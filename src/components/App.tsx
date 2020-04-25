@@ -8,10 +8,13 @@ import SignUp from './SignUp'
 import SignIn from './SignIn'
 import Profile from './Profil'
 import Services from './Services'
+import AddService from './AddService'
 
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+
+
 
 function connexionScreen() {
   return (
@@ -29,11 +32,12 @@ const app = () => {
 
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Services">
+      <Drawer.Navigator initialRouteName="AddService">
 
         <Drawer.Screen name="Connexion" component={connexionScreen} />
         <Drawer.Screen name="Profil" component={Profile} />
         <Drawer.Screen name="Services" component={Services} />
+        <Drawer.Screen name="AddService" component={AddService} />
       </Drawer.Navigator>
     </NavigationContainer>
 

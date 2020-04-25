@@ -50,5 +50,7 @@ export default StyleSheet.create({
     paddingHorizontal: 10,
     borderWidth: 1.0,
     borderRadius: 10
-  }
+  },
+
+
 });
