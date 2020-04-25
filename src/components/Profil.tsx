@@ -5,7 +5,11 @@ import {
 } from 'react-native';
 import styles from '../../assets/css/styles'
 
-export default class Profile extends Component {
+export interface Props {}
+
+interface State {}
+
+export default class Profile extends React.Component<Props, State> {
 
   render() {
     return (

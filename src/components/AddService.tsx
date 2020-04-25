@@ -5,12 +5,11 @@ import {
 } from 'react-native';
 import styles from '../../assets/css/styles'
 
-
 export interface Props {}
 
 interface State {}
 
-export default class Service extends React.Component<Props, State> {
+export default class AddService extends React.Component<Props, State> {
 
   render() {
     return (
