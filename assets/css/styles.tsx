@@ -50,5 +50,15 @@ export default StyleSheet.create({
     paddingHorizontal: 10,
     borderWidth: 1.0,
     borderRadius: 10
-  }
+  },
+  error: {
+    height: 40,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "red",
+    textAlign:"center",
+    fontSize:16,
+    borderRadius: 10
+  },
 });

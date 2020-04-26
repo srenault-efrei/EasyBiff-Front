@@ -15,7 +15,9 @@ export interface Props {
 
 interface State {
     email: string,
-    password: string
+    password: string,
+    error:string;
+    
 }
 
 export default class Signin extends React.Component<Props, State>{
@@ -26,6 +28,7 @@ export default class Signin extends React.Component<Props, State>{
         this.state = {
             email: '',
             password: '',
+            error:''
         };
     }
 
@@ -33,6 +36,38 @@ export default class Signin extends React.Component<Props, State>{
         this.props.navigation.navigate(page)
     }
 
+    async signIn(){
+
+        
+        const result = await fetch('https://eazybiff-server.herokuapp.com/api/authenticate/signin', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({email : this.state.email.trim(), password : this.state.password.trim() })
+        })
+          .then((response) => response.json())
+          .then((json) => {
+              if(json['err'] ){
+                  this.setState({error : json["err"]["description"]})
+              }
+              else {
+                  this.props.navigation.navigate('Services',{token:json['data']['meta']['token'], id : json['data']['user']['id']})
+              }
+            return json
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+
+      }
+
+      
+      
+
+
+   
 
     render() {
         return (
@@ -42,7 +77,6 @@ export default class Signin extends React.Component<Props, State>{
                 </View>
                 <View style={styles.loginView}>
                     <TextInput
-                        caretHidden
                         // name="email"
                         autoCapitalize='none'
                         style={styles.input}
@@ -58,11 +92,12 @@ export default class Signin extends React.Component<Props, State>{
                         onChangeText={password => this.setState({ password })}
                     >
                     </TextInput>
+                    <Text style= {styles.error}>{this.state.error}</Text>
                     <View style={{ width: "100%", marginBottom: 5, flexDirection: "row-reverse" }}>
                         <Text>Mot de passe oublié</Text>
                     </View>
                     <View style={styles.button}>
-                        <Text style={styles.textButton} onPress={() => this.goTo('Services')}>Connexion</Text>
+                        <Text style={styles.textButton} onPress={() => this.signIn()}>Connexion</Text>
                     </View>
                 </View>
                 <View style={styles.bottomView}>
