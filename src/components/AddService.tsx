@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
+  StyleSheet,
+  SafeAreaView
 
 } from 'react-native';
 import styles from '../../assets/css/services'
-import { SafeAreaView } from 'react-native-safe-area-context';
 import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-datepicker'
 import { TextInput } from 'react-native-gesture-handler';
@@ -14,22 +15,29 @@ import { TextInput } from 'react-native-gesture-handler';
 
 export interface Props { }
 
-interface ItemsCategories{
+interface Items {
   label: string,
-  value: string
+  value: string,
+  
 }
 
 interface State {
   startDate: Date
-  endDate: Date
   dateNow: Date
-  time: string
+  endDate: Date
+  startTime: string
+  endTime: string
   typeService: string
   price: number
   postalCode: number
   city: string
   radius: number
-  items: Array<ItemsCategories>
+  itemsCategories: Array<Items>
+  itemsRadius: Array<Items>
+  userId: string
+  token: string
+  email: string
+  description: string
 
 }
 
@@ -40,23 +48,30 @@ export default class Service extends React.Component<Props, State> {
 
     this.state = {
       startDate: new Date(),
-      endDate: new Date(),
       dateNow: new Date(),
-      time: new Date().getHours() + ':' + new Date().getMinutes(),
+      endDate: new Date(),
+      startTime: new Date().getHours() + ':' + new Date().getMinutes(),
+      endTime: new Date().getHours() + ':' + new Date().getMinutes(),
       typeService: '',
       price: 0,
       postalCode: 0,
       city: '',
       radius: 0,
-      items: []
+      itemsCategories: [],
+      itemsRadius: [],
+      userId: '',
+      token: '',
+      email: "user1@gmail.com",
+      description: ''
 
     }
   }
 
 
   componentDidMount() {
+    this.signInUser()
     this.fetchCategories()
-
+    this.fetchRadius()
   }
 
 
@@ -67,6 +82,13 @@ export default class Service extends React.Component<Props, State> {
     return date
   }
 
+  dateWithTime = (value: Date, time: string): Date => {
+
+    let fullDate = new Date(value.getFullYear() + '-' + ("0" + (value.getMonth() + 1)).slice(-2) + '-' + value.getDate() + 'T' + time)
+    return fullDate
+
+  }
+
   verifPrice = (value: string): void => {
     let p: number = parseInt(value)
 
@@ -75,7 +97,7 @@ export default class Service extends React.Component<Props, State> {
     }
     else {
       if (value != '') {
-        alert('Vous devez rentrer un nombre entier')
+        alert('Vous devez rentrer un chiffre')
       }
     }
   }
@@ -104,11 +126,56 @@ export default class Service extends React.Component<Props, State> {
   }
 
 
-  fetchRadius = (): Promise<void | never> => {
+  isFieldEmpty = (): Boolean => {
 
-    return fetch('http://127.0.0.1:4242/api/categories')
+    let bool: Boolean = false
+
+    if (this.state.typeService == '' || this.state.price == 0 || this.state.postalCode == 0 || this.state.city == '' || this.state.radius == 0) {
+      bool = true
+    }
+    return bool
+  }
+
+
+  signInUser = (): Promise<void | never> => {
+
+    return fetch('https://eazybiff-server.herokuapp.com/api/authenticate/signin', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email: this.state.email, password: "123456" })
+    })
       .then((response) => response.json())
       .then((json) => {
+        this.setState({
+          userId: json.data.user.id,
+          token: json.data.meta.token
+        })
+
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+
+
+
+  fetchRadius = (): Promise<void | never> => {
+
+    return fetch('https://eazybiff-server.herokuapp.com/api/radius')
+      .then((response) => response.json())
+      .then((json) => {
+        let tab: Array<Items> = []
+
+        for (const radius of json.data.radius) {
+          let obj: Items = { label: radius.kilometer.toString(), value: radius.id }
+          tab.push(obj)
+        }
+
+        this.setState({ itemsRadius: tab })
       })
       .catch((error) => {
         console.error(error);
@@ -118,21 +185,79 @@ export default class Service extends React.Component<Props, State> {
 
   fetchCategories = (): Promise<void | never> => {
 
-    return fetch('http://localhost:4242/api/categories')
+    return fetch('https://eazybiff-server.herokuapp.com/api/categories')
       .then((response) => response.json())
       .then((json) => {
-        let tab: Array<ItemsCategories> = []
+        let tab: Array<Items> = []
 
         for (const category of json.data.category) {
-          let obj: ItemsCategories = { label: category.name, value: category.name }
+          let obj: Items = { label: category.name, value: category.id }
           tab.push(obj)
         }
 
-        this.setState({ items: tab })
+        this.setState({ itemsCategories: tab })
       })
       .catch((error) => {
         console.error(error);
       });
+  }
+
+
+
+  insertService = (): void => {
+
+    console.log(this.state.token)
+
+    if (this.isFieldEmpty()) {
+      alert('Remplissez tous les champs ')
+    } else {
+
+      console.log(this.state.typeService)
+      console.log(this.state.startDate)
+      console.log(this.state.endDate)
+      console.log(this.state.startTime)
+      console.log(this.state.endTime)
+      console.log(this.state.price)
+      console.log(this.state.postalCode)
+      console.log(this.state.city)
+      console.log(this.state.radius)
+
+
+
+
+      fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.userId}/services`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Authorization': this.state.token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+
+          dateDebut: this.dateWithTime(this.state.startDate, this.state.startTime),
+          dateFin: this.dateWithTime(this.state.endDate, this.state.endTime),
+          postalCode: this.state.postalCode,
+          description: this.state.description,
+          state: true,
+          city: this.state.city,
+          price: this.state.price,
+          categoryId: this.state.typeService,
+          radiusId: this.state.radius,
+        }),
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(json)
+          if (json.data != null || json.data != undefined) {
+            alert("Insertion reussi")
+          } else {
+            alert(json.err.description)
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   }
 
   render() {
@@ -140,166 +265,205 @@ export default class Service extends React.Component<Props, State> {
     return (
       <SafeAreaView style={styles.safeArea}>
 
-
-        <View>
-          <Text style={styles.label}>Choisissez un service</Text>
-          <RNPickerSelect
-            placeholder={{
-              label: 'Selectionner le type de service',
-              value: null,
-            }}
-            onValueChange={(value) => this.setState({ typeService: value })}
-            style={{ ...styles }}
-            items={this.state.items}
-          // Icon={() => {
-          //   return <Ionicons name={"md-arrow-dropdown"} size={30} style={styles.dropDown} />;
-          // }}
-          />
-        </View>
-
-        <View style={styles.view_row}>
-          <View style={styles.view}>
-            <Text style={styles.label}>Date de début</Text>
-            <DatePicker
-              style={{ width: 150 }}
-              date={this.state.startDate}
-              mode="date"
-              placeholder="selectionner une date"
-              format="DD-MM-YYYY"
-              minDate={this.state.dateNow}
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateIcon: {
-                  position: 'absolute',
-                  right: 0,
-                  top: 4,
-                  marginLeft: 0
-                },
-                dateInput: { ...styles.dateInput }
-              }}
-              onDateChange={(value) => { this.setState({ startDate: this.transfromDate(value) }) }}
-            />
-          </View>
-
-
-          <View style={styles.view}>
-            <Text style={styles.label}>Date de fin</Text>
-            <DatePicker
-              style={{ width: 150 }}
-              date={this.state.endDate}
-              mode="date"
-              placeholder="selectionner une date"
-              format="DD-MM-YYYY"
-              minDate={this.state.dateNow}
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateIcon: {
-                  position: 'absolute',
-                  right: 0,
-                  top: 4,
-                  marginLeft: 0
-                },
-                dateInput: { ...styles.dateInput }
-              }}
-              onDateChange={(value) => { this.setState({ endDate: this.transfromDate(value) }) }}
-            />
-          </View>
-
-
-        </View>
-        <View style={styles.view_row}>
-          <View style={styles.view}>
-            <Text style={styles.label}>Heure</Text>
-            <DatePicker
-              style={{ width: 150 }}
-              date={this.state.time}
-              mode="time"
-              placeholder="selectionner une heure"
-              minDate={this.state.dateNow}
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateIcon: {
-                  position: 'absolute',
-                  right: 0,
-                  top: 4,
-                  marginLeft: 0
-                },
-                dateInput: { ...styles.dateInput }
-              }}
-              onDateChange={(time) => { this.setState({ time: time }) }}
-            />
-
-          </View>
-
-          <View style={{ marginTop: 20, marginLeft: 10 }}>
-
-            <Text style={styles.label}>Prix</Text>
-            <TextInput style={styles.input}
-              placeholder={"8"}
-              onChangeText={value => this.verifPrice(value)}
-              maxLength={2}
-            >
-
-            </TextInput>
-          </View>
-        </View>
-
-
-        <View style={styles.view_row}>
-          <View style={styles.view}>
-            <Text style={styles.label}> Code postal</Text>
-            <TextInput style={styles.input}
-              placeholder={"94310"}
-              maxLength={4}
-              onChangeText={value => this.verifPostalCode(value)}
-            >
-            </TextInput>
-
-          </View>
-
-          <View style={{ marginTop: 20, marginLeft: 10 }}>
-            <Text style={styles.label}>Ville</Text>
-            <TextInput style={styles.input}
-              placeholder={"Orly"}
-              onChangeText={value => this.verifCity(value)}
-
-            >
-            </TextInput>
-          </View>
-        </View>
-
-        <View style={styles.view_row}>
-          <View style={styles.view}>
-            <Text style={styles.label}>Rayons</Text>
+          <View style={{ marginLeft: 35 }}>
+            <Text style={styles.label}>Choisissez un service</Text>
             <RNPickerSelect
               placeholder={{
-                label: 'Choisir un rayon',
+                label: 'Selectionner le type de service',
                 value: null,
               }}
-              onValueChange={(value) => this.setState({ radius: value })}
+              onValueChange={(value) => this.setState({ typeService: value })}
               style={{ ...styles }}
-              items={[
-                { label: '5', value: '5' },
-                { label: '10', value: '10' },
-                { label: '20', value: '20' },
-              ]}
-            // Icon={() => {
-            //   return <Ionicons name={"md-arrow-dropdown"} size={30} style={styles.dropDown} />;
-            // }}
+              items={this.state.itemsCategories}
             />
           </View>
-        </View>
 
-        <View style={styles.button}>
-          <Text style={styles.textButton}>Ajouter un service</Text>
+          <View style={styles.view_row}>
+            <View style={styles.view}>
+              <Text style={styles.label}>Date de début</Text>
+              <DatePicker
+                style={{ width: 150 }}
+                date={this.state.startDate}
+                mode="date"
+                placeholder="selectionner une date"
+                format="DD-MM-YYYY"
+                minDate={this.state.dateNow}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    position: 'absolute',
+                    right: 0,
+                    top: 4,
+                    marginLeft: 0
+                  },
+                  dateInput: { ...styles.dateInput }
+                }}
+                onDateChange={(value) => { this.setState({ startDate: this.transfromDate(value) }) }}
+              />
+            </View>
+
+
+            <View style={styles.view}>
+              <Text style={styles.label}>Date de fin</Text>
+              <DatePicker
+                style={{ width: 150 }}
+                date={this.state.endDate}
+                mode="date"
+                placeholder="selectionner une date"
+                format="DD-MM-YYYY"
+                minDate={this.state.dateNow}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    position: 'absolute',
+                    right: 0,
+                    top: 4,
+                    marginLeft: 0
+                  },
+                  dateInput: { ...styles.dateInput }
+                }}
+                onDateChange={(value) => { this.setState({ endDate: this.transfromDate(value) }) }}
+              />
+            </View>
+          </View>
+
+          <View style={styles.view_row}>
+            <View style={styles.view}>
+              <Text style={styles.label}>Heure de début</Text>
+              <DatePicker
+                style={{ width: 150 }}
+                date={this.state.startTime}
+                mode="time"
+                placeholder="selectionner une heure"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    position: 'absolute',
+                    right: 0,
+                    top: 4,
+                    marginLeft: 0
+                  },
+                  dateInput: { ...styles.dateInput }
+                }}
+                onDateChange={(time) => { this.setState({ startTime: time }) }}
+              />
+            </View>
+
+            <View style={styles.view}>
+              <Text style={styles.label}>Heure de fin </Text>
+              <DatePicker
+                style={{ width: 150 }}
+                date={this.state.endTime}
+                mode= "time"
+                placeholder="selectionner une heure"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    position: 'absolute',
+                    right: 0,
+                    top: 4,
+                    marginLeft: 0
+                  },
+                  dateInput: { ...styles.dateInput }
+                }}
+                onDateChange={(time) => { this.setState({ endTime: time }) }}
+              />
+
+            </View>
+          </View>
+
+
+          <View style={styles.view_row}>
+            <View style={styles.view}>
+              <Text style={styles.label}> Code postal</Text>
+              <TextInput style={styles.input}
+                placeholder={"94310"}
+                maxLength={4}
+                onChangeText={value => this.verifPostalCode(value)}
+              >
+              </TextInput>
+
+            </View>
+
+            <View style={{ marginTop: 20, marginLeft: 10 }}>
+              <Text style={styles.label}>Ville</Text>
+              <TextInput style={styles.input}
+                placeholder={"Orly"}
+                onChangeText={value => this.verifCity(value)}
+              >
+              </TextInput>
+            </View>
+          </View>
+
+
+          <View style={styles.view_row}>
+
+            <View style={styles.view}>
+              <Text style={styles.label}>Rayon (Km)</Text>
+              <RNPickerSelect
+                placeholder={{
+                  label: 'Choisir  un rayon',
+                  value: null,
+                }}
+                onValueChange={(value) => this.setState({ radius: value })}
+                style={{ ...stylesIos }}
+                items={this.state.itemsRadius}
+              />
+            </View>
+
+            <View style={{ marginTop: 20, marginLeft: 10 }}>
+
+              <Text style={styles.label}>Prix (€)</Text>
+              <TextInput style={styles.input}
+                placeholder={"8"}
+                onChangeText={value => this.verifPrice(value)}
+                maxLength={2}>
+
+              </TextInput>
+            </View>
+          </View>
+
+          <View style={{ marginLeft: 35, top:20}}>
+            <Text style={styles.label}>Description</Text>
+            <TextInput style={styles.description}
+              placeholder={"Lave votre voiture, aucun produits à fournir"}
+              multiline={true}
+              numberOfLines={4}
+              onChangeText={value => this.setState({ description: value})}
+            >
+            </TextInput>
+          </View>
+        <View style={{ alignItems: "center" }}>
+          <View style={styles.button}>
+            <Text onPress={() => this.insertService()} style={styles.textButton}>Ajouter un service</Text>
+          </View>
         </View>
 
       </SafeAreaView>
+
     );
 
   }
 
 }
+
+
+const stylesIos = StyleSheet.create({
+
+  inputIOS: {
+    fontSize: 15,
+    paddingLeft: 5,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    backgroundColor: 'white',
+    color: 'black',
+    height: 40,
+    width: 150,
+  },
+
+})

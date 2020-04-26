@@ -8,6 +8,11 @@ export default StyleSheet.create({
         marginTop: 50,
     },
 
+    scrollView:{
+        paddingLeft: 10,
+        paddingRight: 10,
+    },
+
     view: {
         marginTop: 20,
         marginLeft: 10
@@ -20,7 +25,7 @@ export default StyleSheet.create({
 
     label: {
         fontSize: 15,
-        marginBottom: 15
+        marginBottom: 5
     },
 
     picker: {
@@ -41,30 +46,41 @@ export default StyleSheet.create({
     },
 
     inputIOS: {
-        fontSize: 16,
-        paddingTop: 13,
-        paddingHorizontal: 10,
-        paddingBottom: 12,
+        fontSize: 15,
+        paddingLeft: 5,
         borderWidth: 1,
         borderColor: 'gray',
         borderRadius: 4,
         backgroundColor: 'white',
         color: 'black',
+        height: 40,
+        width: 310
     },
 
     input: {
 
-        height: 40,
-        borderWidth: 1.0,
-        borderRadius: 4,
-        width: 150,
-        backgroundColor: "white",
-        fontSize: 16,
-        paddingTop: 13,
-        paddingHorizontal: 10,
-        paddingBottom: 12,
+        fontSize: 15,
+        paddingLeft: 5,
+        borderWidth: 1,
         borderColor: 'gray',
-        color: 'black'
+        borderRadius: 4,
+        backgroundColor: 'white',
+        color: 'black',
+        height: 40,
+        width: 150
+    },
+
+    description: {
+
+        fontSize: 15,
+        paddingLeft: 5,
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 4,
+        backgroundColor: 'white',
+        color: 'black',
+        height: 50,
+        width: 300
     },
 
     dateInput:{
@@ -78,21 +94,23 @@ export default StyleSheet.create({
         height: 40
       
       },
-
-
-
       button: {
         height: 40,
-        width: "100%",
-        top:20,
+        width: "70%",
+        top:50,
+        textAlign: "center",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "grey",
         color: "white",
-        borderRadius: 4
+        borderRadius: 4,
+
       },
+
       textButton: {
         color: "white"
       },
+
+      
 
 });
