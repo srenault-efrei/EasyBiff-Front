@@ -39,7 +39,7 @@ export default class Signin extends React.Component<Props, State>{
     async signIn(){
 
         
-        const result = await fetch('https://eazybiff-server.herokuapp.com/api/authenticate/signin', {
+        await fetch('https://eazybiff-server.herokuapp.com/api/authenticate/signin', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -50,15 +50,15 @@ export default class Signin extends React.Component<Props, State>{
           .then((response) => response.json())
           .then((json) => {
               if(json['err'] ){
-                  this.setState({error : json["err"]["description"]})
+                  this.setState({error : json.err.description})
               }
               else {
-                  this.props.navigation.navigate('Services',{token:json['data']['meta']['token'], id : json['data']['user']['id']})
+                  this.props.navigation.navigate('Services',{token:json.data.meta.token, id : json.data.user.id})
               }
             return json
           })
           .catch((error) => {
-            console.error(error);
+            this.setState({error})
           });
 
       }

@@ -38,10 +38,16 @@ export default StyleSheet.create({
     alignItems: "center",
     backgroundColor: "grey",
     color: "white",
-    borderRadius: 10
+    borderRadius: 10,
+
+    
+
   },
   textButton: {
-    color: "white"
+    color: "white",
+    width: "100%",
+    textAlign:'center'
+   
   },
   input: {
     width: "100%",
