@@ -53,7 +53,13 @@ export default class Signin extends React.Component<Props, State>{
                   this.setState({error : json.err.description})
               }
               else {
-                  this.props.navigation.navigate('Services',{token:json.data.meta.token, id : json.data.user.id})
+                  if(json.data.user.type == "customer"){
+                    this.props.navigation.navigate('ServicesCusto',{token:json.data.meta.token, id : json.data.user.id})
+                  }
+                  else{
+                    this.props.navigation.navigate('Services',{token:json.data.meta.token, id : json.data.user.id})
+                  } 
+                 
               }
             return json
           })
@@ -63,7 +69,6 @@ export default class Signin extends React.Component<Props, State>{
 
       }
 
-      
       
 
 
