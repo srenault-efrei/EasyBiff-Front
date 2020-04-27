@@ -1,0 +1,8 @@
+[0426/184709.186:ERROR:process_info.cc(359)] UncheckedAllocate
+[0426/185043.118:ERROR:process_info.cc(359)] UncheckedAllocate
+[0426/185044.214:ERROR:process_info.cc(359)] UncheckedAllocate
+[0426/185528.425:ERROR:process_info.cc(359)] UncheckedAllocate
+[0426/191049.062:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0426/200643.114:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0426/211601.431:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0426/211642.518:ERROR:crash_report_database_win.cc(428)] unexpected header

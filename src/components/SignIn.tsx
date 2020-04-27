@@ -4,7 +4,8 @@ import {
     SafeAreaView,
     View,
     Text,
-    TextInput
+    TextInput,
+    Alert
 } from 'react-native';
 import styles from '../../assets/css/styles'
 
@@ -29,8 +30,31 @@ export default class Signin extends React.Component<Props, State>{
         };
     }
 
-    goTo = (page: string) => {
-        this.props.navigation.navigate(page)
+    goTo(page: string, params: object = {}) {
+        this.props.navigation.navigate(page, params)
+    }
+
+    signIn() {
+        fetch('http://localhost:4242/api/authenticate/signin', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: this.state.email,
+                password: this.state.password,
+            })
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // console.log(responseJson);
+                this.goTo('Services', responseJson.data);
+
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
 
@@ -43,7 +67,6 @@ export default class Signin extends React.Component<Props, State>{
                 <View style={styles.loginView}>
                     <TextInput
                         caretHidden
-                        // name="email"
                         autoCapitalize='none'
                         style={styles.input}
                         placeholder="Email"
@@ -51,7 +74,6 @@ export default class Signin extends React.Component<Props, State>{
                     >
                     </TextInput>
                     <TextInput
-                        // name="password"
                         secureTextEntry={true}
                         style={styles.input}
                         placeholder="Password"
@@ -62,7 +84,7 @@ export default class Signin extends React.Component<Props, State>{
                         <Text>Mot de passe oublié</Text>
                     </View>
                     <View style={styles.button}>
-                        <Text style={styles.textButton} onPress={() => this.goTo('Services')}>Connexion</Text>
+                        <Text style={styles.textButton} onPress={() => this.signIn()}>Connexion</Text>
                     </View>
                 </View>
                 <View style={styles.bottomView}>

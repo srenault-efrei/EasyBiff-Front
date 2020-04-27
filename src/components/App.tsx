@@ -16,9 +16,7 @@ const Stack = createStackNavigator();
 function connexionScreen() {
   return (
 
-    <Stack.Navigator screenOptions={{
-      headerShown: false
-    }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Connexion" component={SignIn} />
       <Stack.Screen name="Inscription" component={SignUp} />
     </Stack.Navigator>
@@ -29,7 +27,7 @@ const app = () => {
 
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Services">
+      <Drawer.Navigator initialRouteName="Connexion">
 
         <Drawer.Screen name="Connexion" component={connexionScreen} />
         <Drawer.Screen name="Profil" component={Profile} />
