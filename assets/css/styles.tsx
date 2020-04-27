@@ -38,10 +38,16 @@ export default StyleSheet.create({
     alignItems: "center",
     backgroundColor: "grey",
     color: "white",
-    borderRadius: 10
+    borderRadius: 10,
+
+    
+
   },
   textButton: {
-    color: "white"
+    color: "white",
+    width: "100%",
+    textAlign:'center'
+   
   },
   input: {
     width: "100%",
@@ -50,5 +56,15 @@ export default StyleSheet.create({
     paddingHorizontal: 10,
     borderWidth: 1.0,
     borderRadius: 10
-  }
+  },
+  error: {
+    height: 40,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "red",
+    textAlign:"center",
+    fontSize:16,
+    borderRadius: 10
+  },
 });
