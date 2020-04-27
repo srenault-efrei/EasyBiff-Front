@@ -1,19 +1,25 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView
+  SafeAreaView,
+  TouchableOpacity
 
 } from 'react-native';
 import styles from '../../assets/css/services'
 import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-datepicker'
 import { TextInput } from 'react-native-gesture-handler';
+import { NavigationScreenProp } from 'react-navigation'
 
 
 
-export interface Props { }
+
+export interface Props { 
+  navigation: NavigationScreenProp<any>
+
+}
 
 interface Items {
   label: string,
@@ -36,7 +42,6 @@ interface State {
   itemsRadius: Array<Items>
   userId: string
   token: string
-  email: string
   description: string
 
 }
@@ -61,7 +66,6 @@ export default class Service extends React.Component<Props, State> {
       itemsRadius: [],
       userId: '',
       token: '',
-      email: "user1@gmail.com",
       description: ''
 
     }
@@ -75,6 +79,10 @@ export default class Service extends React.Component<Props, State> {
   }
 
 
+
+  goTo = (page: string) => {
+    this.props.navigation.navigate(page)
+}
 
   transfromDate = (value: string): Date => {
     let dateSplit: Array<string> = value.split('-')
@@ -124,13 +132,14 @@ export default class Service extends React.Component<Props, State> {
       alert('Votre ville ne doit pas avoir de chiffres')
     }
   }
-
+  
+  
 
   isFieldEmpty = (): Boolean => {
 
     let bool: Boolean = false
 
-    if (this.state.typeService == '' || this.state.price == 0 || this.state.postalCode == 0 || this.state.city == '' || this.state.radius == 0) {
+    if (this.state.typeService == '' || this.state.price == 0 || this.state.postalCode == 0 || this.state.city == '' || this.state.radius == 0 || this.state.description == '') {
       bool = true
     }
     return bool
@@ -145,7 +154,7 @@ export default class Service extends React.Component<Props, State> {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ email: this.state.email, password: "123456" })
+      body: JSON.stringify({ email: "user1@gmail.com", password: "123456" })
     })
       .then((response) => response.json())
       .then((json) => {
@@ -223,8 +232,6 @@ export default class Service extends React.Component<Props, State> {
       console.log(this.state.radius)
 
 
-
-
       fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.userId}/services`, {
         method: 'POST',
         headers: {
@@ -238,7 +245,6 @@ export default class Service extends React.Component<Props, State> {
           dateFin: this.dateWithTime(this.state.endDate, this.state.endTime),
           postalCode: this.state.postalCode,
           description: this.state.description,
-          state: true,
           city: this.state.city,
           price: this.state.price,
           categoryId: this.state.typeService,
@@ -249,9 +255,9 @@ export default class Service extends React.Component<Props, State> {
         .then((json) => {
           console.log(json)
           if (json.data != null || json.data != undefined) {
-            alert("Insertion reussi")
+            this.goTo('Services')
           } else {
-            alert(json.err.description)
+            console.log(json.err.description)
           }
         })
         .catch((error) => {
@@ -437,10 +443,16 @@ export default class Service extends React.Component<Props, State> {
             >
             </TextInput>
           </View>
-        <View style={{ alignItems: "center" }}>
-          <View style={styles.button}>
-            <Text onPress={() => this.insertService()} style={styles.textButton}>Ajouter un service</Text>
-          </View>
+          <View style={{ alignItems: "center", top: 20 }}>
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={() => this.insertService()}
+          >
+            <View style={{ alignItems: "center" }}>
+              <Text style={{ color: "green", fontSize: 20, fontWeight: "bold" }} >Valider</Text>
+            </View>
+
+          </TouchableOpacity>
         </View>
 
       </SafeAreaView>

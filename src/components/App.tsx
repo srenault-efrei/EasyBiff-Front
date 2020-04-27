@@ -9,6 +9,7 @@ import SignIn from './SignIn'
 import Profile from './Profil'
 import Services from './Services'
 import AddService from './AddService'
+import EditService from './EditService'
 
 
 const Drawer = createDrawerNavigator();
@@ -32,12 +33,13 @@ const app = () => {
 
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="AddService">
+      <Drawer.Navigator initialRouteName="Services">
 
         <Drawer.Screen name="Connexion" component={connexionScreen} />
         <Drawer.Screen name="Profil" component={Profile} />
         <Drawer.Screen name="Services" component={Services} />
         <Drawer.Screen name="AddService" component={AddService} />
+        <Drawer.Screen name="EditService" component={EditService} />
       </Drawer.Navigator>
     </NavigationContainer>
 

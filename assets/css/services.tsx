@@ -1,4 +1,4 @@
-import { StyleSheet, Platform, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 
@@ -80,7 +80,7 @@ export default StyleSheet.create({
         backgroundColor: 'white',
         color: 'black',
         height: 50,
-        width: 300
+        width: 310
     },
 
     dateInput:{
@@ -94,23 +94,19 @@ export default StyleSheet.create({
         height: 40
       
       },
-      button: {
+
+      editButton: {
         height: 40,
-        width: "70%",
+        width: "43%",
         top:50,
-        textAlign: "center",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "grey",
-        color: "white",
-        borderRadius: 4,
+        // textAlign: "center",
+        // justifyContent: "center",
+        // backgroundColor: "green",
+        // color: "green",
+        // borderRadius: 4,
+        // marginLeft:20
 
       },
-
-      textButton: {
-        color: "white"
-      },
-
       
 
 });
