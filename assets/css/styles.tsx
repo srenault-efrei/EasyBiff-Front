@@ -20,7 +20,9 @@ export default StyleSheet.create({
   topView: {
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 10
+    alignContent:"space-between",
+    paddingVertical: 10,
+    flexDirection: "row"
   },
   bottomView: {
     justifyContent: "center",
@@ -38,10 +40,16 @@ export default StyleSheet.create({
     alignItems: "center",
     backgroundColor: "grey",
     color: "white",
-    borderRadius: 10
+    borderRadius: 10,
+
+    
+
   },
   textButton: {
-    color: "white"
+    color: "white",
+    width: "100%",
+    textAlign:'center'
+   
   },
   input: {
     width: "100%",
@@ -51,6 +59,37 @@ export default StyleSheet.create({
     borderWidth: 1.0,
     borderRadius: 10
   },
+  line:{
+    
+      borderWidth: 1,
+      borderColor: 'gray',
+      borderRadius: 4,
+      height: 1,
+      width:'90%'
+    
+  },
+  viewService:{
+    marginTop: 20,
+    
+    alignItems:"center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    height: 30,
+    width: 200
+    
+  
+},
 
-
+  error: {
+    height: 40,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "red",
+    textAlign:"center",
+    fontSize:16,
+    borderRadius: 10
+  },
 });

@@ -1,15 +1,22 @@
 import { registerRootComponent } from 'expo';
 import React from 'react';
-import 'react-native-gesture-handler';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer, DrawerActions} from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import { NavigationScreenProp } from 'react-navigation'
+import { createDrawerNavigator, DrawerItem,DrawerContentScrollView} from '@react-navigation/drawer'
 import SignUp from './SignUp'
 import SignIn from './SignIn'
 import Profile from './Profil'
 import Services from './Services'
-import AddService from './AddService'
+import ServicesCusto from './ServicesCusto'
+import Preferences from './Preferences';
 import EditService from './EditService'
+import AddService from './AddService'
+
+
+export interface Props {
+  navigation:any
+}
 
 
 const Drawer = createDrawerNavigator();
@@ -17,34 +24,52 @@ const Stack = createStackNavigator();
 
 
 
-function connexionScreen() {
-  return (
+function createCustomMenu(props:Props){
+  const jumpToConnexion = DrawerActions.jumpTo('StackApp',{screen:'Preferences'})
+  const jumpToServices = DrawerActions.jumpTo('StackApp',{screen:'Services'})
 
-    <Stack.Navigator screenOptions={{
-      headerShown: false
-    }}>
+
+  return(
+    <DrawerContentScrollView {...props}>
+      <DrawerItem
+      label ="Services"
+      onPress = {() => { props.navigation.dispatch(jumpToServices)}}
+      />
+      <DrawerItem label='Preferences' onPress = {() => { props.navigation.dispatch(jumpToConnexion)}}></DrawerItem>  
+    </DrawerContentScrollView>
+  )
+}
+
+function createAppStack() {
+  return  (
+    <Stack.Navigator   headerMode="none"  initialRouteName='Connexion'  >
+      <Stack.Screen name ='ServicesCusto' component = {ServicesCusto} />
+      <Stack.Screen name ='Services' component = {Services} />
+      <Stack.Screen name ='Profil' component = {Profile} />
       <Stack.Screen name="Connexion" component={SignIn} />
       <Stack.Screen name="Inscription" component={SignUp} />
+      <Stack.Screen name="Preferences" component={Preferences} />
+      <Stack.Screen name="EditService" component={EditService} />
+       <Stack.Screen name="AddService" component={AddService} />
+
+
+      
     </Stack.Navigator>
-  );
+  )
 }
 
 const app = () => {
 
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Services">
-
-        <Drawer.Screen name="Connexion" component={connexionScreen} />
-        <Drawer.Screen name="Profil" component={Profile} />
-        <Drawer.Screen name="Services" component={Services} />
-        <Drawer.Screen name="AddService" component={AddService} />
-        <Drawer.Screen name="EditService" component={EditService} />
-      </Drawer.Navigator>
+    <Drawer.Navigator drawerContent = { props => createCustomMenu(props)}  screenOptions={{swipeEnabled:false}} > 
+    <Drawer.Screen name='StackApp' component={createAppStack} />
+    </Drawer.Navigator>
     </NavigationContainer>
 
   )
 
 }
+
 
 export default registerRootComponent(app)

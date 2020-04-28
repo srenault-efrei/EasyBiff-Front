@@ -5,7 +5,7 @@ export default StyleSheet.create({
     safeArea: {
         paddingLeft: 10,
         paddingRight: 10,
-        marginTop: 50,
+        marginTop: 20,
     },
 
     scrollView:{
@@ -98,7 +98,7 @@ export default StyleSheet.create({
       editButton: {
         height: 40,
         width: "43%",
-        top:50,
+        top:20,
         // textAlign: "center",
         // justifyContent: "center",
         // backgroundColor: "green",

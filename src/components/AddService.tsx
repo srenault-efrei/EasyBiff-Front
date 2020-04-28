@@ -13,10 +13,13 @@ import DatePicker from 'react-native-datepicker'
 import { TextInput } from 'react-native-gesture-handler';
 import { NavigationScreenProp } from 'react-navigation'
 
-
+import MyHeader from './MyHeader'
 
 
 export interface Props { 
+  serviceId: string
+  route: any
+  params: any
   navigation: NavigationScreenProp<any>
 
 }
@@ -64,8 +67,8 @@ export default class Service extends React.Component<Props, State> {
       radius: 0,
       itemsCategories: [],
       itemsRadius: [],
-      userId: '',
-      token: '',
+      userId: this.props.route.params.user,
+      token: this.props.route.params.token,
       description: ''
 
     }
@@ -73,7 +76,6 @@ export default class Service extends React.Component<Props, State> {
 
 
   componentDidMount() {
-    this.signInUser()
     this.fetchCategories()
     this.fetchRadius()
   }
@@ -92,7 +94,7 @@ export default class Service extends React.Component<Props, State> {
 
   dateWithTime = (value: Date, time: string): Date => {
 
-    let fullDate = new Date(value.getFullYear() + '-' + ("0" + (value.getMonth() + 1)).slice(-2) + '-' + value.getDate() + 'T' + time)
+    let fullDate = new Date(value.getFullYear() + '-' + ("0" + (value.getMonth() + 1)).slice(-2) + '-' + ("0" + (value.getDate() + 1)).slice(-2) + 'T' + time)
     return fullDate
 
   }
@@ -144,32 +146,6 @@ export default class Service extends React.Component<Props, State> {
     }
     return bool
   }
-
-
-  signInUser = (): Promise<void | never> => {
-
-    return fetch('https://eazybiff-server.herokuapp.com/api/authenticate/signin', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email: "user1@gmail.com", password: "123456" })
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        this.setState({
-          userId: json.data.user.id,
-          token: json.data.meta.token
-        })
-
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-
-
 
 
   fetchRadius = (): Promise<void | never> => {
@@ -231,6 +207,8 @@ export default class Service extends React.Component<Props, State> {
       console.log(this.state.city)
       console.log(this.state.radius)
 
+      console.log(this.state.startDate, this.state.startTime)
+
 
       fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.userId}/services`, {
         method: 'POST',
@@ -269,6 +247,11 @@ export default class Service extends React.Component<Props, State> {
   render() {
 
     return (
+
+      <View style={{marginTop: 20}}>
+        <MyHeader  navigation={this.props.navigation} name="Services" ></MyHeader>
+
+  
       <SafeAreaView style={styles.safeArea}>
 
           <View style={{ marginLeft: 35 }}>
@@ -456,7 +439,7 @@ export default class Service extends React.Component<Props, State> {
         </View>
 
       </SafeAreaView>
-
+      </View>
     );
 
   }

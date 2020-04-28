@@ -12,9 +12,15 @@ import DatePicker from 'react-native-datepicker'
 import { TextInput } from 'react-native-gesture-handler';
 import { NavigationScreenProp } from 'react-navigation'
 
+import MyHeader from './MyHeader'
+
+
 
 
 export interface Props {
+  serviceId: string
+  route: any
+  params: any
   navigation: NavigationScreenProp<any>
 
 }
@@ -64,10 +70,10 @@ export default class EditService extends React.Component<Props, State> {
       city: '',
       radius: 0,
       itemsRadius: [],
-      userId: '',
-      token: '',
+      userId: this.props.route.params.user,
+      token: this.props.route.params.token,
       description: '',
-      serviceId: 6,
+      serviceId: this.props.route.params.serviceId,
       typeServiceId: 0,
       radiusId: 0,
       stateService: 0
@@ -77,7 +83,6 @@ export default class EditService extends React.Component<Props, State> {
 
 
   componentDidMount() {
-    this.signInUser()
     this.fetchRadius()
     this.fetchService()
   }
@@ -96,7 +101,7 @@ export default class EditService extends React.Component<Props, State> {
 
   dateWithTime = (value: Date, time: string): Date => {
 
-    let fullDate = new Date(value.getFullYear() + '-' + ("0" + (value.getMonth() + 1)).slice(-2) + '-' + value.getDate() + 'T' + time)
+    let fullDate = new Date(value.getFullYear() + '-' + ("0" + (value.getMonth() + 1)).slice(-2) + '-' + ("0" + (value.getDate() + 1)).slice(-2) + 'T' + time)
     return fullDate
 
   }
@@ -151,31 +156,6 @@ export default class EditService extends React.Component<Props, State> {
   }
 
 
-  signInUser = (): Promise<void | never> => {
-
-    return fetch('https://eazybiff-server.herokuapp.com/api/authenticate/signin', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email: "user1@gmail.com", password: "123456" })
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        this.setState({
-          userId: json.data.user.id,
-          token: json.data.meta.token
-        })
-
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-
-
-
 
   fetchRadius = (): Promise<void | never> => {
 
@@ -196,27 +176,24 @@ export default class EditService extends React.Component<Props, State> {
   }
 
   fetchService = (): Promise<void | never> => {
+    
 
     return fetch(`https://eazybiff-server.herokuapp.com/api/services/${this.state.serviceId}`)
       .then((response) => response.json()
         .then((json) => {
-          console.log(json)
-          let regex: RegExp = /^[\d]+-[\d]+-[\d]+T[\d]+:[\d]+:[\d]+/g
-          let matchStartDate: Array<string> = json.data.service.dateDebut.match(regex)
-          let matchEndDate: Array<string> = json.data.service.dateFin.match(regex)
+         
 
-          let startDate = new Date(matchStartDate[0])
-          let endDate = new Date(matchEndDate[0])
+          let startDate: Date = new Date(json.data.service.dateDebut)
+          let endDate: Date = new Date( json.data.service.dateFin)
 
-          console.log(matchStartDate[0])
-          console.log(matchEndDate[0])
 
           let startTime: string = (startDate.getMinutes() < 10 ? '0' : '') + startDate.getMinutes()
           let endTime: any = (endDate.getMinutes() < 10 ? '0' : '') + endDate.getMinutes()
 
-          let startHours: string = (startDate.getHours() < 10 ? '0' : '') + startDate.getHours()
-          let endHours: string = (endDate.getHours() < 10 ? '0' : '') + endDate.getHours()
+          let startHours: string = (startDate.getUTCHours() < 10 ? '0' : '') + startDate.getUTCHours()
+          let endHours: string = (endDate.getUTCHours() < 10 ? '0' : '') + endDate.getUTCHours()
 
+         
 
           this.setState({
             startDate: startDate,
@@ -242,15 +219,15 @@ export default class EditService extends React.Component<Props, State> {
 
   deleteService = (): Promise<void | never> => {
 
-    console.log(this.state.typeService)
     console.log(this.state.startDate)
     console.log(this.state.endDate)
-    console.log(this.state.startTime)
-    console.log(this.state.endTime)
     console.log(this.state.price)
     console.log(this.state.postalCode)
     console.log(this.state.city)
     console.log(this.state.radius)
+
+    console.log(this.state.serviceId)
+    console.log(this.state.userId)
 
 
 
@@ -263,9 +240,8 @@ export default class EditService extends React.Component<Props, State> {
 
       },
       body: JSON.stringify({
-
-        dateDebut: this.dateWithTime(this.state.startDate, this.state.startTime),
-        dateFin: this.dateWithTime(this.state.endDate, this.state.endTime),
+        dateDebut: this.state.startDate,
+        dateFin: this.state.endDate,
         postalCode: this.state.postalCode,
         description: this.state.description,
         state: -1,
@@ -344,6 +320,10 @@ export default class EditService extends React.Component<Props, State> {
   render() {
 
     return (
+
+      <View style={{marginTop: 20}}>
+        <MyHeader  navigation={this.props.navigation} name="Services" ></MyHeader>
+        
       <SafeAreaView style={styles.safeArea}>
 
         <View style={{ alignItems: "center" }}>
@@ -523,13 +503,13 @@ export default class EditService extends React.Component<Props, State> {
             style={styles.editButton}
             onPress={() => this.goTo('Services')}
           >
-            <Text style={{ color: "gray", fontSize: 20, fontWeight: "bold" }} >Annuler</Text>
+            <Text style={{ color: "gray", fontSize: 20, fontWeight: "bold", top :10 }} >Annuler</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.editButton}
             onPress={() => this.updateService()}
           >
-            <Text style={{ color: "green", fontSize: 20, fontWeight: "bold" }} >Valider</Text>
+            <Text style={{ color: "green", fontSize: 20, fontWeight: "bold", top: 10 }} >Valider</Text>
           </TouchableOpacity>
         </View>
 
@@ -546,6 +526,7 @@ export default class EditService extends React.Component<Props, State> {
         </View>
 
       </SafeAreaView>
+      </View>
 
     );
 
