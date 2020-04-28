@@ -19,7 +19,7 @@ export interface Props {
 
 interface State {}
 
-export default class Service extends React.Component<Props, State> {
+export default class ServicesCusto extends React.Component<Props, State> {
   
   componentDidMount(){
     if(!this.props.route?.params){
@@ -32,7 +32,7 @@ export default class Service extends React.Component<Props, State> {
       <SafeAreaView style={styles.view}>
         <MyHeader navigation={this.props.navigation} name="Services" ></MyHeader>
       <View style={styles.topView}>
-          <Text >Services presta</Text>
+          <Text >Services custo</Text>
       </View>
       <View style={styles.loginView}>
         </View>

@@ -19,20 +19,16 @@ export interface Props {
 
 interface State {}
 
-export default class Service extends React.Component<Props, State> {
+export default class Preferences extends React.Component<Props, State> {
   
-  componentDidMount(){
-    if(!this.props.route?.params){
-      this.props.navigation.navigate('Connexion')
-    }
-  }
+
   
   render() {
     return (
       <SafeAreaView style={styles.view}>
-        <MyHeader navigation={this.props.navigation} name="Services" ></MyHeader>
+        <MyHeader navigation={this.props.navigation} name={this.constructor.name} ></MyHeader>
       <View style={styles.topView}>
-          <Text >Services presta</Text>
+          <Text >Preferences</Text>
       </View>
       <View style={styles.loginView}>
         </View>
