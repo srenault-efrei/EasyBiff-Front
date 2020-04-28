@@ -9,7 +9,7 @@ import SignIn from './SignIn'
 import Profile from './Profil'
 import Services from './Services'
 import ServicesCusto from './ServicesCusto'
-import Preferences from './Preferences';
+import Preference from './Preference';
 
 export interface Props {
   navigation:any
@@ -45,7 +45,7 @@ function createAppStack() {
       <Stack.Screen name ='Profil' component = {Profile} />
       <Stack.Screen name="Connexion" component={SignIn} />
       <Stack.Screen name="Inscription" component={SignUp} />
-      <Stack.Screen name="Preferences" component={Preferences} />
+      <Stack.Screen name="Preference" component={Preference} />
       
     </Stack.Navigator>
   )
