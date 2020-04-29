@@ -164,7 +164,7 @@ export default class SignUp extends React.Component<Props, State>{
                     </View>
                 </View>
                 <View style={styles.bottomView}>
-                    <Text onPress={() => this.goTo('Connexion')}>Déjà inscrit ? Clique ici !</Text>
+                    <Text onPress={() => this.props.navigation.navigate('Connexion')}>Déjà inscrit ? Clique ici !</Text>
                 </View>
             </SafeAreaView>
         );
