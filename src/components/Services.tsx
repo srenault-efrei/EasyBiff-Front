@@ -45,7 +45,7 @@ export default class Service extends React.Component<Props, State> {
 
 
   componentDidUpdate() {
-      this.fetchServices()
+    this.fetchServices()
   }
 
 
@@ -114,5 +114,4 @@ export default class Service extends React.Component<Props, State> {
     );
 
   }
-
 }

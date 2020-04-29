@@ -82,6 +82,12 @@ export default StyleSheet.create({
   
 },
 
+  inputRow: {
+    width: "100%",
+    flexDirection: 'row',
+    alignItems:"center",
+    justifyContent:'center'
+  },
   error: {
     height: 40,
     width: "100%",
@@ -91,5 +97,13 @@ export default StyleSheet.create({
     textAlign:"center",
     fontSize:16,
     borderRadius: 10
+  },
+  card:{
+    width:'90%',
+    alignItems:'center',
+    borderColor:'black',
+    justifyContent:'space-around',
+    borderBottomWidth:1,
+    flexDirection: 'row',
   },
 });

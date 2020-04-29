@@ -62,7 +62,7 @@ const app = () => {
 
   return (
     <NavigationContainer>
-    <Drawer.Navigator drawerContent = { props => createCustomMenu(props)}  screenOptions={{swipeEnabled:false}} > 
+    <Drawer.Navigator drawerContent = { props => createCustomMenu(props)}  screenOptions={{swipeEnabled:false,gestureEnabled:false}} > 
     <Drawer.Screen name='StackApp' component={createAppStack} />
     </Drawer.Navigator>
     </NavigationContainer>

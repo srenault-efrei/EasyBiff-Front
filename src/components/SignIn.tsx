@@ -4,7 +4,8 @@ import {
     SafeAreaView,
     View,
     Text,
-    TextInput
+    TextInput,
+    AsyncStorage
 } from 'react-native';
 import styles from '../../assets/css/styles'
 
@@ -32,6 +33,17 @@ export default class Signin extends React.Component<Props, State>{
         };
     }
 
+    _storeData = async (token:string,user:object) => {
+        try {
+          await AsyncStorage.setItem('token', token);
+          await AsyncStorage.setItem('user', JSON.stringify(user));
+        } catch (error) {
+          console.log(error);
+          
+        }
+      
+      };
+
     goTo = (page: string) => {
         this.props.navigation.navigate(page)
     }
@@ -53,11 +65,12 @@ export default class Signin extends React.Component<Props, State>{
                   this.setState({error : json.err.description})
               }
               else {
+                  this._storeData(json.data.meta.token,json.data.user)
                   if(json.data.user.type == "customer"){
-                    this.props.navigation.navigate('ServicesCusto',{token:json.data.meta.token, id : json.data.user.id})
+                    this.goTo('ServiceCusto')
                   }
                   else{
-                    this.props.navigation.navigate('Services',{token:json.data.meta.token, id : json.data.user.id})
+                    this.goTo('Services')
                   } 
                  
               }
@@ -69,7 +82,11 @@ export default class Signin extends React.Component<Props, State>{
 
       }
 
-      
+    // async componentDidMount(){
+    //     const response = await fetch('https://eazybiff-server.herokuapp.com/api/services/')
+    //     const services = response.json()
+    //     console.log("services",services);
+    // }
 
 
    
