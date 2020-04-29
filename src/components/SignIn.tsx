@@ -37,29 +37,6 @@ export default class Signin extends React.Component<Props, State>{
         this.props.navigation.navigate(page, params)
     }
 
-    signIn() {
-        fetch('http://localhost:4242/api/authenticate/signin', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: this.state.email,
-                password: this.state.password,
-            })
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // console.log(responseJson);
-                this.goTo('Services', responseJson.data);
-
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }
-
     async signIn(){
 
         

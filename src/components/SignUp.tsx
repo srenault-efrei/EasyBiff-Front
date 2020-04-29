@@ -4,9 +4,11 @@ import {
     SafeAreaView,
     View,
     Text,
-    TextInput
+    TextInput,
+    AsyncStorage
 } from 'react-native';
-import ModalSelector from 'react-native-modal-selector';
+import DatePicker from 'react-native-datepicker';
+import moment from 'moment';
 import styles from '../../assets/css/styles'
 
 
@@ -20,11 +22,10 @@ interface State {
     birthday: Date | null,
     email: string,
     password: string,
-    confirm_password: string,
-    gender: boolean,
-    phone: number,
+    passwordConfirmation: string,
+    phone: string,
     type: string,
-    orderData: Array<{ key: number, section: boolean, label: string, value: boolean }>
+    error: string
 }
 
 export default class SignUp extends React.Component<Props, State>{
@@ -38,42 +39,63 @@ export default class SignUp extends React.Component<Props, State>{
             birthday: null,
             email: '',
             password: '',
-            confirm_password: '',
-            gender: true,
-            phone: 0,
+            passwordConfirmation: '',
+            phone: '',
             type: '',
-            orderData: [
-                { key: 1, section: true, label: 'Homme', value: true },
-                { key: 2, section: false, label: 'Femme', value: false }
-            ],
+            error: ''
         };
     }
 
-    goTo(page: string, params: object = {}) {
-        this.props.navigation.navigate(page, params)
+    isSamePasswords(password: string, passwordConfirmation: string): boolean {
+        return (password.trim() === passwordConfirmation.trim()) ? true : false;
+    }
+
+    _storeData = async (token: string, user: object) => {
+        try {
+            
+
+        } catch(error) {
+            console.log('Storage data Error : ', error)
+        }
     }
 
     signUp() {
-        fetch('http://localhost:4242/api/authenticate/signin', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: this.state.email,
-                password: this.state.password,
-            })
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // console.log(responseJson);
-                this.goTo('Services', responseJson.data.user);
+        if (this.isSamePasswords(this.state.password, this.state.passwordConfirmation)) {
 
+            fetch('http://eazybiff-server.herokuapp.com/api/authenticate/signup', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    firstname: this.state.firstname.trim(),
+                    lastname: this.state.lastname.trim(),
+                    birthday: this.state.birthday,
+                    email: this.state.email.trim(),
+                    password: this.state.password.trim(),
+                    passwordConfirmation: this.state.passwordConfirmation.trim(),
+                    phone: this.state.phone.trim(),
+                    gender: true,
+                    type: "provider"
+                })
             })
-            .catch((error) => {
-                console.error(error);
-            });
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    if (responseJson['err']) {
+                        this.setState({ error: responseJson.err.description })
+                    } else {
+                        console.log(responseJson);
+
+                        this.props.navigation.navigate('Preference');
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        } else {
+            this.setState({ error: 'Attention,\nLes mots de passe saisis ne correspondent pas' });
+        }
     }
 
     render() {
@@ -83,16 +105,6 @@ export default class SignUp extends React.Component<Props, State>{
                     <Text style={styles.title}>EazyBiff</Text>
                 </View>
                 <View style={styles.loginView}>
-                    <ModalSelector
-                        data={this.state.orderData}
-                        onChange={(option) => { this.setState({ gender: option.value }) }}
-                        style={{width: '100%'}}>
-                        <TextInput
-                            autoCapitalize='none'
-                            style={styles.input}
-                            placeholder="Genre (Binaire)"
-                            value={this.state.gender ? 'Homme' : 'Femme'} />
-                    </ModalSelector>
                     <TextInput
                         autoCapitalize='none'
                         style={styles.input}
@@ -105,6 +117,28 @@ export default class SignUp extends React.Component<Props, State>{
                         placeholder="Nom"
                         onChangeText={lastname => this.setState({ lastname })}
                     />
+                    <DatePicker
+                        style={styles.input}
+                        date={this.state.birthday}
+                        mode="date"
+                        placeholder="Date de naissance"
+                        format="YYYY-MM-DD"
+                        minDate="1900-01-01"
+                        maxDate={moment(new Date()).format('YYYY-MM-DD')}
+                        confirmBtnText="Valider"
+                        cancelBtnText="Annuler"
+                        customStyles={{
+                            dateIcon: styles.dateIcon,
+                            dateInput: styles.dateInput
+                        }}
+                        onDateChange={(birthday: Date | null) => { this.setState({ birthday }) }}
+                    />
+                    <TextInput
+                        autoCapitalize='none'
+                        style={styles.input}
+                        placeholder="Numéro de téléphone"
+                        onChangeText={phone => this.setState({ phone })}
+                    />
                     <TextInput
                         caretHidden
                         autoCapitalize='none'
@@ -115,9 +149,16 @@ export default class SignUp extends React.Component<Props, State>{
                     <TextInput
                         secureTextEntry={true}
                         style={styles.input}
-                        placeholder="Password"
+                        placeholder="Mot de passe"
                         onChangeText={password => this.setState({ password })}
                     />
+                    <TextInput
+                        secureTextEntry={true}
+                        style={styles.input}
+                        placeholder="Confirmation du mot de passe"
+                        onChangeText={passwordConfirmation => this.setState({ passwordConfirmation })}
+                    />
+                    <Text style={styles.error}>{this.state.error}</Text>
                     <View style={styles.button}>
                         <Text style={styles.textButton} onPress={() => this.signUp()}>S'inscrire</Text>
                     </View>

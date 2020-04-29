@@ -2,7 +2,6 @@ import { registerRootComponent } from 'expo';
 import React from 'react';
 import { NavigationContainer, DrawerActions} from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { NavigationScreenProp } from 'react-navigation'
 import { createDrawerNavigator, DrawerItem,DrawerContentScrollView} from '@react-navigation/drawer'
 import SignUp from './SignUp'
 import SignIn from './SignIn'
@@ -46,7 +45,6 @@ function createAppStack() {
       <Stack.Screen name="Connexion" component={SignIn} />
       <Stack.Screen name="Inscription" component={SignUp} />
       <Stack.Screen name="Preference" component={Preference} />
-      
     </Stack.Navigator>
   )
 }
@@ -55,7 +53,7 @@ const app = () => {
 
   return (
     <NavigationContainer>
-    <Drawer.Navigator drawerContent = { props => createCustomMenu(props)}  screenOptions={{swipeEnabled:false}} > 
+    <Drawer.Navigator drawerContent = { props  => createCustomMenu(props)}  screenOptions={{swipeEnabled:false}} > 
     <Drawer.Screen name='StackApp' component={createAppStack} />
     </Drawer.Navigator>
     </NavigationContainer>
