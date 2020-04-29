@@ -106,7 +106,6 @@ export default class Signin extends React.Component<Props, State>{
                     >
                     </TextInput>
                     <TextInput
-                        // name="password"
                         secureTextEntry={true}
                         style={styles.input}
                         placeholder="Password"

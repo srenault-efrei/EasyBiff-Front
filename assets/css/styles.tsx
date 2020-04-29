@@ -41,15 +41,20 @@ export default StyleSheet.create({
     backgroundColor: "grey",
     color: "white",
     borderRadius: 10,
-
-    
-
+  },
+  halfButton: {
+    height: 40,
+    width: "50%",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "grey",
+    color: "white",
+    borderRadius: 10,
   },
   textButton: {
     color: "white",
     width: "100%",
-    textAlign:'center'
-   
+    textAlign: 'center'
   },
   input: {
     width: "100%",
@@ -94,8 +99,8 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     color: "red",
-    textAlign:"center",
-    fontSize:16,
+    textAlign: "center",
+    fontSize: 16,
     borderRadius: 10
   },
   card:{
@@ -106,4 +111,15 @@ export default StyleSheet.create({
     borderBottomWidth:1,
     flexDirection: 'row',
   },
+  dateIcon: {
+    position: 'absolute',
+    left: 0,
+    marginLeft: 0
+  },
+  dateInput: {
+    position: 'absolute',
+    marginLeft: 36,
+    borderWidth: 0,
+    left: 0
+  }
 });
