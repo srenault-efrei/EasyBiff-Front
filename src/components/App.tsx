@@ -13,6 +13,8 @@ import Preferences from './Preferences';
 import EditService from './EditService'
 import AddService from './AddService'
 
+import Details from './ShowService';
+import Payment from './Payement'
 
 export interface Props {
   navigation:any
@@ -51,8 +53,8 @@ function createAppStack() {
       <Stack.Screen name="Preferences" component={Preferences} />
       <Stack.Screen name="EditService" component={EditService} />
        <Stack.Screen name="AddService" component={AddService} />
-
-
+      <Stack.Screen name="Details service" component={Details} />
+      <Stack.Screen name="Payment" component={Payment} />
       
     </Stack.Navigator>
   )
