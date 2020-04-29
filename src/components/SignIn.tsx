@@ -54,7 +54,7 @@ export default class Signin extends React.Component<Props, State>{
               }
               else {
                   if(json.data.user.type == "customer"){
-                    this.props.navigation.navigate('ServicesCusto',{token:json.data.meta.token, id : json.data.user.id})
+                    this.props.navigation.navigate('Details service',{token:json.data.meta.token, id : json.data.user.id})
                   }
                   else{
                     this.props.navigation.navigate('Services',{token:json.data.meta.token, id : json.data.user.id})

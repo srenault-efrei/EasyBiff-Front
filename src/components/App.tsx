@@ -10,6 +10,8 @@ import Profile from './Profil'
 import Services from './Services'
 import ServicesCusto from './ServicesCusto'
 import Preferences from './Preferences';
+import Details from './ShowService';
+import Payment from './Payement'
 
 export interface Props {
   navigation:any
@@ -46,6 +48,8 @@ function createAppStack() {
       <Stack.Screen name="Connexion" component={SignIn} />
       <Stack.Screen name="Inscription" component={SignUp} />
       <Stack.Screen name="Preferences" component={Preferences} />
+      <Stack.Screen name="Details service" component={Details} />
+      <Stack.Screen name="Payment" component={Payment} />
       
     </Stack.Navigator>
   )
