@@ -42,7 +42,7 @@ function createCustomMenu(props:Props){
 
 function createAppStack() {
   return  (
-    <Stack.Navigator   headerMode="none"  initialRouteName='Connexion'  >
+    <Stack.Navigator   headerMode="none"  initialRouteName='Connexion' screenOptions={{gestureEnabled: false}} >
       <Stack.Screen name ='ServicesCusto' component = {ServicesCusto} />
       <Stack.Screen name ='Services' component = {Services} />
       <Stack.Screen name ='Profil' component = {Profile} />

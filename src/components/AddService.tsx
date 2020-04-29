@@ -82,8 +82,8 @@ export default class Service extends React.Component<Props, State> {
 
 
 
-  goTo = (page: string) => {
-    this.props.navigation.navigate(page)
+  goTo = (page: string, isEdit?: boolean) => {
+    this.props.navigation.navigate(page,{ isEdit: isEdit})
 }
 
   transfromDate = (value: string): Date => {
@@ -94,12 +94,15 @@ export default class Service extends React.Component<Props, State> {
 
   dateWithTime = (value: Date, time: string): Date => {
 
+    console.log('date :' + value.getFullYear() + '-' + ("0" + (value.getMonth() + 1)).slice(-2) + '-' + ("0" + (value.getDate() + 1)).slice(-2) + 'T' + time)
     let fullDate = new Date(value.getFullYear() + '-' + ("0" + (value.getMonth() + 1)).slice(-2) + '-' + ("0" + (value.getDate() + 1)).slice(-2) + 'T' + time)
     return fullDate
 
   }
 
   verifPrice = (value: string): void => {
+    console.log(this.state.startTime)
+    console.log(this.state.endTime)
     let p: number = parseInt(value)
 
     if (Number.isInteger(p)) {
@@ -207,7 +210,9 @@ export default class Service extends React.Component<Props, State> {
       console.log(this.state.city)
       console.log(this.state.radius)
 
-      console.log(this.state.startDate, this.state.startTime)
+      console.log(new Date(this.dateWithTime(this.state.startDate, this.state.startTime)))
+      console.log(new Date(this.dateWithTime(this.state.endDate, this.state.endTime)))
+
 
 
       fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.userId}/services`, {
@@ -233,7 +238,7 @@ export default class Service extends React.Component<Props, State> {
         .then((json) => {
           console.log(json)
           if (json.data != null || json.data != undefined) {
-            this.goTo('Services')
+            this.goTo('Services',true)
           } else {
             console.log(json.err.description)
           }

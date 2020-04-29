@@ -299,7 +299,7 @@ export default class EditService extends React.Component<Props, State> {
         state: this.state.stateService,
         price: this.state.price,
         categoryId: this.state.typeServiceId,
-        radiusId: this.state.radiusId,
+        radiusId: this.state.radius,
       })
     })
       .then((response) => response.json())

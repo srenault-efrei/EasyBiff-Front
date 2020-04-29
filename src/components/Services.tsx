@@ -12,9 +12,12 @@ import MyHeader from './MyHeader'
 export interface Props {
   token: string,
   id: string
+  isEdit: boolean
   route: any
   params: any
   navigation: NavigationScreenProp<any>
+
+
 }
 
 interface State {
@@ -32,11 +35,17 @@ export default class Service extends React.Component<Props, State> {
     }
   }
 
+
   componentDidMount() {
     if (!this.props.route?.params) {
       this.props.navigation.navigate('Connexion')
     }
     this.fetchServices()
+  }
+
+
+  componentDidUpdate() {
+      this.fetchServices()
   }
 
 
@@ -67,7 +76,7 @@ export default class Service extends React.Component<Props, State> {
 
   render() {
 
-    console.log(this.state.services)
+    // console.log(this.state.services)
     return (
       <SafeAreaView style={styles.view}>
         <MyHeader navigation={this.props.navigation} name="Services" ></MyHeader>
@@ -92,9 +101,9 @@ export default class Service extends React.Component<Props, State> {
         }
 
         <TouchableOpacity
-          onPress={() => this.goTo('AddService',1,this.props.route.params.id, this.props.route.params.token)}
+          onPress={() => this.goTo('AddService', 1, this.props.route.params.id, this.props.route.params.token)}
         >
-          <Text style={{ fontSize: 15, color: "green", marginTop: 20, fontWeight: "bold"}} >Ajouter un service </Text >
+          <Text style={{ fontSize: 15, color: "green", marginTop: 20, fontWeight: "bold" }} >Ajouter un service </Text >
         </TouchableOpacity>
 
         <View style={styles.loginView}>
