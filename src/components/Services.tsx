@@ -3,7 +3,9 @@ import { NavigationScreenProp } from 'react-navigation'
 import {
   View,
   Text,
-  SafeAreaView, TouchableOpacity
+  SafeAreaView,
+  TouchableOpacity,
+  AsyncStorage
 } from 'react-native';
 import styles from '../../assets/css/styles'
 import MyHeader from './MyHeader'
@@ -16,13 +18,15 @@ export interface Props {
   route: any
   params: any
   navigation: NavigationScreenProp<any>
-
-
 }
+
+
 
 interface State {
 
   services: Array<any>
+  user: any
+  token: string
 }
 
 export default class Service extends React.Component<Props, State> {
@@ -31,22 +35,36 @@ export default class Service extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      services: []
+      services: [],
+      user: {},
+      token: ''
     }
   }
 
 
-  componentDidMount() {
-    if (!this.props.route?.params) {
-      this.props.navigation.navigate('Connexion')
+  async  componentDidMount() {
+    await this.setDataStorage()
+    this.fetchServices()
+  }
+
+  async setDataStorage() {
+    let user = await AsyncStorage.getItem('user')
+    let token = await AsyncStorage.getItem('token')
+    if (!user) {
+      this.props.navigation.navigate("Connexion")
+    } else if (user && token) {
+
+      this.setState({
+        user: JSON.parse(user),
+        token
+      })
     }
-    this.fetchServices()
   }
 
-
-  componentDidUpdate() {
-    this.fetchServices()
-  }
+  // permet de mettre a jour les states auto mais rend l'appli lente 
+  // componentDidUpdate() {
+  //   this.fetchServices()
+  // }
 
 
   goTo = (page: string, service?: number, user?: string, token?: string) => {
@@ -54,12 +72,16 @@ export default class Service extends React.Component<Props, State> {
   }
 
 
-  fetchServices = (): Promise<void | never> => {
+  fetchServices = async (): Promise<void | never> => {
 
-    return fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.props.route.params.id}`, {
+
+    console.log(this.state.user)
+    console.log(this.state.token)
+
+    return fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.user.id}`, {
       headers: {
         'Accept': 'application/json',
-        'Authorization': this.props.route.params.token,
+        'Authorization': this.state.token,
         'Content-Type': 'application/json'
       },
     })
@@ -91,7 +113,7 @@ export default class Service extends React.Component<Props, State> {
             {service.state !== -1 ?
               <View style={styles.viewService}>
                 <TouchableOpacity
-                  onPress={() => this.goTo('EditService', service.id, this.props.route.params.id, this.props.route.params.token)}
+                  onPress={() => this.goTo('EditService', service.id, this.state.user.id, this.state.token)}
                 >
                   <Text style={{ fontSize: 15 }} >{service.id} / name</Text >
                 </TouchableOpacity>
@@ -101,7 +123,7 @@ export default class Service extends React.Component<Props, State> {
         }
 
         <TouchableOpacity
-          onPress={() => this.goTo('AddService', 1, this.props.route.params.id, this.props.route.params.token)}
+          onPress={() => this.goTo('AddService', 1, this.state.user.id, this.state.token)}
         >
           <Text style={{ fontSize: 15, color: "green", marginTop: 20, fontWeight: "bold" }} >Ajouter un service </Text >
         </TouchableOpacity>

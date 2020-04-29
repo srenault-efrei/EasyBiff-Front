@@ -206,8 +206,7 @@ export default class EditService extends React.Component<Props, State> {
             description: json.data.service.description,
             typeService: json.data.service.category.name,
             typeServiceId: json.data.service.category.id,
-            radius: json.data.service.radius.kilometer,
-            radiusId: json.data.service.radius.id,
+            radius: json.data.service.radius.id,
             stateService: json.data.service.state
 
           })
@@ -248,7 +247,7 @@ export default class EditService extends React.Component<Props, State> {
         city: this.state.city,
         price: this.state.price,
         categoryId: this.state.typeServiceId,
-        radiusId: this.state.radiusId,
+        radiusId: this.state.radius,
       })
     })
       .then((response) => response.json())
@@ -319,6 +318,7 @@ export default class EditService extends React.Component<Props, State> {
 
   render() {
 
+    console.log(this.state.radius)
     return (
 
       <View style={{marginTop: 20}}>
@@ -461,7 +461,7 @@ export default class EditService extends React.Component<Props, State> {
             <Text style={styles.label}>Rayon (Km)</Text>
             <RNPickerSelect
               placeholder={{
-                label: 'Choisir  un rayon',
+                label: this.state.radius.toString(),
                 value: null,
               }}
               onValueChange={(value) => this.setState({ radius: value })}
