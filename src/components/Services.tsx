@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   AsyncStorage
 } from 'react-native';
-import styles from '../../assets/css/styles'
+import styles from '../../assets/css/services'
 import MyHeader from './MyHeader'
 
 
@@ -100,16 +100,18 @@ export default class Service extends React.Component<Props, State> {
 
     // console.log(this.state.services)
     return (
-      <SafeAreaView style={styles.view}>
+      <SafeAreaView >
         <MyHeader navigation={this.props.navigation} name="Services" ></MyHeader>
-        {/* <View style={styles.topView}>
+       
+        <View style={styles.topView}>
           <Text >Services</Text>
-          <Text style={{ marginLeft: 200 }}>Demandes</Text>
+          <Text style={{ marginLeft: 230 }}>Demandes</Text>
         </View>
-        <View style={styles.line}></View> */}
+        
+        <View style={styles.line}></View>
         {this.state.services.map((service, i) => (
 
-          <View key={i} >
+          <View key={i} style={styles.viewServiceAsk} >
             {service.state !== -1 ?
               <View style={styles.viewService}>
                 <TouchableOpacity
@@ -117,7 +119,20 @@ export default class Service extends React.Component<Props, State> {
                 >
                   <Text style={{ fontSize: 15 }} >{service.id} / name</Text >
                 </TouchableOpacity>
-              </View> : <View></View>}
+              </View>
+              : <View></View>
+            }
+
+            {service.state !== -1 ?
+              <View style={styles.viewAsk}>
+                <TouchableOpacity
+                >
+                  <Text style={{ fontSize: 15 }} >0</Text >
+                </TouchableOpacity>
+              </View>
+              : <View></View>
+            }
+
           </View>
         ))
         }
@@ -125,7 +140,7 @@ export default class Service extends React.Component<Props, State> {
         <TouchableOpacity
           onPress={() => this.goTo('AddService', 1, this.state.user.id, this.state.token)}
         >
-          <Text style={{ fontSize: 15, color: "green", marginTop: 20, fontWeight: "bold" }} >Ajouter un service </Text >
+          <Text style={styles.addService} >Ajouter un service </Text >
         </TouchableOpacity>
 
         <View style={styles.loginView}>

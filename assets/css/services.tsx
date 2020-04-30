@@ -8,7 +8,7 @@ export default StyleSheet.create({
         marginTop: 20,
     },
 
-    scrollView:{
+    scrollView: {
         paddingLeft: 10,
         paddingRight: 10,
     },
@@ -83,7 +83,7 @@ export default StyleSheet.create({
         width: 310
     },
 
-    dateInput:{
+    dateInput: {
         paddingTop: 13,
         paddingHorizontal: 10,
         paddingBottom: 12,
@@ -92,13 +92,13 @@ export default StyleSheet.create({
         borderRadius: 4,
         backgroundColor: 'white',
         height: 40
-      
-      },
 
-      editButton: {
+    },
+
+    editButton: {
         height: 40,
         width: "43%",
-        top:20,
+        top: 20,
         // textAlign: "center",
         // justifyContent: "center",
         // backgroundColor: "green",
@@ -106,7 +106,69 @@ export default StyleSheet.create({
         // borderRadius: 4,
         // marginLeft:20
 
-      },
-      
+    },
+
+    topView: {
+        justifyContent: "center",
+        alignItems: "center",
+        alignContent: "space-between",
+        paddingVertical: 10,
+        flexDirection: "row"
+    },
+
+    line: {
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 4,
+        height: 1,
+        width: '95%',
+        marginLeft: 10
+    },
+
+    viewService: {
+        marginTop: 20,
+        alignItems: "center",
+        justifyContent: "center",
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 4,
+        height: 30,
+        width: 100
+    },
+
+    viewAsk: {
+        marginTop: 20,
+        alignItems: "center",
+        justifyContent: "center",
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 4,
+        height: 30,
+        width: 50,
+        marginLeft: 205
+    },
+
+    viewServiceAsk: {
+
+        marginLeft: 10,
+        flexDirection: "row",
+        alignContent: "space-between",
+    },
+
+    addService: {
+        fontSize: 15,
+        color: "green",
+        marginTop: 50,
+        fontWeight: "bold",
+        marginLeft: 15
+    },
+
+  loginView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginHorizontal: 30
+    },
+
 
 });
