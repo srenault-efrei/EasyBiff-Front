@@ -45,6 +45,7 @@ export default class Service extends React.Component<Props, State> {
   async  componentDidMount() {
     await this.setDataStorage()
     this.fetchServices()
+    console.log(this.props.route)
   }
 
   async setDataStorage() {
@@ -61,22 +62,22 @@ export default class Service extends React.Component<Props, State> {
     }
   }
 
-  // permet de mettre a jour les states auto mais rend l'appli lente 
-  // componentDidUpdate() {
-  //   this.fetchServices()
-  // }
+  componentDidUpdate() {
 
+    if (this.props.route.params !== undefined) {
+      if (this.props.route.params.isEdit) {
+        this.fetchServices()
+      }
+    }
+  }
 
   goTo = (page: string, service?: number, user?: string, token?: string) => {
-    this.props.navigation.navigate(page, { serviceId: service, user: user, token: token })
+    this.props.navigation.setParams({isEdit: false})
+    this.props.navigation.navigate(page, { serviceId: service, user: user, token: token})
   }
 
 
   fetchServices = async (): Promise<void | never> => {
-
-
-    console.log(this.state.user)
-    console.log(this.state.token)
 
     return fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.user.id}`, {
       headers: {
@@ -102,12 +103,12 @@ export default class Service extends React.Component<Props, State> {
     return (
       <SafeAreaView >
         <MyHeader navigation={this.props.navigation} name="Services" ></MyHeader>
-       
+
         <View style={styles.topView}>
           <Text >Services</Text>
           <Text style={{ marginLeft: 230 }}>Demandes</Text>
         </View>
-        
+
         <View style={styles.line}></View>
         {this.state.services.map((service, i) => (
 

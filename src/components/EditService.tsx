@@ -88,10 +88,9 @@ export default class EditService extends React.Component<Props, State> {
   }
 
 
-
-  goTo = (page: string) => {
-    this.props.navigation.navigate(page)
-  }
+  goTo = (page: string, isEdit?: boolean) => {
+    this.props.navigation.navigate(page,{ isEdit: isEdit})
+}
 
   transfromDate = (value: string): Date => {
     let dateSplit: Array<string> = value.split('-')
@@ -254,7 +253,7 @@ export default class EditService extends React.Component<Props, State> {
       .then((json) => {
         console.log(json)
         if (json.data != null || json.data != undefined) {
-          this.goTo('Services')
+          this.goTo('Services',true)
         } else {
           console.log(json.err.description)
         }
