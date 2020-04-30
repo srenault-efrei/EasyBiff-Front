@@ -461,7 +461,7 @@ export default class EditService extends React.Component<Props, State> {
             <Text style={styles.label}>Rayon (Km)</Text>
             <RNPickerSelect
               placeholder={{
-                label: this.state.radius.toString(),
+                label: 'Choisir un rayon',
                 value: null,
               }}
               onValueChange={(value) => this.setState({ radius: value })}
