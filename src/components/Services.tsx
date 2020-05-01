@@ -16,7 +16,6 @@ import Moment from 'react-moment';
 export interface Props {
   token: string,
   id: string
-  isEdit: boolean
   route: any
   params: any
   navigation: NavigationScreenProp<any>
@@ -47,10 +46,16 @@ export default class Service extends React.Component<Props, State> {
   async  componentDidMount() {
     await this.setDataStorage()
     this.fetchServices()
-    console.log(this.props.route)
+    this.unsubscribe()
   }
 
-  async setDataStorage() {
+  unsubscribe = (): void => {
+    this.props.navigation.addListener('focus', () => {
+      this.fetchServices()
+    })
+  }
+
+  async setDataStorage(): Promise<void | never> {
     let user = await AsyncStorage.getItem('user')
     let token = await AsyncStorage.getItem('token')
     if (!user) {
@@ -64,17 +69,11 @@ export default class Service extends React.Component<Props, State> {
     }
   }
 
-  componentDidUpdate() {
-console.log(this.props.route)
-    if (this.props.route.params !== undefined) {
-      if (this.props.route.params.isEdit) {
-        this.fetchServices()
-      }
-    }
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
-  goTo = (page: string, service?: number, user?: string, token?: string) => {
-    this.props.navigation.setParams({ isEdit: false })
+  goTo = (page: string, service?: number, user?: string, token?: string): void => {
     this.props.navigation.navigate(page, { serviceId: service, user: user, token: token })
   }
 
@@ -99,11 +98,11 @@ console.log(this.props.route)
       });
   }
 
-  changeDate = (str: string):string => {
+  changeDate = (str: string): string => {
 
     let date: Date = new Date(str)
 
-    return  `${("0" + (date.getDate() + 1)).slice(-2)}-${("0" + (date.getMonth() + 1)).slice(-2)}-${date.getFullYear()}`
+    return `${("0" + (date.getDate())).slice(-2)}-${("0" + (date.getMonth() + 1)).slice(-2)}-${date.getFullYear()}`
 
   }
 
@@ -122,14 +121,14 @@ console.log(this.props.route)
         {this.state.services.map((service, i) => (
 
           <View key={i} style={styles.viewServiceAsk} >
-                              {/* <Moment format="DD/MM/YYYY">{service.dateDebut}</Moment> */}
+            {/* <Moment format="DD/MM/YYYY">{service.dateDebut}</Moment> */}
 
-            {service.state !== -1 ?
+            {service.state == 1 ?
               <View style={styles.viewService}>
                 <TouchableOpacity
                   onPress={() => this.goTo('EditService', service.id, this.state.user.id, this.state.token)}
                 >
-                  <Text style={{ fontSize: 15, fontWeight: "bold" }} > {service["category"].name} / {this.changeDate(service.createdAt)} </Text >
+                  <Text style={{ fontSize: 15, fontWeight: "bold" }} > {service["category"].name} / {this.changeDate(service.dateDebut)} </Text >
                 </TouchableOpacity>
               </View>
               : <View></View>
@@ -137,7 +136,7 @@ console.log(this.props.route)
 
           </View>
 
-          
+
         ))
         }
 

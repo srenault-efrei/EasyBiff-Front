@@ -14,8 +14,6 @@ export default class MyHeader extends React.Component<Props> {
 
 
 logout(){
-    AsyncStorage.removeItem('token')
-    AsyncStorage.removeItem('user')
     this.props.navigation.navigate('Connexion')
 }
 
