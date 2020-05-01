@@ -304,7 +304,7 @@ export default class EditService extends React.Component<Props, State> {
       .then((json) => {
         console.log(json)
         if (json.data != null || json.data != undefined) {
-          this.goTo('Services')
+          this.goTo('Services', true)
         } else {
           console.log(json.err.description)
         }
@@ -320,7 +320,7 @@ export default class EditService extends React.Component<Props, State> {
     console.log(this.state.radius)
     return (
 
-      <View style={{marginTop: 20}}>
+      <View>
         <MyHeader  navigation={this.props.navigation} name="Services" ></MyHeader>
         
       <SafeAreaView style={styles.safeArea}>

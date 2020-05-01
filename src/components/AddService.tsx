@@ -253,7 +253,7 @@ export default class Service extends React.Component<Props, State> {
 
     return (
 
-      <View style={{marginTop: 20}}>
+      <View>
         <MyHeader  navigation={this.props.navigation} name="Services" ></MyHeader>
 
   
