@@ -1,6 +1,6 @@
 import React from 'react';
 import { Header, Icon } from 'react-native-elements';
-import { View } from 'react-native';
+import { View, AsyncStorage} from 'react-native';
 import { NavigationScreenProp } from 'react-navigation'
 
  export interface Props{
@@ -14,6 +14,8 @@ export default class MyHeader extends React.Component<Props> {
 
 
 logout(){
+    AsyncStorage.removeItem('token')
+    AsyncStorage.removeItem('user')
     this.props.navigation.navigate('Connexion')
 }
 
