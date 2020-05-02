@@ -10,6 +10,7 @@ import {
 import styles from '../../assets/css/services'
 import MyHeader from './MyHeader'
 import Moment from 'react-moment';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 
@@ -109,7 +110,7 @@ export default class Service extends React.Component<Props, State> {
   render() {
 
     return (
-      <View style={styles.viewPage} >
+      <SafeAreaView style={styles.viewPage} >
         <MyHeader navigation={this.props.navigation} name="Services" ></MyHeader>
 
         <TouchableOpacity
@@ -118,33 +119,36 @@ export default class Service extends React.Component<Props, State> {
           <Text style={styles.addService} > + Ajouter un service </Text >
         </TouchableOpacity>
 
-        {this.state.services.map((service, i) => (
+        <ScrollView>
+          {this.state.services.map((service, i) => (
 
-          <View key={i} style={styles.viewServiceAsk} >
-            {/* <Moment format="DD/MM/YYYY">{service.dateDebut}</Moment> */}
+            <View key={i} style={styles.viewServiceAsk} >
+              {/* <Moment format="DD/MM/YYYY">{service.dateDebut}</Moment> */}
 
-            {service.state == 1 ?
-              <View style={styles.viewService}>
-                <TouchableOpacity
-                  onPress={() => this.goTo('EditService', service.id, this.state.user.id, this.state.token)}
-                >
-                  <Text style={{ fontSize: 15, fontWeight: "bold" }} > {service["category"].name} / {this.changeDate(service.dateDebut)} </Text >
-                </TouchableOpacity>
-              </View>
-              : <View></View>
-            }
+              {service.state == 1 ?
+                <View style={styles.viewService}>
+                  <TouchableOpacity
+                    onPress={() => this.goTo('EditService', service.id, this.state.user.id, this.state.token)}
+                  >
+                    <Text style={{ fontSize: 15, fontWeight: "bold" }} > {service["category"].name} du {this.changeDate(service.dateDebut)} </Text >
+                  </TouchableOpacity>
+                </View>
+                : <View></View>
+              }
 
-          </View>
+            </View>
 
 
-        ))
-        }
+          ))
+          }
+
+        </ScrollView>
 
         <View style={styles.loginView}>
         </View>
 
 
-      </View>
+      </SafeAreaView>
     );
 
   }

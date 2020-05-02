@@ -1,4 +1,6 @@
 import { StyleSheet } from 'react-native';
+import Constants from 'expo-constants';
+
 
 export default StyleSheet.create({
 
@@ -139,7 +141,9 @@ export default StyleSheet.create({
     viewPage: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        marginTop: -20,
+
       },
 
 });
