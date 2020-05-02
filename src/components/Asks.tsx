@@ -48,7 +48,7 @@ export default class Service extends React.Component<Props, State> {
         this.fetchAsks()
     }
 
-  
+
 
 
     async setDataStorage(): Promise<void | never> {
@@ -141,12 +141,12 @@ export default class Service extends React.Component<Props, State> {
                     {
                         this.state.asks.map((ask, idAsk) => (
                             <View key={idAsk} style={{ flexDirection: "row" }}>
-                                {ask.state == 1
+                                {ask.state === 1
                                     ?
                                     <View style={styles.viewServiceAsk} >
                                         <View style={styles.viewAsk}>
                                             <TouchableOpacity>
-                                                <Text style={{ fontSize: 15 }} > Demande de {ask.customer.firstname} pour le service de {ask.service.category.name}  du {this.changeDate(ask.service.dateDebut)} </Text >
+                                                <Text style={{ fontSize: 15 }} > Demande de {ask.customer.firstname} pour le service de {ask.service.category.name} du {this.changeDate(ask.service.dateDebut)}.</Text >
                                             </TouchableOpacity>
                                         </View>
                                         {this.state.tabClick.includes(ask.service.id) ?
@@ -171,30 +171,38 @@ export default class Service extends React.Component<Props, State> {
                                                     iconStyle={{ fontSize: 35, display: "flex" }}
                                                     containerStyle={{ marginLeft: 20, justifyContent: "center", paddingRight: 20 }}
                                                     onPress={() => { this.updateAsk(-1, ask.service.id) }}
-
                                                 />
                                             </View>
                                         }
-
                                     </View>
                                     :
-                                    ask.state == -1
+                                    ask.state === -1
                                         ?
                                         <View style={styles.viewServiceAsk} >
                                             <View style={styles.viewRefusedAsk}>
                                                 <TouchableOpacity>
-                                                    <Text style={{ fontSize: 15 }} > Demande de {ask.customer.firstname} pour le service de {ask.service.category.name}  du {this.changeDate(ask.service.dateDebut)} </Text >
+                                                    <Text style={{ fontSize: 15 }} > Vous avez refusé la demande de {ask.customer.firstname} pour le service {ask.service.category.name} du {this.changeDate(ask.service.dateDebut)}.</Text >
                                                 </TouchableOpacity>
                                             </View>
                                         </View>
                                         :
-                                        <View style={styles.viewServiceAsk} >
-                                            <View style={styles.viewValidAsk}>
-                                                <TouchableOpacity>
-                                                    <Text style={{ fontSize: 15 }} > Demande de {ask.customer.firstname} pour le service de {ask.service.category.name}  du {this.changeDate(ask.service.dateDebut)} </Text >
-                                                </TouchableOpacity>
+                                        ask.service.state === 2
+                                            ?
+                                            <View style={styles.viewServiceAsk} >
+                                                <View style={styles.viewValidAsk}>
+                                                    <TouchableOpacity>
+                                                        <Text style={{ fontSize: 15 }} >Le service {ask.service.category.name} du {this.changeDate(ask.service.dateDebut)} a été payé par {ask.customer.firstname}.</Text >
+                                                    </TouchableOpacity>
+                                                </View>
                                             </View>
-                                        </View>
+                                            :
+                                            <View style={styles.viewServiceAsk} >
+                                                <View style={styles.viewValidAsk}>
+                                                    <TouchableOpacity>
+                                                        <Text style={{ fontSize: 15 }} > Vous avez validé la demande de {ask.customer.firstname} pour le service {ask.service.category.name} du {this.changeDate(ask.service.dateDebut)}.</Text >
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </View>
                                 }
                             </View>
                         ))
