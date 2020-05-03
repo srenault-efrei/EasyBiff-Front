@@ -39,17 +39,16 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "grey",
-    color: "white",
     borderRadius: 10,
   },
   halfButton: {
     height: 40,
-    width: "50%",
+    width: "45%",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "grey",
-    color: "white",
     borderRadius: 10,
+    marginHorizontal: 10
   },
   textButton: {
     color: "white",
@@ -94,14 +93,13 @@ export default StyleSheet.create({
     justifyContent:'center'
   },
   error: {
-    height: 40,
+    height: 'auto',
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
     color: "red",
     textAlign: "center",
-    fontSize: 16,
-    borderRadius: 10
+    fontSize: 16
   },
   card:{
     width:'90%',
