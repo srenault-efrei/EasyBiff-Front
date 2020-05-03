@@ -13,15 +13,12 @@ import Preference from './Preference';
 import EditService from './EditService'
 import AddService from './AddService'
 import Asks from './Asks'
-
+import AsksCusto from './AsksCusto'
 import Details from './ShowService';
 import Payment from './Payement'
-
 export interface Props {
   navigation:any
 }
-
-
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -38,11 +35,17 @@ function serviceScreen(){
     );
 }
 
+function serviceScreenCusto(){
+  return(
+    <Tab.Navigator  initialRouteName='ServicesCusto' backBehavior='initialRoute'>
+          <Tab.Screen name="Services" component={ServicesCusto} />
+          <Stack.Screen name="Demandes" component={AsksCusto} />
+        </Tab.Navigator>
+    );
+}
 function createCustomMenu(props:Props){
   const jumpToConnexion = DrawerActions.jumpTo('StackApp',{screen:'Preference'})
   const jumpToServices = DrawerActions.jumpTo('StackApp',{screen:'Services'})
-
-
   return(
     <DrawerContentScrollView {...props}>
       <DrawerItem
@@ -53,11 +56,10 @@ function createCustomMenu(props:Props){
     </DrawerContentScrollView>
   )
 }
-
 function createAppStack() {
   return  (
     <Stack.Navigator   headerMode="none"  initialRouteName='Connexion' screenOptions={{gestureEnabled: false}} >
-      <Stack.Screen name ='ServicesCusto' component = {ServicesCusto} />
+      <Stack.Screen name ='ServicesCusto' component = {serviceScreenCusto} />
       <Stack.Screen name ='Services' children = {serviceScreen} />
       <Stack.Screen name ='Profil' component = {Profile} />
       <Stack.Screen name="Connexion" component={SignIn} />
@@ -67,23 +69,16 @@ function createAppStack() {
        <Stack.Screen name="AddService" component={AddService} />
       <Stack.Screen name="Details service" component={Details} />
       <Stack.Screen name="Payment" component={Payment} />
-      
     </Stack.Navigator>
   )
 }
-
 const app = () => {
-
   return (
     <NavigationContainer>
     <Drawer.Navigator drawerContent = { props => createCustomMenu(props)}  screenOptions={{swipeEnabled:false,gestureEnabled:false}} > 
     <Drawer.Screen name='StackApp' component={createAppStack} />
     </Drawer.Navigator>
     </NavigationContainer>
-
   )
-
 }
-
-
 export default registerRootComponent(app)

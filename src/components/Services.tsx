@@ -62,7 +62,9 @@ export default class Service extends React.Component<Props, State> {
     if (!user) {
       this.props.navigation.navigate("Connexion")
     } else if (user && token) {
-
+      if(JSON.parse(user).type=="customer"){
+        this.props.navigation.navigate('ServicesCusto')
+      }
       this.setState({
         user: JSON.parse(user),
         token

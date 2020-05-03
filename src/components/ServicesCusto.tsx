@@ -1,36 +1,70 @@
 import React from 'react';
 import { NavigationScreenProp } from 'react-navigation'
 import { Icon, Button } from 'react-native-elements'
-import {  SafeAreaView, View, TextInput, ScrollView, Image, Picker, TouchableOpacity, AsyncStorage,FlatList } from 'react-native';
-import styles from '../../assets/css/styles'
+import {  SafeAreaView, View, TextInput, ScrollView, Text, Picker, TouchableOpacity, AsyncStorage,FlatList } from 'react-native';
+import styles from '../../assets/css/services'
 import MyHeader from './MyHeader'
+import  {isNull} from 'lodash'
 
 
 export interface Props {
   token:string,
   id:string
-  route:any
+  route:object
   params:any
   navigation: NavigationScreenProp<any>
 }
 
+export interface IService {
+    category: object
+    city: string
+    dateDebut: string
+    dateFin: string
+    description:string
+    id: number
+    postalCode: number
+    price: number
+    radius: object
+    user:object
+
+}
+export interface IResService{
+    service:Array<IService>
+}
+
+export interface IResData{
+    data:IResService
+}
+
 interface State {
-  searchFilter:any
-  services:any
-  servicesSearched:any
-  initialServices:any
+  searchFilter:string
+  services:Array<IService>
+  servicesSearched:string
+  initialServices:Array<IService>
 }
 
 export default class ServicesCusto extends React.Component<Props, State> {
 
   state = { searchFilter: 'name',services : [],servicesSearched:"",initialServices : []}
 
-  fetchServices(){
+  async fetchServices(){
+      const res = await fetch(`https://eazybiff-server.herokuapp.com/api/services/`)
+      const jsonRes : IResData = await res.json()
+      const services = await Object.values(jsonRes.data.service)
+      this.setState({services,initialServices:services})
+  }
 
+  async checkToken(){
+    const token = await AsyncStorage.getItem('token')
+    if(!token){
+     this.props.navigation.navigate('Connexion')
+    }
   }
 
   componentDidMount(){
-   
+      this.checkToken()
+      this.fetchServices()
+
   }
 
   searchMatchedServices(text:any) {
@@ -77,10 +111,19 @@ sortList() {
 
 }
 
+getUserFirstname(item:any) {
+    
+    
+    return isNull(item) ? "Sans User" :item.firstname
+}
+
+
 async updateFilterParam(searchFilter:string) {
     await this.setState({ searchFilter })
     this.sortList()
 }
+
+
   
 
   displayServices() {
@@ -90,11 +133,22 @@ async updateFilterParam(searchFilter:string) {
         return (
             <FlatList<any>
                 data={this.state.services}
-                renderItem={({ item }) => <View style={styles.card} key={item.id} >
-                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('TODO') }}>
-                    </TouchableOpacity>
-                    <Button title={item.name} buttonStyle={{ width: '100%', borderWidth: 0, backgroundColor: 'transparent' }} titleStyle={{ color: 'rgb(250,90,86)', textTransform: 'capitalize' }} onPress={() => { this.props.navigation.navigate('Pokemon', { pokemon: item }) }} />
-                </View>}
+                renderItem={({ item }) => 
+                <View style={{width:"100%"}}>
+                    <View style={styles.cardContainer}>
+                        <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate('Details service',{service:item})}>
+                            <View>
+                                <Text style={{ fontSize: 15,fontWeight:'bold'}} >{item.category.name} </Text >
+                                <Text style={{ fontSize: 15 }} >{this.getUserFirstname(item.user)} </Text >
+                            </View>
+                            <Text style={{ fontSize: 15 }} >{item.price}€ </Text >
+                            <Text style={{ fontSize: 15 }} >{converTimeStrToFrench(item.dateDebut)} </Text >
+                            
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                
+                }
                 keyExtractor={item => String(item.id)}
                 onEndReached={() => {
                     if (this.state.servicesSearched==='') {
@@ -111,11 +165,10 @@ async updateFilterParam(searchFilter:string) {
 render() {
 
     return (
-        <SafeAreaView>
-
+        <SafeAreaView >
             <MyHeader navigation={this.props.navigation} name="Services"></MyHeader>
-            <View style={styles.inputRow}>
-
+            <View style={styles.researchContainer}>
+                <TextInput placeholder='Taper votre recherche ici' style={styles.inputResearch} onChangeText={(text) => { this.searchMatchedServices(text) }}></TextInput>
                 <Icon
                     reverse
                     name='filter'
@@ -135,11 +188,16 @@ render() {
                     <Picker.Item label="Type" value="types" />
                     <Picker.Item label="Numero" value="id" />
                 </Picker>
-                <TextInput placeholder='Taper votre recherche ici' style={styles.input} onChangeText={(text) => { this.searchMatchedServices(text) }}></TextInput>
             </View>
             {this.displayServices()}
         </SafeAreaView>
 
     )
 }
+}
+
+export function converTimeStrToFrench(time:string){
+
+    return time.slice(0,10)
+    
 }

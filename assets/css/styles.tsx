@@ -1,5 +1,4 @@
 import { StyleSheet, Platform } from 'react-native';
-
 export default StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -19,7 +18,6 @@ export default StyleSheet.create({
     paddingVertical: 10,
     flexDirection: "row"
 },
-
   loginView: {
     flex: 1,
     justifyContent: "center",
@@ -67,7 +65,6 @@ export default StyleSheet.create({
     borderWidth: 1.0,
     borderRadius: 10
   },
-
   inputRow: {
     width: "100%",
     flexDirection: 'row',

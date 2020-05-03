@@ -3,7 +3,6 @@ import Constants from 'expo-constants';
 
 
 export default StyleSheet.create({
-
     safeArea: {
         paddingLeft: 10,
         paddingRight: 10,
@@ -14,39 +13,29 @@ export default StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
     },
-
     view: {
         marginTop: 20,
         marginLeft: 10
-
     },
     view_row: {
         flexDirection: "row",
         justifyContent: "center"
     },
-
     label: {
         fontSize: 15,
         marginBottom: 5
     },
-
     picker: {
         borderRadius: 3,
         borderColor: "black"
-
     },
-
     dropDown: {
         padding: 10
-
     },
-
     euro: {
         padding: 15,
         marginRight: 220
-
     },
-
     inputIOS: {
         fontSize: 15,
         paddingLeft: 5,
@@ -58,9 +47,7 @@ export default StyleSheet.create({
         height: 40,
         width: 310
     },
-
     input: {
-
         fontSize: 15,
         paddingLeft: 5,
         borderWidth: 1,
@@ -71,9 +58,7 @@ export default StyleSheet.create({
         height: 40,
         width: 150
     },
-
     description: {
-
         fontSize: 15,
         paddingLeft: 5,
         borderWidth: 1,
@@ -123,26 +108,55 @@ export default StyleSheet.create({
         flexDirection: "row",
         alignContent: "space-between",
     },
-
     addService: {
         fontSize: 18,
         color: "green",
         marginTop: 20,
         fontWeight: "bold",
     },
-
   loginView: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
         marginHorizontal: 30
     },
-
     viewPage: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
-
+        alignItems: "center"
       },
-
+      cardContainer:{
+        width:"90%",
+        marginTop: 10,
+        alignItems:"center",
+        justifyContent: "center",
+        textAlign:'center',
+        alignSelf:"center",
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 4,
+        height: 60,
+      },
+      researchContainer:{
+        width:'100%',
+        borderColor:'black',
+        justifyContent:'space-around',
+        borderBottomWidth:1,
+        flexDirection: 'row',
+      },
+      inputResearch: {
+        width: "60%",
+        height: 40,
+        margin: 10,
+        paddingHorizontal: 10,
+        borderWidth: 1.0,
+        borderRadius: 1,
+        alignSelf:"flex-start",
+      },
+      card:{
+        width:'100%',
+        borderColor:'black',
+        justifyContent:'space-around',
+        flexDirection: 'row',
+      },
 });
