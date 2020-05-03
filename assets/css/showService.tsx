@@ -9,22 +9,27 @@ export default StyleSheet.create({
       alignItems: 'center',
     },
     avatar: {
-      width: 130,
-      height: 130,
+      width: 100,
+      height: 100,
       borderRadius: 63,
       borderWidth: 4,
       borderColor: "white",
-      marginBottom:10,
     },
     name:{
       fontSize:22,
       color:"#000000",
       fontWeight:'600',
     },
+    title:{
+      fontSize:22,
+      color:"#000000",
+      fontWeight:'600',
+      marginBottom: 20,
+    },
     userInfo:{
       fontSize:16,
-      color:"#778899",
-      fontWeight:'600',
+      color:"#000",
+      fontWeight:'500',
     },
     body:{
       backgroundColor: "#778899",
@@ -53,5 +58,8 @@ export default StyleSheet.create({
       fontSize:18,
       marginTop:20,
       color: "#FFFFFF",
+    },
+    card:{
+      width: 200,
     }
   });

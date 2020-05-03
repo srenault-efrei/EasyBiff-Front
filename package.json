@@ -9,13 +9,13 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-navigation/bottom-tabs": "^5.3.1",
     "@react-navigation/drawer": "^5.5.0",
     "@react-navigation/native": "^5.1.6",
     "@react-navigation/stack": "^5.2.13",
-
     "@types/react-native-datepicker": "^1.7.0",
-    "moment": "^2.24.0",
     "expo": "^37.0.8",
+    "moment": "^2.24.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-moment": "^0.9.7",
