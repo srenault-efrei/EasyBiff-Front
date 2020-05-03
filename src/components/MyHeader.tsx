@@ -14,11 +14,6 @@ export default class MyHeader extends React.Component<Props> {
 
 
 logout(){
-  const keys = ['token','user']
-  AsyncStorage.clear().catch((err)=>{
-    console.log(err);
-    
-  })
     this.props.navigation.navigate('Connexion')
 }
 
