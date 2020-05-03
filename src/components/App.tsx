@@ -3,6 +3,7 @@ import React from 'react';
 import { NavigationContainer, DrawerActions} from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createDrawerNavigator, DrawerItem,DrawerContentScrollView} from '@react-navigation/drawer'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SignUp from './SignUp'
 import SignIn from './SignIn'
 import Profile from './Profil'
@@ -11,6 +12,7 @@ import ServicesCusto from './ServicesCusto'
 import Preference from './Preference';
 import EditService from './EditService'
 import AddService from './AddService'
+import Asks from './Asks'
 
 import Details from './ShowService';
 import Payment from './Payement'
@@ -22,8 +24,19 @@ export interface Props {
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 
+
+function serviceScreen(){
+  return(
+
+    <Tab.Navigator  initialRouteName='Services'>
+          <Tab.Screen name="Services" component={Services} />
+          <Stack.Screen name="Demandes" component={Asks} />
+        </Tab.Navigator>
+    );
+}
 
 function createCustomMenu(props:Props){
   const jumpToConnexion = DrawerActions.jumpTo('StackApp',{screen:'Preference'})
@@ -45,7 +58,7 @@ function createAppStack() {
   return  (
     <Stack.Navigator   headerMode="none"  initialRouteName='Connexion' screenOptions={{gestureEnabled: false}} >
       <Stack.Screen name ='ServicesCusto' component = {ServicesCusto} />
-      <Stack.Screen name ='Services' component = {Services} />
+      <Stack.Screen name ='Services' children = {serviceScreen} />
       <Stack.Screen name ='Profil' component = {Profile} />
       <Stack.Screen name="Connexion" component={SignIn} />
       <Stack.Screen name="Inscription" component={SignUp} />

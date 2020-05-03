@@ -1,4 +1,6 @@
 import { StyleSheet } from 'react-native';
+import Constants from 'expo-constants';
+
 
 export default StyleSheet.create({
 
@@ -8,7 +10,7 @@ export default StyleSheet.create({
         marginTop: 20,
     },
 
-    scrollView:{
+    scrollView: {
         paddingLeft: 10,
         paddingRight: 10,
     },
@@ -83,7 +85,7 @@ export default StyleSheet.create({
         width: 310
     },
 
-    dateInput:{
+    dateInput: {
         paddingTop: 13,
         paddingHorizontal: 10,
         paddingBottom: 12,
@@ -92,21 +94,55 @@ export default StyleSheet.create({
         borderRadius: 4,
         backgroundColor: 'white',
         height: 40
-      
-      },
 
-      editButton: {
+    },
+
+    editButton: {
         height: 40,
         width: "43%",
-        top:20,
-        // textAlign: "center",
-        // justifyContent: "center",
-        // backgroundColor: "green",
-        // color: "green",
-        // borderRadius: 4,
-        // marginLeft:20
+        top: 20,
+    },
+
+
+    viewService: {
+        marginTop: 20,
+        alignItems: "center",
+        justifyContent: "center",
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 4,
+        height: 40,
+        width: 300
+    },
+
+  
+
+    viewServiceAsk: {
+
+        marginLeft: 10,
+        flexDirection: "row",
+        alignContent: "space-between",
+    },
+
+    addService: {
+        fontSize: 18,
+        color: "green",
+        marginTop: 20,
+        fontWeight: "bold",
+    },
+
+  loginView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginHorizontal: 30
+    },
+
+    viewPage: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
 
       },
-      
 
 });

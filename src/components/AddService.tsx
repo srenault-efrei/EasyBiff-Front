@@ -82,8 +82,8 @@ export default class Service extends React.Component<Props, State> {
 
 
 
-  goTo = (page: string, isEdit?: boolean) => {
-    this.props.navigation.navigate(page,{ isEdit: isEdit})
+  goTo = (page: string) => {
+    this.props.navigation.navigate(page)
 }
 
   transfromDate = (value: string): Date => {
@@ -92,12 +92,9 @@ export default class Service extends React.Component<Props, State> {
     return date
   }
 
-  dateWithTime = (value: Date, time: string): Date => {
-
-    console.log('date :' + value.getFullYear() + '-' + ("0" + (value.getMonth() + 1)).slice(-2) + '-' + ("0" + (value.getDate() + 1)).slice(-2) + 'T' + time)
-    let fullDate = new Date(value.getFullYear() + '-' + ("0" + (value.getMonth() + 1)).slice(-2) + '-' + ("0" + (value.getDate() + 1)).slice(-2) + 'T' + time)
+  dateWithTime = (value: Date, time: string): string => {
+    let fullDate = value.getFullYear() + '-' + ("0" + (value.getMonth() + 1)).slice(-2) + '-' + ("0" + (value.getDate())).slice(-2) + 'T' + time
     return fullDate
-
   }
 
   verifPrice = (value: string): void => {
@@ -200,18 +197,17 @@ export default class Service extends React.Component<Props, State> {
       alert('Remplissez tous les champs ')
     } else {
 
-      console.log(this.state.typeService)
-      console.log(this.state.startDate)
-      console.log(this.state.endDate)
-      console.log(this.state.startTime)
-      console.log(this.state.endTime)
-      console.log(this.state.price)
-      console.log(this.state.postalCode)
-      console.log(this.state.city)
-      console.log(this.state.radius)
+      // console.log(this.state.typeService)
+      // console.log(this.state.startDate)
+      // console.log(this.state.endDate)
+      // console.log(this.state.startTime)
+      // console.log(this.state.endTime)
+      // console.log(this.state.price)
+      // console.log(this.state.postalCode)
+      // console.log(this.state.city)
+      // console.log(this.state.radius)
 
-      console.log(new Date(this.dateWithTime(this.state.startDate, this.state.startTime)))
-      console.log(new Date(this.dateWithTime(this.state.endDate, this.state.endTime)))
+      console.log(this.dateWithTime(this.state.startDate, this.state.startTime))
 
 
 
@@ -238,8 +234,9 @@ export default class Service extends React.Component<Props, State> {
         .then((json) => {
           console.log(json)
           if (json.data != null || json.data != undefined) {
-            this.goTo('Services',true)
+            this.goTo('Services')
           } else {
+            alert(json.err.description)
             console.log(json.err.description)
           }
         })
@@ -253,7 +250,7 @@ export default class Service extends React.Component<Props, State> {
 
     return (
 
-      <View style={{marginTop: 20}}>
+      <View>
         <MyHeader  navigation={this.props.navigation} name="Services" ></MyHeader>
 
   

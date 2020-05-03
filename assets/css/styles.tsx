@@ -11,19 +11,22 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
+  
+  topView: {
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "space-between",
+    paddingVertical: 10,
+    flexDirection: "row"
+},
+
   loginView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 30
   },
-  topView: {
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent:"space-between",
-    paddingVertical: 10,
-    flexDirection: "row"
-  },
+
   bottomView: {
     justifyContent: "center",
     alignItems: "center",
@@ -64,28 +67,6 @@ export default StyleSheet.create({
     borderWidth: 1.0,
     borderRadius: 10
   },
-  line:{
-    
-      borderWidth: 1,
-      borderColor: 'gray',
-      borderRadius: 4,
-      height: 1,
-      width:'90%'
-    
-  },
-  viewService:{
-    marginTop: 20,
-    
-    alignItems:"center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 4,
-    height: 30,
-    width: 200
-    
-  
-},
 
   inputRow: {
     width: "100%",
@@ -121,5 +102,5 @@ export default StyleSheet.create({
     marginLeft: 36,
     borderWidth: 0,
     left: 0
-  }
+  },
 });
