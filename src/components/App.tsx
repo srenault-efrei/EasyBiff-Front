@@ -4,6 +4,7 @@ import { NavigationContainer, DrawerActions} from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createDrawerNavigator, DrawerItem,DrawerContentScrollView} from '@react-navigation/drawer'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import SplashScreen from './SplashScreen'
 import SignUp from './SignUp'
 import SignIn from './SignIn'
 import Profile from './Profil'
@@ -58,10 +59,11 @@ function createCustomMenu(props:Props){
 }
 function createAppStack() {
   return  (
-    <Stack.Navigator   headerMode="none"  initialRouteName='Connexion' screenOptions={{gestureEnabled: false}} >
+    <Stack.Navigator   headerMode="none"  initialRouteName='SplashScreen' screenOptions={{gestureEnabled: false}} >
       <Stack.Screen name ='ServicesCusto' component = {serviceScreenCusto} />
       <Stack.Screen name ='Services' children = {serviceScreen} />
       <Stack.Screen name ='Profil' component = {Profile} />
+      <Stack.Screen name ='SplashScreen' component = {SplashScreen} />
       <Stack.Screen name="Connexion" component={SignIn} />
       <Stack.Screen name="Inscription" component={SignUp} />
       <Stack.Screen name="Preference" component={Preference} />
