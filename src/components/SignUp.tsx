@@ -64,7 +64,7 @@ export default class SignUp extends React.Component<Props, State>{
     signUp() {
         if (this.isSamePasswords(this.state.password, this.state.passwordConfirmation)) {
 
-            fetch('http://127.0.0.1:4242/api/authenticate/signup', {
+            fetch('https://eazybiff-server.herokuapp.com/api/authenticate/signup', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
