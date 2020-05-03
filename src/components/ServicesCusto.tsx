@@ -30,9 +30,6 @@ export default class ServicesCusto extends React.Component<Props, State> {
   }
 
   componentDidMount(){
-    if(!this.props.route?.params){
-      this.props.navigation.navigate('Connexion')
-    }
    
   }
 

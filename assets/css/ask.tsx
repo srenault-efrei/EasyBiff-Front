@@ -6,11 +6,9 @@ export default StyleSheet.create({
 
     viewPage: {
         flex: 1,
-        marginTop: -20,
+    },
 
-      },
-
-      viewServiceAsk: {
+    viewServiceAsk: {
         marginLeft: 10,
         flexDirection: "row",
         alignContent: "space-between",
@@ -20,20 +18,20 @@ export default StyleSheet.create({
     viewAsk: {
         marginTop: 20,
         justifyContent: "center",
-        paddingLeft:10,
+        paddingLeft: 10,
         borderWidth: 1,
         borderColor: 'gray',
         borderRadius: 4,
         height: 70,
         width: 230,
-    
+
     },
 
 
     viewValidAsk: {
         marginTop: 20,
         justifyContent: "center",
-        paddingLeft:10,
+        paddingLeft: 10,
         borderWidth: 1,
         borderColor: 'gray',
         borderRadius: 4,
@@ -47,7 +45,7 @@ export default StyleSheet.create({
     viewRefusedAsk: {
         marginTop: 20,
         justifyContent: "center",
-        paddingLeft:10,
+        paddingLeft: 10,
         borderWidth: 1,
         alignItems: "center",
         borderColor: 'gray',
@@ -57,6 +55,13 @@ export default StyleSheet.create({
         backgroundColor: "#FEAAAA",
 
     },
+
+    textUnderline: {
+        fontWeight: "bold",
+        textDecorationLine: "underline",
+        
+
+    }
 
 
 

@@ -58,7 +58,6 @@ function createAppStack() {
   return  (
     <Stack.Navigator   headerMode="none"  initialRouteName='Connexion' screenOptions={{gestureEnabled: false}} >
       <Stack.Screen name ='ServicesCusto' component = {ServicesCusto} />
-      {/* <Stack.Screen name ='Services' component = {Services} /> */}
       <Stack.Screen name ='Services' children = {serviceScreen} />
       <Stack.Screen name ='Profil' component = {Profile} />
       <Stack.Screen name="Connexion" component={SignIn} />

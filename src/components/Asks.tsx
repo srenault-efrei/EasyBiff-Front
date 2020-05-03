@@ -4,7 +4,6 @@ import {
     View,
     Text,
     SafeAreaView,
-    TouchableOpacity,
     ScrollView,
     AsyncStorage
 
@@ -12,7 +11,6 @@ import {
 import MyHeader from './MyHeader'
 import styles from '../../assets/css/ask'
 import { Icon } from 'react-native-elements';
-import services from '@/assets/css/services';
 
 
 export interface Props {
@@ -116,19 +114,13 @@ export default class Service extends React.Component<Props, State> {
                     tab.push(idService)
                     this.setState({
                         tabClick: tab
-
                     })
-
-
                     this.fetchAsks()
                 }
             })
             .catch((error) => {
                 console.error(error);
             });
-
-
-
     }
 
 
@@ -145,9 +137,18 @@ export default class Service extends React.Component<Props, State> {
                                     ?
                                     <View style={styles.viewServiceAsk} >
                                         <View style={styles.viewAsk}>
-                                            <TouchableOpacity>
-                                                <Text style={{ fontSize: 15 }} > Demande de {ask.customer.firstname} pour le service de {ask.service.category.name} du {this.changeDate(ask.service.dateDebut)}.</Text >
-                                            </TouchableOpacity>
+                                            <View>
+                                                <Text style={{ fontSize: 15 }} > Demande de
+                                                <Text style={styles.textUnderline}
+                                                        // onPress={() => this.props.navigation.navigate('Profil', { customer: ask.customer.id })}
+                                                    > {ask.customer.firstname} </Text>
+                                                  pour le service de
+                                                  <Text style={styles.textUnderline}
+                                                        // onPress={() => this.props.navigation.navigate('Details service', { service: ask.service.id })}
+                                                    > {ask.service.category.name} </Text>
+                                                    du {this.changeDate(ask.service.dateDebut)}.
+                                                    </Text >
+                                            </View>
                                         </View>
                                         {this.state.tabClick.includes(ask.service.id) ?
                                             <View style={{ flexDirection: "row" }}>
@@ -180,9 +181,18 @@ export default class Service extends React.Component<Props, State> {
                                         ?
                                         <View style={styles.viewServiceAsk} >
                                             <View style={styles.viewRefusedAsk}>
-                                                <TouchableOpacity>
-                                                    <Text style={{ fontSize: 15 }} > Vous avez refusé la demande de {ask.customer.firstname} pour le service {ask.service.category.name} du {this.changeDate(ask.service.dateDebut)}.</Text >
-                                                </TouchableOpacity>
+                                                <View>
+                                                    <Text style={{ fontSize: 15 }} > Vous avez refusé la demande de
+                                                    <Text style={styles.textUnderline}
+                                                            // onPress={() => this.props.navigation.navigate('Profil', { customer: ask.customer.id })}
+                                                        > {ask.customer.firstname} </Text>
+                                                    pour le service
+                                                    <Text style={styles.textUnderline}
+                                                            // onPress={() => this.props.navigation.navigate('Details service', { service: ask.service.id })}
+                                                        > {ask.service.category.name} </Text>
+                                                    du {this.changeDate(ask.service.dateDebut)}.
+                                                    </Text >
+                                                </View>
                                             </View>
                                         </View>
                                         :
@@ -190,17 +200,34 @@ export default class Service extends React.Component<Props, State> {
                                             ?
                                             <View style={styles.viewServiceAsk} >
                                                 <View style={styles.viewValidAsk}>
-                                                    <TouchableOpacity>
-                                                        <Text style={{ fontSize: 15 }} >Le service {ask.service.category.name} du {this.changeDate(ask.service.dateDebut)} a été payé par {ask.customer.firstname}.</Text >
-                                                    </TouchableOpacity>
+                                                    <View>
+                                                        <Text style={{ fontSize: 15 }} >Le service
+                                                        <Text style={styles.textUnderline}
+                                                                // onPress={() => this.props.navigation.navigate('Details service', { service: ask.service.id })}
+                                                            > {ask.service.category.name} </Text>
+                                                         du {this.changeDate(ask.service.dateDebut)} a été payé par
+                                                        <Text style={styles.textUnderline}
+                                                                // onPress={() => this.props.navigation.navigate('Profil', { customer: ask.customer.id })}
+                                                            > {ask.customer.firstname}.</Text>
+                                                        </Text >
+                                                    </View>
                                                 </View>
                                             </View>
                                             :
                                             <View style={styles.viewServiceAsk} >
                                                 <View style={styles.viewValidAsk}>
-                                                    <TouchableOpacity>
-                                                        <Text style={{ fontSize: 15 }} > Vous avez validé la demande de {ask.customer.firstname} pour le service {ask.service.category.name} du {this.changeDate(ask.service.dateDebut)}.</Text >
-                                                    </TouchableOpacity>
+                                                    <View>
+                                                        <Text style={{ fontSize: 15 }} > Vous avez validé la demande de
+                                                        <Text style={styles.textUnderline}
+                                                                // onPress={() => this.props.navigation.navigate('Profil', { customer: ask.customer.id })}
+                                                            > {ask.customer.firstname} </Text>
+                                                          pour le service
+                                                          <Text style={styles.textUnderline}
+                                                                // onPress={() => this.props.navigation.navigate('Details service', { customer: ask.customer.id })}
+                                                            > {ask.service.category.name} </Text>
+                                                            du {this.changeDate(ask.service.dateDebut)}.
+                                                            </Text >
+                                                    </View>
                                                 </View>
                                             </View>
                                 }
