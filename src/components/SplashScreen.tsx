@@ -20,7 +20,7 @@ export interface Props {
 
 interface State {
     token: string,
-    user: object,
+    user: any,
     isConnected: boolean
 }
 

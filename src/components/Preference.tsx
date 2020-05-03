@@ -20,7 +20,7 @@ export interface Props {
 
 interface State {
     token: string,
-    user: object,
+    user: any,
     error: string
 }
 
@@ -36,8 +36,8 @@ export default class SignUp extends React.Component<Props, State>{
         }
     }
 
-    componentDidMount() {
-        this.getToken();
+    async componentDidMount() {
+        await this.getToken();
         this.getUser();
     }
 
@@ -72,7 +72,7 @@ export default class SignUp extends React.Component<Props, State>{
     }
 
     setType(type: string) {
-        fetch(`http://127.0.0.1:4242/api/users/${this.state.user.id}`, {
+        fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.user.id}`, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -93,6 +93,7 @@ export default class SignUp extends React.Component<Props, State>{
             .then((responseJson) => {
                 if (responseJson['err']) {
                     this.setState({ error: responseJson.err.description })
+                    console.log(responseJson.err.description)
                 }
                 else {
                     console.log(responseJson);
@@ -107,6 +108,7 @@ export default class SignUp extends React.Component<Props, State>{
                 }
             })
             .catch((error) => {
+                console.log(error)
                 this.setState({ error })
             });
     }
@@ -136,7 +138,6 @@ export default class SignUp extends React.Component<Props, State>{
                             <Text style={styles.textButton} onPress={() => this.setType(UserType.CUSTOMER)}>Obtenir un service</Text>
                         </View>
                     </View>
-                    <Text style={styles.error}>{this.state.error}</Text>
                 </View>
             </SafeAreaView >
         );
