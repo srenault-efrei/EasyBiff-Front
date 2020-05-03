@@ -3,7 +3,8 @@ import { NavigationScreenProp } from 'react-navigation'
 import {
     SafeAreaView,
     View,
-    Text
+    Text,
+    AsyncStorage
 } from 'react-native';
 import styles from '../../assets/css/styles'
 
@@ -14,12 +15,12 @@ export enum UserType {
 
 export interface Props {
     navigation: NavigationScreenProp<any>;
-    route: any;
-    data: any;
     UserType: UserType;
 }
 
 interface State {
+    token: string,
+    user: any,
     error: string
 }
 
@@ -29,52 +30,96 @@ export default class SignUp extends React.Component<Props, State>{
         super(props)
 
         this.state = {
+            token: '',
+            user: {},
             error: ''
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        await this.getToken();
+        this.getUser();
     }
 
-    goTo(page: string, params: object = {}) {
-        this.props.navigation.navigate(page, params)
+    async getToken() {
+        const token = await AsyncStorage.getItem('token');
+        if (token && token !== undefined) {
+            console.log('PRE-TOKEN : ', token);
+            this.setState({ token });
+        } else {
+            this.props.navigation.navigate('Inscription', {
+                error: {
+                    screen: 'Preference',
+                    text: 'There is no token in the local storage'
+                }
+            });
+        }
+    }
+
+    async getUser() {
+        const user = await AsyncStorage.getItem('user');
+        if (user && user !== undefined) {
+            console.log('PRE-USER : ', user);
+            this.setState({ user: JSON.parse(user) });
+        } else {
+            this.props.navigation.navigate('Inscription', {
+                error: {
+                    screen: 'Preference',
+                    text: 'There is no user data in the local storage'
+                }
+            });
+        }
     }
 
     setType(type: string) {
-        fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.props.data.user.id}`, {
+        fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.user.id}`, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': this.props.data.meta.token
+                'Authorization': this.state.token
             },
-            body: JSON.stringify({ 
-                firstname: this.props.data.user.firstname,
-                lastname: this.props.data.user.lastname,
-                birthday: this.props.data.user.birthday,
+            body: JSON.stringify({
+                firstname: this.state.user.firstname,
+                lastname: this.state.user.lastname,
+                birthday: this.state.user.birthday,
                 bio: 'Pas de biographie',
                 type,
+                phone: this.state.user.phone
 
-             })
+            })
         })
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson['err']) {
                     this.setState({ error: responseJson.err.description })
+                    console.log(responseJson.err.description)
                 }
                 else {
+                    console.log(responseJson);
+                    this._storeData(responseJson.data.meta.token, responseJson.data.user)
                     if (type === UserType.CUSTOMER) {
-                        this.goTo('ServicesCusto', { data: responseJson.data })
+                        this.props.navigation.navigate('ServicesCusto');
                     }
                     else if (type === UserType.PROVIDER) {
-                        this.goTo('Services', { data: responseJson.data })
+                        this.props.navigation.navigate('Services');
                     }
 
                 }
             })
             .catch((error) => {
+                console.log(error)
                 this.setState({ error })
             });
+    }
+
+    _storeData = async (token: string, user: object) => {
+        try {
+            await AsyncStorage.setItem('token', token);
+            await AsyncStorage.setItem('user', JSON.stringify(user));
+        } catch (error) {
+            console.log('Local storage data Error : ', error)
+        }
     }
 
     render() {
@@ -84,14 +129,14 @@ export default class SignUp extends React.Component<Props, State>{
                     <Text style={styles.title}>EazyBiff</Text>
                 </View>
                 <View style={styles.loginView}>
-                    <Text>Vous souhaitez ?</Text>
-                </View>
-                <View style={styles.loginView}>
-                    <View style={styles.button}>
-                        <Text style={styles.textButton} onPress={() => this.setType(UserType.PROVIDER)}>Rendre service</Text>
-                    </View>
-                    <View style={styles.button}>
-                        <Text style={styles.textButton} onPress={() => this.setType(UserType.CUSTOMER)}>Obtenir un service</Text>
+                    <Text style={{ fontSize: 24, marginBottom: 20 }}>Vous souhaitez ?</Text>
+                    <View style={{ flexDirection: "row"}}>
+                        <View style={styles.halfButton}>
+                            <Text style={styles.textButton} onPress={() => this.setType(UserType.PROVIDER)}>Rendre service</Text>
+                        </View>
+                        <View style={styles.halfButton}>
+                            <Text style={styles.textButton} onPress={() => this.setType(UserType.CUSTOMER)}>Obtenir un service</Text>
+                        </View>
                     </View>
                 </View>
             </SafeAreaView >

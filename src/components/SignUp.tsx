@@ -14,12 +14,14 @@ import styles from '../../assets/css/styles'
 
 export interface Props {
     navigation: NavigationScreenProp<any>
+    route: any
+    error: { screen: string, text: string }
 }
 
 interface State {
     firstname: string,
     lastname: string,
-    birthday: Date | null,
+    birthday: string,
     email: string,
     password: string,
     passwordConfirmation: string,
@@ -36,7 +38,7 @@ export default class SignUp extends React.Component<Props, State>{
         this.state = {
             firstname: '',
             lastname: '',
-            birthday: null,
+            birthday: '01-05-2010',
             email: '',
             password: '',
             passwordConfirmation: '',
@@ -46,23 +48,23 @@ export default class SignUp extends React.Component<Props, State>{
         };
     }
 
-    isSamePasswords(password: string, passwordConfirmation: string): boolean {
-        return (password.trim() === passwordConfirmation.trim()) ? true : false;
+    componentDidMount() {
+        this.isThereError();
     }
 
-    _storeData = async (token: string, user: object) => {
-        try {
-            
-
-        } catch(error) {
-            console.log('Storage data Error : ', error)
+    isThereError() {
+        if (this.props.error) {
+            console.log(`${this.props.error.screen} sreen return error : ${this.props.error.text}`);
+        }
+        if (this.props.route) {
+            console.log(this.props.route)
         }
     }
 
     signUp() {
         if (this.isSamePasswords(this.state.password, this.state.passwordConfirmation)) {
 
-            fetch('http://eazybiff-server.herokuapp.com/api/authenticate/signup', {
+            fetch('https://eazybiff-server.herokuapp.com/api/authenticate/signup', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -75,9 +77,7 @@ export default class SignUp extends React.Component<Props, State>{
                     email: this.state.email.trim(),
                     password: this.state.password.trim(),
                     passwordConfirmation: this.state.passwordConfirmation.trim(),
-                    phone: this.state.phone.trim(),
-                    gender: true,
-                    type: "provider"
+                    phone: this.state.phone.trim()
                 })
             })
                 .then((response) => response.json())
@@ -86,7 +86,7 @@ export default class SignUp extends React.Component<Props, State>{
                         this.setState({ error: responseJson.err.description })
                     } else {
                         console.log(responseJson);
-
+                        this._storeData(responseJson.data.meta.token, responseJson.data.user)
                         this.props.navigation.navigate('Preference');
                     }
                 })
@@ -95,6 +95,19 @@ export default class SignUp extends React.Component<Props, State>{
                 });
         } else {
             this.setState({ error: 'Attention,\nLes mots de passe saisis ne correspondent pas' });
+        }
+    }
+
+    isSamePasswords(password: string, passwordConfirmation: string): boolean {
+        return (password.trim() === passwordConfirmation.trim()) ? true : false;
+    }
+
+    _storeData = async (token: string, user: object) => {
+        try {
+            await AsyncStorage.setItem('token', token);
+            await AsyncStorage.setItem('user', JSON.stringify(user));
+        } catch (error) {
+            console.log('Local storage data Error : ', error)
         }
     }
 
@@ -122,16 +135,16 @@ export default class SignUp extends React.Component<Props, State>{
                         date={this.state.birthday}
                         mode="date"
                         placeholder="Date de naissance"
-                        format="YYYY-MM-DD"
-                        minDate="1900-01-01"
-                        maxDate={moment(new Date()).format('YYYY-MM-DD')}
+                        format="DD-MM-YYYY"
+                        minDate="01-01-1900"
+                        maxDate={moment(new Date()).format('DD-MM-YYYY')}
                         confirmBtnText="Valider"
                         cancelBtnText="Annuler"
                         customStyles={{
                             dateIcon: styles.dateIcon,
                             dateInput: styles.dateInput
                         }}
-                        onDateChange={(birthday: Date | null) => { this.setState({ birthday }) }}
+                        onDateChange={(birthday: string) => { this.setState({ birthday }) }}
                     />
                     <TextInput
                         autoCapitalize='none'
