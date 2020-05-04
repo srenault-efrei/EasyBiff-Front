@@ -36,9 +36,9 @@ export default class SplashScreen extends React.Component<Props, State>{
         }
     }
 
-    componentDidMount() {
-        this.getToken();
-        this.getUser();
+    async componentDidMount() {
+        await this.getToken();
+        await this.getUser();
         this.timer();
     }
 
@@ -67,7 +67,7 @@ export default class SplashScreen extends React.Component<Props, State>{
         }, 2000);
     }
 
-    screenChoice() {
+    screenChoice() { 
         if (this.state.isConnected) {
             if (this.state.user.type === UserType.CUSTOMER) {
                 this.props.navigation.navigate('ServicesCusto');

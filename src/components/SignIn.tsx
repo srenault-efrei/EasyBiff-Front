@@ -44,7 +44,6 @@ export default class Signin extends React.Component<Props, State>{
             await AsyncStorage.setItem('user', JSON.stringify(user));
         } catch (error) {
             console.log(error);
-
         }
 
     };
@@ -54,9 +53,7 @@ export default class Signin extends React.Component<Props, State>{
     }
 
     async signIn() {
-
-
-        await fetch('https://eazybiff-server.herokuapp.com/api/authenticate/signin', {
+        const req = await fetch('https://eazybiff-server.herokuapp.com/api/authenticate/signin', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -64,27 +61,20 @@ export default class Signin extends React.Component<Props, State>{
             },
             body: JSON.stringify({ email: this.state.email.trim(), password: this.state.password.trim() })
         })
-            .then((response) => response.json())
-            .then((json) => {
-                if (json['err']) {
-                    this.setState({ error: json.err.description })
-                }
-                else {
-                    this._storeData(json.data.meta.token, json.data.user)
-                    if (json.data.user.type === UserType.CUSTOMER) {
-                        this.props.navigation.navigate('ServicesCusto');
-                    } else if (json.data.user.type === UserType.PROVIDER) {
-                        this.props.navigation.navigate('Services');
-                    } else {
-                        this.props.navigation.navigate('Preference');
-                    }
-                }
-                return json
-            })
-            .catch((error) => {
-                this.setState({ error })
-            });
-
+        const json =await req.json()
+        if (json.err) {
+            this.setState({ error: json.err.description })
+        }
+        else {
+            await this._storeData(json.data.meta.token, json.data.user)
+            if (json.data.user.type === UserType.CUSTOMER) {
+                this.props.navigation.navigate('ServicesCusto');
+            } else if (json.data.user.type === UserType.PROVIDER) {
+                this.props.navigation.navigate('Services');
+            } else {
+                this.props.navigation.navigate('Preference');
+            }
+        }
     }
 
     // async componentDidMount(){
@@ -127,7 +117,7 @@ export default class Signin extends React.Component<Props, State>{
                     </View>
                 </View>
                 <View style={styles.bottomView}>
-                    <Text onPress={() => this.goTo('Inscription')}>Pas encore inscrit ? Clique ici !</Text>
+                    <Text onPress={() => this.props.navigation.navigate('Inscription')}>Pas encore inscrit ? Clique ici !</Text>
                 </View>
             </SafeAreaView>
         );
