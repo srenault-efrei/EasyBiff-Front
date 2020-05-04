@@ -125,7 +125,7 @@ export default class Service extends React.Component<Props, State> {
 
 
     render() {
-
+console.log(this.state.asks)
         return (
             <SafeAreaView style={styles.viewPage} >
                 <MyHeader navigation={this.props.navigation} name="Demandes" ></MyHeader>
@@ -140,11 +140,11 @@ export default class Service extends React.Component<Props, State> {
                                             <View>
                                                 <Text style={{ fontSize: 15 }} > Demande de
                                                 <Text style={styles.textUnderline}
-                                                        // onPress={() => this.props.navigation.navigate('Profil', { customer: ask.customer.id })}
+                                                        onPress={() => this.props.navigation.navigate('Profil', { user: ask.customer })}
                                                     > {ask.customer.firstname} </Text>
                                                   pour le service de
                                                   <Text style={styles.textUnderline}
-                                                        // onPress={() => this.props.navigation.navigate('Details service', { service: ask.service.id })}
+                                                        onPress={() => this.props.navigation.navigate('Details service', { service: ask.service })}
                                                     > {ask.service.category.name} </Text>
                                                     du {this.changeDate(ask.service.dateDebut)}.
                                                     </Text >
@@ -184,11 +184,11 @@ export default class Service extends React.Component<Props, State> {
                                                 <View>
                                                     <Text style={{ fontSize: 15 }} > Vous avez refusé la demande de
                                                     <Text style={styles.textUnderline}
-                                                            // onPress={() => this.props.navigation.navigate('Profil', { customer: ask.customer.id })}
+                                                            onPress={() => this.props.navigation.navigate('Profil', { user: ask.customer })}
                                                         > {ask.customer.firstname} </Text>
                                                     pour le service
                                                     <Text style={styles.textUnderline}
-                                                            // onPress={() => this.props.navigation.navigate('Details service', { service: ask.service.id })}
+                                                            onPress={() => this.props.navigation.navigate('Details service', { service: ask.service })}
                                                         > {ask.service.category.name} </Text>
                                                     du {this.changeDate(ask.service.dateDebut)}.
                                                     </Text >
@@ -203,11 +203,11 @@ export default class Service extends React.Component<Props, State> {
                                                     <View>
                                                         <Text style={{ fontSize: 15 }} >Le service
                                                         <Text style={styles.textUnderline}
-                                                                // onPress={() => this.props.navigation.navigate('Details service', { service: ask.service.id })}
+                                                                onPress={() => this.props.navigation.navigate('Details service', { service: ask.service })}
                                                             > {ask.service.category.name} </Text>
                                                          du {this.changeDate(ask.service.dateDebut)} a été payé par
                                                         <Text style={styles.textUnderline}
-                                                                // onPress={() => this.props.navigation.navigate('Profil', { customer: ask.customer.id })}
+                                                                onPress={() => this.props.navigation.navigate('Profil', { user: ask.customer })}
                                                             > {ask.customer.firstname}.</Text>
                                                         </Text >
                                                     </View>
@@ -219,11 +219,11 @@ export default class Service extends React.Component<Props, State> {
                                                     <View>
                                                         <Text style={{ fontSize: 15 }} > Vous avez validé la demande de
                                                         <Text style={styles.textUnderline}
-                                                                // onPress={() => this.props.navigation.navigate('Profil', { customer: ask.customer.id })}
+                                                                onPress={() => this.props.navigation.navigate('Profil', { user: ask.customer })}
                                                             > {ask.customer.firstname} </Text>
                                                           pour le service
                                                           <Text style={styles.textUnderline}
-                                                                // onPress={() => this.props.navigation.navigate('Details service', { customer: ask.customer.id })}
+                                                                onPress={() => this.props.navigation.navigate('Details service', { service: ask.service })}
                                                             > {ask.service.category.name} </Text>
                                                             du {this.changeDate(ask.service.dateDebut)}.
                                                             </Text >

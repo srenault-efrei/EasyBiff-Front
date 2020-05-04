@@ -49,6 +49,10 @@ export default class Signin extends React.Component<Props, State>{
 
     };
 
+    goTo = (page: string) => {
+        this.props.navigation.navigate(page)
+    }
+
     async signIn() {
 
 
@@ -116,7 +120,7 @@ export default class Signin extends React.Component<Props, State>{
                     </TextInput>
                     <Text style={styles.error}>{this.state.error}</Text>
                     <View style={{ width: "100%", marginBottom: 5, flexDirection: "row-reverse" }}>
-                        <Text>Mot de passe oublié</Text>
+                        <Text onPress={() => this.goTo('ForgotPassword')}>Mot de passe oublié</Text>
                     </View>
                     <View style={styles.button}>
                         <Text style={styles.textButton} onPress={() => this.signIn()}>Connexion</Text>

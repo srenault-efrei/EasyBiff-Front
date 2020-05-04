@@ -373,7 +373,7 @@ export default class Service extends React.Component<Props, State> {
               <Text style={styles.label}> Code postal</Text>
               <TextInput style={styles.input}
                 placeholder={"94310"}
-                maxLength={4}
+                maxLength={5}
                 onChangeText={value => this.verifPostalCode(value)}
               >
               </TextInput>
