@@ -45,7 +45,7 @@ function serviceScreenCusto(){
     );
 }
 function createCustomMenu(props:Props){
-  const jumpToConnexion = DrawerActions.jumpTo('StackApp',{screen:'Preference'})
+  const jumpToProfile = DrawerActions.jumpTo('StackApp',{screen:'Profil'})
   const jumpToServices = DrawerActions.jumpTo('StackApp',{screen:'Services'})
   return(
     <DrawerContentScrollView {...props}>
@@ -53,13 +53,13 @@ function createCustomMenu(props:Props){
       label ="Services"
       onPress = {() => { props.navigation.dispatch(jumpToServices)}}
       />
-      <DrawerItem label='Preference' onPress = {() => { props.navigation.dispatch(jumpToConnexion)}}></DrawerItem>  
+      <DrawerItem label='Profil' onPress = {() => { props.navigation.dispatch(jumpToProfile)}}></DrawerItem>  
     </DrawerContentScrollView>
   )
 }
 function createAppStack() {
   return  (
-    <Stack.Navigator   headerMode="none"  initialRouteName='SplashScreen' screenOptions={{gestureEnabled: false}} >
+    <Stack.Navigator   headerMode="none"  initialRouteName='SplashScreen'  >
       <Stack.Screen name ='ServicesCusto' component = {serviceScreenCusto} />
       <Stack.Screen name ='Services' children = {serviceScreen} />
       <Stack.Screen name ='Profil' component = {Profile} />
@@ -77,7 +77,7 @@ function createAppStack() {
 const app = () => {
   return (
     <NavigationContainer>
-    <Drawer.Navigator drawerContent = { props => createCustomMenu(props)}  screenOptions={{swipeEnabled:false,gestureEnabled:false}} > 
+    <Drawer.Navigator drawerContent = { props => createCustomMenu(props)}  screenOptions={{swipeEnabled:false}} > 
     <Drawer.Screen name='StackApp' component={createAppStack} />
     </Drawer.Navigator>
     </NavigationContainer>

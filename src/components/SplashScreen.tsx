@@ -36,9 +36,9 @@ export default class SplashScreen extends React.Component<Props, State>{
         }
     }
 
-    componentDidMount() {
-        this.getToken();
-        this.getUser();
+    async componentDidMount() {
+        await this.getToken();
+        await this.getUser();
         this.timer();
     }
 

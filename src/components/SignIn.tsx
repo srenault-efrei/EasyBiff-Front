@@ -123,7 +123,7 @@ export default class Signin extends React.Component<Props, State>{
                     </View>
                 </View>
                 <View style={styles.bottomView}>
-                    <Text onPress={() => this.goTo('Inscription')}>Pas encore inscrit ? Clique ici !</Text>
+                    <Text onPress={() => this.props.navigation.navigate('Inscription')}>Pas encore inscrit ? Clique ici !</Text>
                 </View>
             </SafeAreaView>
         );

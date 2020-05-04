@@ -13,7 +13,20 @@ export default class MyHeader extends React.Component<Props> {
 
 
 
-logout(){
+async logout(){
+  try {
+    const keys = await  AsyncStorage.getAllKeys()
+    await AsyncStorage.multiRemove(keys)
+    console.log('keys supprimés',keys);
+    
+
+  }
+  catch(err){
+    console.log('deconnexion erreur :',err);
+    
+  }
+
+
     this.props.navigation.navigate('Connexion')
 }
 
