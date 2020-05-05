@@ -42,8 +42,8 @@ export default class Profile extends React.Component<Props, State> {
         lastname: '',
         firstname: '',
         birthday: '',
-        bio: '',
-        phone: '',
+        bio: null,
+        phone: 'string'
       },
       longitude: 0,
       latitude: 0,
@@ -65,7 +65,7 @@ export default class Profile extends React.Component<Props, State> {
 
   async componentDidMount(){
     await this.setDataStorage()
-    this.getProfile()
+    this.createInfos()
     this.getLocation()
     console.log(this.props.route.params)
   }
@@ -113,6 +113,25 @@ export default class Profile extends React.Component<Props, State> {
     this.setState({ btnDisabled: false })
   }
 
+  createInfos(){
+    const {user} = this.state
+    const obj = {
+      avatar: null,
+      bio: null,
+      birthday: user.birthday.split('T')[0],
+      createdAt: user.createdAt.split('T')[0],
+      email: user.email,
+      firstname: user.firstname,
+      id: user.id,
+      lastname: user.lastname,
+      paypal: null,
+      phone: user.phone,
+      type: user.type,
+      updateAt: user.updateAt
+    }
+    this.setState({ user: obj })
+  }
+
   getLocation() {
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -121,34 +140,6 @@ export default class Profile extends React.Component<Props, State> {
       error => alert(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
-  }
-
-  getProfile = async (): Promise<void | never> => {
-    const { token, user } = this.state
-    console.log('id: ' + user.id + ', ' + 'token: ' + token)
-    return fetch(`https://eazybiff-server.herokuapp.com/api/users/${user.id}`, {
-      method: 'GET',
-      headers: 
-      new Headers({
-        'Authorization': token.toString(), 
-        'Content-Type': 'application/json'
-      })
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        const obj: Infos = {
-          birthday: json.data.user.birthday.split('T')[0],
-          lastname: json.data.user.lastname,
-          firstname: json.data.user.firstname,
-          bio: json.data.user.bio,
-          phone: json.data.user.phone
-        }
-        this.setState({ data: obj })
-        this.infos = obj
-      })
-      .catch((error) => {
-        console.error(error);
-      });
   }
 
   updateInfos = async (): Promise<void | never> => {
@@ -194,7 +185,9 @@ export default class Profile extends React.Component<Props, State> {
 
   render() {
 
-    const { data, longitude, latitude } = this.state
+    const { longitude, latitude, user } = this.state
+
+    console.log(user)
 
     return (
       <View style={styles.view}>
@@ -204,25 +197,30 @@ export default class Profile extends React.Component<Props, State> {
           <View>
 
             <Input
-              defaultValue={data.lastname} 
+              label='Lastname'
+              defaultValue={user.lastname} 
               onChangeText={text => this.handleChange('lastname', text)}
             />
             <Input
-              defaultValue={data.firstname}
+              label='Firstname'
+              defaultValue={user.firstname}
               onChangeText={text => this.handleChange('firstname', text)}
             />
             <Input
-              defaultValue={data.birthday} 
+              label='Birthday'
+              defaultValue={user.birthday} 
               onChangeText={text => this.handleChange('birthday', text)}
               maxLength={10}
             />
             <Input
-              defaultValue={data.bio} 
+              label='Bio'
+              defaultValue={user.bio} 
               onChangeText={text => this.handleChange('bio', text)}
               maxLength={10}
             />
             <Input
-              defaultValue={data.phone}
+              label='Phone'
+              defaultValue={user.phone}
               onChangeText={text => this.handleChange('phone', text)}
               maxLength={10}
             />
@@ -242,7 +240,7 @@ export default class Profile extends React.Component<Props, State> {
           </TouchableOpacity>
         </View>
         <View style={styles.bottomView}>
-                    <Text>Vous êtes inscrit depuis le : 16 avril 2020</Text>
+          <Text>Vous êtes inscrit depuis le : {user.createdAt}</Text>
         </View>
       </View>
     );

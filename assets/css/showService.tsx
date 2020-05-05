@@ -61,5 +61,8 @@ export default StyleSheet.create({
     },
     card:{
       width: 200,
+    },
+    infos:{
+      fontWeight: "600"
     }
   });

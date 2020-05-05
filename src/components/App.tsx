@@ -27,7 +27,6 @@ const Tab = createBottomTabNavigator();
 
 function serviceScreen(){
   return(
-
     <Tab.Navigator  initialRouteName='Services'>
           <Tab.Screen name="Services" component={Services} />
           <Stack.Screen name="Demandes" component={Asks} />
@@ -59,8 +58,8 @@ function createCustomMenu(props:Props){
 function createAppStack() {
   return  (
     <Stack.Navigator   headerMode="none"  initialRouteName='Connexion' screenOptions={{gestureEnabled: false}} >
-      <Stack.Screen name ='ServicesCusto' component = {serviceScreenCusto} />
-      <Stack.Screen name ='Services' children = {serviceScreen} />
+      <Stack.Screen name ='ServicesCusto' component = {ServicesCusto} />
+      <Stack.Screen name ='Services' component = {Services} />
       <Stack.Screen name ='Profil' component = {Profile} />
       <Stack.Screen name="Connexion" component={SignIn} />
       <Stack.Screen name="Inscription" component={SignUp} />
