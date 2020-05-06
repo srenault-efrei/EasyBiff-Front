@@ -42,6 +42,9 @@ export default class Asks extends React.Component<Props, State> {
       })
       const resJson = await res.json()
       const asks  = resJson.data.ask
+      asks.forEach((ask:any) => {
+        ask.service.user= ask.provider 
+      });
       this.setState({asks})
 
       
@@ -79,6 +82,7 @@ return state ==-1 ? 'refusé' : state ==2 ? 'Validé' :'en attente de réponse'
 }
 
   render() {
+  
     return (
       <SafeAreaView>
         <MyHeader navigation={this.props.navigation} name="Demandes" ></MyHeader>
@@ -87,7 +91,7 @@ return state ==-1 ? 'refusé' : state ==2 ? 'Validé' :'en attente de réponse'
                 renderItem={({ item }) => 
                 <View style={{width:"100%"}}>
                     <View style={styles.cardContainer}>
-                        <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate('Details service',{service:item})}>
+                        <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate('Details service',{service:item.service})}>
                             <View>
                                 <Text style={{ fontSize: 15,fontWeight:'bold'}} >{item.service.category.name} </Text >
                             </View>

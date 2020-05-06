@@ -23,6 +23,7 @@ export interface IService {
     description:string
     id: number
     postalCode: number
+    state:number
     price: number
     radius: object
     user:object
@@ -45,12 +46,13 @@ interface State {
 
 export default class ServicesCusto extends React.Component<Props, State> {
 
-  state = { searchFilter: 'name',services : [],servicesSearched:"",initialServices : []}
+  state = { searchFilter: 'category',services : [],servicesSearched:"",initialServices : []}
 
   async fetchServices(){
       const res = await fetch(`https://eazybiff-server.herokuapp.com/api/services/`)
       const jsonRes : IResData = await res.json()
-      const services = await Object.values(jsonRes.data.service)
+      let allServices = await Object.values(jsonRes.data.service)
+      const services= allServices.filter((s)=>{return s.state!=-1})
       this.setState({services,initialServices:services})
   }
 
@@ -75,40 +77,20 @@ export default class ServicesCusto extends React.Component<Props, State> {
         this.setState({ services: this.state.initialServices })
     }
     else {
-        const services = this.state.services.filter((service) => {
-            if (String(service[filter]).toLowerCase().includes(String(text))) {
-                return service
+          const services = this.state.services.filter((service:any) => {
+            if(filter=='category'){
+                if (String(service.category.name).toLowerCase().includes(String(text))) {
+                    return service
+                }
+            }
+            else if(filter == 'desc'){
+                if (String(service.description).toLowerCase().includes(String(text))) {
+                    return service
+                }
             }
         })
         this.setState({ services })
     }
-}
-sortList() {
-    const input_type = this.state.searchFilter
-    console.log(input_type);
-
-    let services = this.state.services
-    if (input_type === 'id') {
-        services = services.sort((a, b) => a[input_type] - b[input_type])
-    }
-    else if (input_type === 'types') {
-        services = services.sort((a, b) => {
-
-            if (a[input_type][0] < b[input_type][0]) {
-                return -1
-            } if (a[input_type][0] > b[input_type][0]) { return 1 } return 0
-        })
-    }
-    else {
-        services = services.sort((a, b) => {
-            if (a[input_type] < b[input_type]) {
-                return -1
-            } if (a[input_type] > b[input_type]) { return 1 } return 0
-        })
-    }
-
-    this.setState({ services })
-
 }
 
 getUserFirstname(item:any) {
@@ -120,11 +102,7 @@ getUserFirstname(item:any) {
 
 async updateFilterParam(searchFilter:string) {
     await this.setState({ searchFilter })
-    this.sortList()
 }
-
-
-  
 
   displayServices() {
     const classThis = this
@@ -184,9 +162,8 @@ render() {
                         this.updateFilterParam(itemValue)
                     }
                     }>
-                    <Picker.Item label="Nom" value="name" />
-                    <Picker.Item label="Type" value="types" />
-                    <Picker.Item label="Numero" value="id" />
+                    <Picker.Item label="Categorie" value="category" />
+                    <Picker.Item label="Description" value="desc" />
                 </Picker>
             </View>
             {this.displayServices()}

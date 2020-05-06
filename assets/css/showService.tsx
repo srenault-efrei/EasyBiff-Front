@@ -59,7 +59,20 @@ export default StyleSheet.create({
       marginTop:20,
       color: "#FFFFFF",
     },
-    card:{
-      width: 200,
-    }
+    itemsCenter:{
+      flex: 1,
+      alignItems: 'center', 
+      justifyContent: 'center',
+      width: 300,
+    },
+    infos:{
+      fontWeight: "600"
+    },
+    stateInfo:{
+      textAlign: "center"
+    },
+    view: {
+      flex: 1,
+      justifyContent: "center",
+    },
   });

@@ -28,9 +28,10 @@ interface State {
 
 export default class Signin extends React.Component<Props, State>{
 
-    constructor(props: Props) {
+    constructor(props: any) {
         super(props)
-
+        console.log(this.props.navigation);
+        
         this.state = {
             email: '',
             password: '',
