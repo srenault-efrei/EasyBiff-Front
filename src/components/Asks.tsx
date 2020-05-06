@@ -138,11 +138,7 @@ console.log(this.state.asks)
                                     <View style={styles.viewServiceAsk} >
                                         <View style={styles.viewAsk}>
                                             <View>
-                                                <Text style={{ fontSize: 15 }} > Demande de
-                                                <Text style={styles.textUnderline}
-                                                        onPress={() => this.props.navigation.navigate('Profil', { user: ask.customer })}
-                                                    > {ask.customer.firstname} </Text>
-                                                  pour le service de
+                                                <Text style={{ fontSize: 15 }} > Demande de {ask.customer.firstname} pour le service de
                                                   <Text style={styles.textUnderline}
                                                         onPress={() => this.props.navigation.navigate('Details service', { service: ask.service })}
                                                     > {ask.service.category.name} </Text>
@@ -182,11 +178,7 @@ console.log(this.state.asks)
                                         <View style={styles.viewServiceAsk} >
                                             <View style={styles.viewRefusedAsk}>
                                                 <View>
-                                                    <Text style={{ fontSize: 15 }} > Vous avez refusé la demande de
-                                                    <Text style={styles.textUnderline}
-                                                            onPress={() => this.props.navigation.navigate('Profil', { user: ask.customer })}
-                                                        > {ask.customer.firstname} </Text>
-                                                    pour le service
+                                                    <Text style={{ fontSize: 15 }} > Vous avez refusé la demande de {ask.customer.firstname} pour le service
                                                     <Text style={styles.textUnderline}
                                                             onPress={() => this.props.navigation.navigate('Details service', { service: ask.service })}
                                                         > {ask.service.category.name} </Text>
@@ -205,10 +197,7 @@ console.log(this.state.asks)
                                                         <Text style={styles.textUnderline}
                                                                 onPress={() => this.props.navigation.navigate('Details service', { service: ask.service })}
                                                             > {ask.service.category.name} </Text>
-                                                         du {this.changeDate(ask.service.dateDebut)} a été payé par
-                                                        <Text style={styles.textUnderline}
-                                                                onPress={() => this.props.navigation.navigate('Profil', { user: ask.customer })}
-                                                            > {ask.customer.firstname}.</Text>
+                                                         du {this.changeDate(ask.service.dateDebut)} a été payé par {ask.customer.firstname}.
                                                         </Text >
                                                     </View>
                                                 </View>
@@ -217,11 +206,7 @@ console.log(this.state.asks)
                                             <View style={styles.viewServiceAsk} >
                                                 <View style={styles.viewValidAsk}>
                                                     <View>
-                                                        <Text style={{ fontSize: 15 }} > Vous avez validé la demande de
-                                                        <Text style={styles.textUnderline}
-                                                                onPress={() => this.props.navigation.navigate('Profil', { user: ask.customer })}
-                                                            > {ask.customer.firstname} </Text>
-                                                          pour le service
+                                                        <Text style={{ fontSize: 15 }} > Vous avez validé la demande de {ask.customer.firstname} pour le service
                                                           <Text style={styles.textUnderline}
                                                                 onPress={() => this.props.navigation.navigate('Details service', { service: ask.service })}
                                                             > {ask.service.category.name} </Text>

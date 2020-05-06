@@ -50,7 +50,6 @@ export default class Signin extends React.Component<Props, State>{
         })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
                 if (json.data != null || json.data != undefined) {
                     this.setState({
                         isDisplay: false

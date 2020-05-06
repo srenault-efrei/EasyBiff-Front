@@ -16,7 +16,7 @@ import { NavigationScreenProp } from 'react-navigation'
 import MyHeader from './MyHeader'
 
 
-export interface Props { 
+export interface Props {
   serviceId: string
   route: any
   params: any
@@ -27,7 +27,7 @@ export interface Props {
 interface Items {
   label: string,
   value: string,
-  
+
 }
 
 interface State {
@@ -84,7 +84,7 @@ export default class Service extends React.Component<Props, State> {
 
   goTo = (page: string) => {
     this.props.navigation.navigate(page)
-}
+  }
 
   transfromDate = (value: string): Date => {
     let dateSplit: Array<string> = value.split('-')
@@ -134,8 +134,8 @@ export default class Service extends React.Component<Props, State> {
       alert('Votre ville ne doit pas avoir de chiffres')
     }
   }
-  
-  
+
+
 
   isFieldEmpty = (): Boolean => {
 
@@ -251,10 +251,10 @@ export default class Service extends React.Component<Props, State> {
     return (
 
       <View>
-        <MyHeader  navigation={this.props.navigation} name="Services" ></MyHeader>
+        <MyHeader navigation={this.props.navigation} name="Services" ></MyHeader>
 
-  
-      <SafeAreaView style={styles.safeArea}>
+
+        <SafeAreaView style={styles.safeArea}>
 
           <View style={{ marginLeft: 35 }}>
             <Text style={styles.label}>Choisissez un service</Text>
@@ -348,7 +348,7 @@ export default class Service extends React.Component<Props, State> {
               <DatePicker
                 style={{ width: 150 }}
                 date={this.state.endTime}
-                mode= "time"
+                mode="time"
                 placeholder="selectionner une heure"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
@@ -418,29 +418,41 @@ export default class Service extends React.Component<Props, State> {
             </View>
           </View>
 
-          <View style={{ marginLeft: 35, top:20}}>
+          <View style={{ marginLeft: 35, top: 20 }}>
             <Text style={styles.label}>Description</Text>
             <TextInput style={styles.description}
               placeholder={"Lave votre voiture, aucun produits à fournir"}
               multiline={true}
               numberOfLines={4}
-              onChangeText={value => this.setState({ description: value})}
+              onChangeText={value => this.setState({ description: value })}
             >
             </TextInput>
           </View>
-          <View style={{ alignItems: "center", top: 20 }}>
-          <TouchableOpacity
-            style={styles.editButton}
-            onPress={() => this.insertService()}
-          >
-            <View style={{ alignItems: "center" }}>
-              <Text style={{ color: "green", fontSize: 20, fontWeight: "bold" }} >Valider</Text>
-            </View>
 
-          </TouchableOpacity>
-        </View>
+          <View style={{ alignItems: "center", flexDirection: "row", top: 20, marginLeft: 50 }}>
 
-      </SafeAreaView>
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={() => this.goTo('Services')}
+            >
+              <View style={{ alignItems: "center" }}>
+                <Text style={{ color: "gray", fontSize: 20, fontWeight: "bold" }} >Annuler</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={() => this.insertService()}
+            >
+              <View style={{ alignItems: "center" }}>
+                <Text style={{ color: "green", fontSize: 20, fontWeight: "bold" }} >Valider</Text>
+              </View>
+            </TouchableOpacity>
+
+
+          </View>
+
+        </SafeAreaView>
       </View>
     );
 
