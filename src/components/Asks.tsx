@@ -64,6 +64,11 @@ export default class Service extends React.Component<Props, State> {
     }
 
 
+    goTo = (page: string, service?: number, user?: string, token?: string): void => {
+        this.props.navigation.navigate(page, { serviceId: service, user: user, token: token })
+    }
+
+
 
     fetchAsks = async (): Promise<void | never> => {
         return fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.user.id}/asks`, {
@@ -111,7 +116,7 @@ export default class Service extends React.Component<Props, State> {
                     console.log(json.err.description)
                 } else {
                     let tab: Array<number> = this.state.tabClick
-                    tab.push(idService)
+                    tab.push(json.data["ask"].id)
                     this.setState({
                         tabClick: tab
                     })
@@ -125,7 +130,7 @@ export default class Service extends React.Component<Props, State> {
 
 
     render() {
-console.log(this.state.asks)
+        // console.log(this.state.asks)
         return (
             <SafeAreaView style={styles.viewPage} >
                 <MyHeader navigation={this.props.navigation} name="Demandes" ></MyHeader>
@@ -139,14 +144,14 @@ console.log(this.state.asks)
                                         <View style={styles.viewAsk}>
                                             <View>
                                                 <Text style={{ fontSize: 15 }} > Demande de {ask.customer.firstname} pour le service de
-                                                  <Text style={styles.textUnderline}
-                                                        onPress={() => this.props.navigation.navigate('Details service', { service: ask.service })}
+                                                  <Text 
+                                                        // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                     > {ask.service.category.name} </Text>
                                                     du {this.changeDate(ask.service.dateDebut)}.
                                                     </Text >
                                             </View>
                                         </View>
-                                        {this.state.tabClick.includes(ask.service.id) ?
+                                        {this.state.tabClick.includes(ask.id) ?
                                             <View style={{ flexDirection: "row" }}>
                                             </View>
                                             :
@@ -179,8 +184,8 @@ console.log(this.state.asks)
                                             <View style={styles.viewRefusedAsk}>
                                                 <View>
                                                     <Text style={{ fontSize: 15 }} > Vous avez refusé la demande de {ask.customer.firstname} pour le service
-                                                    <Text style={styles.textUnderline}
-                                                            onPress={() => this.props.navigation.navigate('Details service', { service: ask.service })}
+                                                    <Text 
+                                                            // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                         > {ask.service.category.name} </Text>
                                                     du {this.changeDate(ask.service.dateDebut)}.
                                                     </Text >
@@ -194,8 +199,8 @@ console.log(this.state.asks)
                                                 <View style={styles.viewValidAsk}>
                                                     <View>
                                                         <Text style={{ fontSize: 15 }} >Le service
-                                                        <Text style={styles.textUnderline}
-                                                                onPress={() => this.props.navigation.navigate('Details service', { service: ask.service })}
+                                                        <Text 
+                                                                // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                             > {ask.service.category.name} </Text>
                                                          du {this.changeDate(ask.service.dateDebut)} a été payé par {ask.customer.firstname}.
                                                         </Text >
@@ -207,8 +212,8 @@ console.log(this.state.asks)
                                                 <View style={styles.viewValidAsk}>
                                                     <View>
                                                         <Text style={{ fontSize: 15 }} > Vous avez validé la demande de {ask.customer.firstname} pour le service
-                                                          <Text style={styles.textUnderline}
-                                                                onPress={() => this.props.navigation.navigate('Details service', { service: ask.service })}
+                                                          <Text 
+                                                                // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                             > {ask.service.category.name} </Text>
                                                             du {this.changeDate(ask.service.dateDebut)}.
                                                             </Text >

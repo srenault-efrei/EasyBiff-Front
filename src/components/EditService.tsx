@@ -318,7 +318,7 @@ export default class EditService extends React.Component<Props, State> {
 
   render() {
 
-    // console.log(this.state.radius)
+    console.disableYellowBox = true;
     return (
 
       <View>

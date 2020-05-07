@@ -247,7 +247,7 @@ export default class Service extends React.Component<Props, State> {
   }
 
   render() {
-
+console.disableYellowBox = true;
     return (
 
       <View>
