@@ -6,15 +6,18 @@ export default StyleSheet.create({
         height:200,
     },
     avatar: {
-        width: 130,
-        height: 130,
+        width: 100,
+        height: 100,
         borderRadius: 63,
-        borderWidth: 4,
-        borderColor: "white",
+        borderWidth: 2,
+        borderColor: "rgb(85,119,186)",
         alignSelf:'center',
     },
     img:{
         width: 20,
         height: 20
-    }
+    },
+    infos:{
+        fontWeight: "600"
+      },
 })

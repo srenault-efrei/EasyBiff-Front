@@ -4,15 +4,17 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
   AsyncStorage,
 } from 'react-native';
 import styles from '../../assets/css/styles'
 import style from '../../assets/css/profile'
-import { Button, Input } from "react-native-elements";
 import { NavigationScreenProp } from 'react-navigation'
+import MyHeader from './MyHeader'
+import { Form, Item, Input, Label, Textarea } from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome'
+const avatar = require('../../assets/img/avatar.png')
 
-export interface Props {
+interface Props {
   navigation: NavigationScreenProp<any>,
   route: any
 }
@@ -32,6 +34,7 @@ interface State {
   user: any,
   token: String,
   btnDisabled: boolean,
+  chosenDate: Date
 }
 
 export default class Profile extends React.Component<Props, State> {
@@ -50,9 +53,11 @@ export default class Profile extends React.Component<Props, State> {
       user: {},
       token: '',
       btnDisabled: true,
+      chosenDate: new Date()
     };
     this.handleReload = this.handleReload.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.setDate = this.setDate.bind(this)
   }
 
   infos: Infos = {
@@ -67,7 +72,6 @@ export default class Profile extends React.Component<Props, State> {
     await this.setDataStorage()
     this.createInfos()
     this.getLocation()
-    console.log(this.props.route.params)
   }
 
   async setDataStorage() {
@@ -82,6 +86,10 @@ export default class Profile extends React.Component<Props, State> {
         token
       })
     }
+  }
+
+  setDate(newDate: Date) {
+    this.setState({ chosenDate: newDate });
   }
 
   handleReload() {
@@ -185,62 +193,65 @@ export default class Profile extends React.Component<Props, State> {
 
   render() {
 
-    const { longitude, latitude, user } = this.state
-
-    console.log(user)
+    const { user } = this.state
 
     return (
       <View style={styles.view}>
-        <View>
-        <Image style={style.avatar} source={require('./avatar.png')}/>
-          <Text style={styles.title}>Profile</Text>
-          <View>
+        <MyHeader navigation={this.props.navigation} name="Profil" ></MyHeader>
+        <View style={styles.loginView}>
+        <Image style={style.avatar} source={avatar}/>
+          <Form>
+            <Item stackedLabel>
+              <Label><Icon name="info" size={15} color="#000" /> Firstname</Label>
+              <Input 
+                defaultValue={user.firstname}
+                onChangeText={text => this.handleChange('firstname', text)}
+              />
+            </Item>
 
-            <Input
-              label='Lastname'
-              defaultValue={user.lastname} 
-              onChangeText={text => this.handleChange('lastname', text)}
-            />
-            <Input
-              label='Firstname'
-              defaultValue={user.firstname}
-              onChangeText={text => this.handleChange('firstname', text)}
-            />
-            <Input
-              label='Birthday'
-              defaultValue={user.birthday} 
-              onChangeText={text => this.handleChange('birthday', text)}
-              maxLength={10}
-            />
-            <Input
-              label='Bio'
-              defaultValue={user.bio} 
-              onChangeText={text => this.handleChange('bio', text)}
-              maxLength={10}
-            />
-            <Input
-              label='Phone'
-              defaultValue={user.phone}
-              onChangeText={text => this.handleChange('phone', text)}
-              maxLength={10}
-            />
+            <Item stackedLabel>
+              <Label><Icon name="info" size={15} color="#000" /> Lastname</Label>
+              <Input 
+                defaultValue={user.lastname}
+                onChangeText={text => this.handleChange('lastname', text)}
+              />
+            </Item>
 
+            <Item stackedLabel>
+              <Label><Icon name="birthday-cake" size={15} color="#000" /> Birthday</Label>
+              <Input 
+                defaultValue={user.birthday}
+                onChangeText={text => this.handleChange('birthday', text)}
+                maxLength={10}
+              />
+            </Item>
+
+            <Item stackedLabel>
+              <Label><Icon name="align-right" size={15} color="#000" /> Biography</Label>
+              <Textarea
+                rowSpan={3} 
+                defaultValue={user.birthday}
+                onChangeText={text => this.handleChange('birthday', text)}
+              />
+            </Item>
+
+            <Item stackedLabel>
+              <Label><Icon name="phone" size={10} color="#000" /> Phone</Label>
+              <Input 
+                defaultValue={user.phone}
+                onChangeText={text => this.handleChange('phone', text)}
+                maxLength={10}
+              />
+            </Item>
+          </Form>
+
+          <View style={[styles.button, {marginTop: 10, backgroundColor: 'rgb(85,119,186)'}]}>
+            <Text style={styles.textButton} onPress={() => this.updateInfos()}>Enregistrer</Text>
           </View>
-          <Button
-            title="Save"
-            type="clear"
-            disabled={this.state.btnDisabled}
-            onPress={() => this.updateInfos()}
-          />
-        </View>
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
-          <Text>Localisation : {latitude},  {longitude}</Text>
-          <TouchableOpacity activeOpacity = { .5 } onPress={this.handleReload}>
-            <Image style={style.img} source={require('./settings.png')}/>
-          </TouchableOpacity>
+          
         </View>
         <View style={styles.bottomView}>
-          <Text>Vous êtes inscrit depuis le : {user.createdAt}</Text>
+          <Text>Vous êtes inscrit depuis le : <Text style={style.infos}>{user.createdAt}</Text></Text>
         </View>
       </View>
     );

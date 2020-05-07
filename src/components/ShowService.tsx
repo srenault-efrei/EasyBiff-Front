@@ -6,6 +6,7 @@ import {
   Image,
   AsyncStorage,
 } from 'react-native';
+import { RouteComponentProps } from "react-router-dom";
 import { Card } from 'react-native-elements'
 import { NavigationScreenProp } from 'react-navigation';
 import MyHeader from './MyHeader'
@@ -15,7 +16,7 @@ import styles from '../../assets/css/styles'
 
 interface Props {
     navigation: NavigationScreenProp<any>,
-    route: any
+    route: RouteComponentProps
 }
 
 interface User {
@@ -99,7 +100,6 @@ export default class Details extends React.Component<Props, State> {
     const data = {
       id: service.id,
       state: service.state,
-      distance: service.radius.kilometer,
       category: service.category.name,
       heure,
       serviceUser: service.user,
@@ -134,7 +134,7 @@ export default class Details extends React.Component<Props, State> {
         user: obj,
         token
         })
-    }
+      }
   }
 
   getState = async (): Promise<void | never> => {
@@ -147,51 +147,33 @@ export default class Details extends React.Component<Props, State> {
         'Content-Type': 'application/json'
       })
     })
-      .then((response) => response.json())
-      .then((json) => {
-        this.setState({ tab: json.data.ask })
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    .then((response) => response.json())
+    .then((json) => {
+      this.setState({ tab: json.data.ask })
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
   verif = (): void => {
-      const { service, tab } = this.state
+    const { service, tab } = this.state
+    
+    const index = tab.findIndex(line => line.service.id === service.id)
+    if (index === -1) {
+      // Service existe pas
+      return
+    }
 
-    console.log('appServiceId : ' + service.id)
-    tab.map( (line:any) => {
+    const currentLine = tab[index]
 
+      let objToUpdate: any = { reqSent: currentLine.state }
 
-      if(line.service.id === service.id && line.state){
-
-        if(line.state === 1){
-          console.log('dbServiceId : ' + line.service.id)
-          console.log('dbState : ' + line.state)
-          console.log('Demande déjà effectuée.')
-          this.setState({ reqSent: 1 })
-        }
-
-        else if(line.state === 2){
-          console.log('dbServiceId : ' + line.service.id)
-          console.log('dbState : ' + line.state)
-          console.log('Demande en attente de paiement')
-          this.setState({ reqSent: 2, waitingPayment: true })
-        }
-
-        else if(line.service.id === -1){
-          console.log('dbServiceId : ' + line.service.id)
-          console.log('dbState : ' + line.state)
-          console.log('Demande refusée')
-          this.setState({ reqSent: -1 })
-        } 
-
-      }else{
-        console.log('Aucune demande déjà effectuée.')
-        this.setState({ reqSent: 0})
+      if (currentLine.state === 2) {
+        objToUpdate.waitingPayment = true
       }
 
-    })
+      this.setState(objToUpdate)
   }
 
   ask = async (): Promise<void | never> => {
@@ -201,7 +183,7 @@ export default class Details extends React.Component<Props, State> {
     const obj = {
       serviceId
     }
-    return fetch(`https://eazybiff-server.herokuapp.com/api/users/1f38ec56-7757-42d7-8f13-cca1df2f780c/asks/`, {
+    return fetch(`https://eazybiff-server.herokuapp.com/api/users/${userId}/asks/`, {
       method: 'POST',
       headers: 
       new Headers({
@@ -210,19 +192,18 @@ export default class Details extends React.Component<Props, State> {
       }),
       body: JSON.stringify(obj)
     })
-      .then((response) => {
-        response.json()
-        this.setState({iSent: true})
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    .then((response) => {
+      response.json()
+      this.setState({iSent: true})
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
-  getAge(birthday: string)
-  {
-  const newBirthday = new Date(birthday);
-  return new Number((new Date().getTime() - newBirthday.getTime()) / 31536000000).toFixed(0)
+  getAge(birthday: string){
+    const newBirthday = new Date(birthday);
+    return new Number((new Date().getTime() - newBirthday.getTime()) / 31536000000).toFixed(0)
   }
 
   distance(obj1: Coords, obj2: Coords) {
@@ -248,62 +229,63 @@ export default class Details extends React.Component<Props, State> {
   }
 
   getCity = async (): Promise<void | never> => {
-        const { service } = this.state
-        const postcode = service.postcode
-        return fetch(`https://api-adresse.data.gouv.fr/search/?q=postcode=${postcode}&type=municipality&autocomplete=0&limit=1`, {
-          method: 'Get',
-          headers: 
-          new Headers({
-            'Content-Type': 'application/json'
-          }),
-        })
-        .then((response) => response.json())
-        .then((json) => {
-            this.setState({cityInfos: json})
-        })
-        .catch((error) => {
-        console.error(error);
-        });
-      }
+    const { service } = this.state
+    const postcode = service.postcode
+    return fetch(`https://api-adresse.data.gouv.fr/search/?q=postcode=${postcode}&type=municipality&autocomplete=0&limit=1`, {
+      method: 'GET',
+      headers: 
+      new Headers({
+        'Content-Type': 'application/json'
+      }),
+    })
+    .then((response) => response.json())
+    .then((json) => {
+        this.setState({cityInfos: json})
+    })
+    .catch((error) => {
+    console.error(error);
+    });
+  }
     
-      getCoordinates = () => {
-        const { service } = this.state
-        const { cityInfos } = this.state
-        
-        if(cityInfos.features[0]){
-          const {city} = cityInfos.features[0].properties
-          if(city === service.city){
-            const obj = {
-              lat: cityInfos.features[0].geometry.coordinates[0],
-              long: cityInfos.features[0].geometry.coordinates[1]
-            }
-            this.setState({cityCoords: obj})
-            this.getLocation()
-          }
+  getCoordinates = () => {
+    const { service } = this.state
+    const { cityInfos } = this.state
+    
+    if(cityInfos.features[0]){
+      const {city} = cityInfos.features[0].properties
+      if(city === service.city){
+        const obj = {
+          lat: cityInfos.features[0].geometry.coordinates[0],
+          long: cityInfos.features[0].geometry.coordinates[1]
         }
+        this.setState({cityCoords: obj})
+        this.getLocation()
       }
+    }
+  }
 
-      getLocation() {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const obj = {
-              lat: position.coords.longitude,
-              long: position.coords.latitude
-            }
-            this.setState({ userCoords: obj })
-          },
-          error => alert(error.message),
-          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-        );
-      }
+  getLocation() {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const obj = {
+          lat: position.coords.longitude,
+          long: position.coords.latitude
+        }
+        this.setState({ userCoords: obj })
+      },
+      error => alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  }
 
   displayDetails(){
     const { service, serviceUser, cityCoords, userCoords } = this.state
     const distance = this.distance(userCoords, cityCoords)
+    const title = service.category.toString()
     return (
       <View style={styles.loginView}>
               
-        <Text style={style.title}></Text>
+    <Text style={style.title}>{title}</Text>
         <Text>Heure de disponibilité : <Text style={style.infos}>{service.heure}</Text></Text>
         <Text>Tarif annoncé : <Text style={style.infos}>{service.price} €</Text></Text>
         { distance != null ? <Text>Distance : <Text style={style.infos}>{distance}</Text></Text>: null }
@@ -311,18 +293,20 @@ export default class Details extends React.Component<Props, State> {
 
         <Card
           title={serviceUser.firstname + ' ' + serviceUser.lastname}>
-          <Image style={style.avatar}
-            source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
-          <Text style={[style.userInfo, {marginBottom: 20, fontStyle: 'italic'}]}> {serviceUser.age} ans</Text>
-          { serviceUser.biographie ? <Text style={[style.userInfo, {marginBottom: 10}]}>Biographie : {serviceUser.biographie}</Text>: null }
-          <Text style={[styles.bottomView, {fontStyle: 'italic'}]}>Membre depuis le {serviceUser.inscription}.</Text>
+          <View style={style.itemsCenter}>
+            <Image style={style.avatar}
+              source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
+            <Text style={[style.userInfo, {marginBottom: 20, fontStyle: 'italic', fontWeight: 'bold'}]}> {serviceUser.age} ans</Text>
+            { serviceUser.biographie ? <Text style={[style.userInfo, {marginBottom: 10}]}>Biographie : {serviceUser.biographie}</Text>: null }
+            <Text style={[styles.bottomView, {fontStyle: 'italic'}]}>Membre depuis le {serviceUser.inscription}.</Text>
+          </View>
         </Card>
 
         <Text style={[style.userInfo, {marginTop: 10, marginBottom: 20}]}>A bientôt j'espère.</Text>
 
         {this.displayButton()}
 
-        <View style={[styles.button, {marginTop: 10}]}>
+        <View style={[styles.button, {marginTop: 10, backgroundColor: 'rgb(85,119,186)'}]}>
           <Text style={styles.textButton} onPress={() => this.props.navigation.navigate('Services')}>Retour aux services</Text>
         </View>
       
@@ -340,7 +324,7 @@ export default class Details extends React.Component<Props, State> {
       )
     } else if(reqSent === 1){
         return(
-          <Text>Vous avez déjà demandé ce service et êtes actuellement en attente d'une réponse.</Text>
+          <Text style={style.stateInfo}>Vous avez déjà demandé ce service et êtes actuellement en attente d'une réponse.</Text>
         )
     } else if(reqSent === 2 && waitingPayment){
         return(
@@ -368,7 +352,7 @@ export default class Details extends React.Component<Props, State> {
   render() {
     const { iSent } = this.state
     return (
-      <SafeAreaView style={styles.safeArea}>
+      <SafeAreaView style={style.view}>
             <MyHeader navigation={this.props.navigation} name="Details service" ></MyHeader>
             { iSent === true ? this.isAsk() : this.displayDetails() }
       </SafeAreaView>
