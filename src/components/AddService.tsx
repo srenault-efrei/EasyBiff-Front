@@ -98,8 +98,6 @@ export default class Service extends React.Component<Props, State> {
   }
 
   verifPrice = (value: string): void => {
-    console.log(this.state.startTime)
-    console.log(this.state.endTime)
     let p: number = parseInt(value)
 
     if (Number.isInteger(p)) {
@@ -179,7 +177,6 @@ export default class Service extends React.Component<Props, State> {
           let obj: Items = { label: category.name, value: category.id }
           tab.push(obj)
         }
-
         this.setState({ itemsCategories: tab })
       })
       .catch((error) => {
@@ -187,67 +184,57 @@ export default class Service extends React.Component<Props, State> {
       });
   }
 
-
+  verifDate = (startDate: Date, endDate: Date): Boolean => {
+    let bool: Boolean = false
+    if (startDate > endDate) {
+      alert(" La date de début ne peut pas etre supérieur à la date de fin.")
+      return true
+    }
+    return bool
+  }
 
   insertService = (): void => {
-
-    console.log(this.state.token)
-
     if (this.isFieldEmpty()) {
-      alert('Remplissez tous les champs ')
+      alert('Remplissez tous les champs')
     } else {
+      if (!this.verifDate(this.state.startDate, this.state.endDate)) {
+        fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.userId}/services`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Authorization': this.state.token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
 
-      // console.log(this.state.typeService)
-      // console.log(this.state.startDate)
-      // console.log(this.state.endDate)
-      // console.log(this.state.startTime)
-      // console.log(this.state.endTime)
-      // console.log(this.state.price)
-      // console.log(this.state.postalCode)
-      // console.log(this.state.city)
-      // console.log(this.state.radius)
-
-      console.log(this.dateWithTime(this.state.startDate, this.state.startTime))
-
-
-
-      fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.userId}/services`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Authorization': this.state.token,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-
-          dateDebut: this.dateWithTime(this.state.startDate, this.state.startTime),
-          dateFin: this.dateWithTime(this.state.endDate, this.state.endTime),
-          postalCode: this.state.postalCode,
-          description: this.state.description,
-          city: this.state.city,
-          price: this.state.price,
-          categoryId: this.state.typeService,
-          radiusId: this.state.radius,
-        }),
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          console.log(json)
-          if (json.data != null || json.data != undefined) {
-            this.goTo('Services')
-          } else {
-            alert(json.err.description)
-            console.log(json.err.description)
-          }
+            dateDebut: this.dateWithTime(this.state.startDate, this.state.startTime),
+            dateFin: this.dateWithTime(this.state.endDate, this.state.endTime),
+            postalCode: this.state.postalCode,
+            description: this.state.description,
+            city: this.state.city,
+            price: this.state.price,
+            categoryId: this.state.typeService,
+            radiusId: this.state.radius,
+          }),
         })
-        .catch((error) => {
-          console.error(error);
-        });
+          .then((response) => response.json())
+          .then((json) => {
+            if (json.data != null || json.data != undefined) {
+              this.goTo('Services')
+            } else {
+              alert(json.err.description)
+              console.log(json.err.description)
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
     }
   }
 
   render() {
-console.disableYellowBox = true;
+    console.disableYellowBox = true;
     return (
 
       <View>

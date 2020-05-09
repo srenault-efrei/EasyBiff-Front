@@ -215,18 +215,6 @@ export default class EditService extends React.Component<Props, State> {
 
   deleteService = (): Promise<void | never> => {
 
-    console.log(this.state.startDate)
-    console.log(this.state.endDate)
-    console.log(this.state.price)
-    console.log(this.state.postalCode)
-    console.log(this.state.city)
-    console.log(this.state.radius)
-
-    console.log(this.state.serviceId)
-    console.log(this.state.userId)
-
-
-
     return fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.userId}/services/${this.state.serviceId}`, {
       method: 'PUT',
       headers: {
@@ -249,7 +237,6 @@ export default class EditService extends React.Component<Props, State> {
     })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json)
         if (json.data != null || json.data != undefined) {
           this.goTo('Services')
         } else {
@@ -263,22 +250,21 @@ export default class EditService extends React.Component<Props, State> {
   }
 
 
-
-  updateService = (): Promise<void | never> => {
-
-    // console.log(this.state.typeService)
-    // console.log(this.state.startDate)
-    // console.log(this.state.endDate)
-    // console.log(this.state.startTime)
-    // console.log(this.state.endTime)
-    // console.log(this.state.price)
-    // console.log(this.state.postalCode)
-    // console.log(this.state.city)
-    // console.log(this.state.radius)
-
-    // console.log(this.dateWithTime(this.state.startDate, this.state.startTime))
+  verifDate = (startDate: Date, endDate: Date): Boolean => {
+    let bool: Boolean = false
+    if (startDate > endDate) {
+      alert(" La date de début ne peut pas etre supérieur à la date de fin.")
+      return true
+    }
+    return bool
+  }
 
 
+
+  updateService = (): Promise<void | never> | void => {
+
+
+    if (!this.verifDate(this.state.startDate, this.state.endDate)) {
 
     return fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.userId}/services/${this.state.serviceId}`, {
       method: 'PUT',
@@ -303,16 +289,18 @@ export default class EditService extends React.Component<Props, State> {
     })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json)
         if (json.data != null || json.data != undefined) {
           this.goTo('Services')
         } else {
+          alert(json.err.description)
           console.log(json.err.description)
         }
       })
       .catch((error) => {
         console.error(error);
       });
+    }
+      
   }
 
 
