@@ -30,7 +30,6 @@ export default class Signin extends React.Component<Props, State>{
 
     constructor(props: any) {
         super(props)
-        console.log(this.props.navigation);
         
         this.state = {
             email: '',

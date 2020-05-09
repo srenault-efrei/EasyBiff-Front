@@ -159,4 +159,27 @@ export default StyleSheet.create({
         justifyContent:'space-around',
         flexDirection: 'row',
       },
+      button: {
+        height: 40,
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+        alignSelf:'center',
+        backgroundColor: "rgb(85,119,186)",
+        borderRadius: 10,
+      },
+      halfButton: {
+        height: 40,
+        width: "45%",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "grey",
+        borderRadius: 10,
+        marginHorizontal: 10
+      },
+      textButton: {
+        color: "white",
+        width: "100%",
+        textAlign: 'center'
+      },
 });

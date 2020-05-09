@@ -128,13 +128,6 @@ async updateFilterParam(searchFilter:string) {
                 
                 }
                 keyExtractor={item => String(item.id)}
-                onEndReached={() => {
-                    if (this.state.servicesSearched==='') {
-                        classThis.fetchServices()
-                    }
-
-                }}
-                onEndReachedThreshold={0.5}
             />
         )
     }
