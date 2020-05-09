@@ -17,7 +17,7 @@ import AddService from './AddService'
 import Asks from './Asks'
 import AsksCusto from './AsksCusto'
 import Details from './ShowService';
-import Payment from './Payement'
+import Payment from './Payment'
 export interface Props {
   navigation:any
 }

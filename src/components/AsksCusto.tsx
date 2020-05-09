@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   AsyncStorage
 } from 'react-native';
+import {Icon} from 'react-native-elements'
 import styles from '../../assets/css/services'
 import MyHeader from './MyHeader'
 
@@ -98,6 +99,17 @@ return state ==-1 ? 'refusé' : state ==2 ? 'Validé' :'en attente de réponse'
                             <Text style={{ fontSize: 15 }} >{item.service.price}€ </Text > 
                             <Text style={{ fontSize: 15 }} >Statut : {this.getStateStr(item.state)} </Text > 
                         </TouchableOpacity>
+                        {item.state > 0 && 
+                         <TouchableOpacity style ={{flexDirection:'row', margin:5, justifyContent:"flex-end",}} onPress={() => this.props.navigation.navigate('Payment',{service:item.service})}>
+                           <Text>Payer </Text>
+                           <Icon
+                           name='add-shopping-cart'
+                          type='material'  />
+                         </TouchableOpacity>
+                        }
+
+
+                       
                     </View>
                 </View>
                 
