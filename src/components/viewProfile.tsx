@@ -47,7 +47,5 @@ export default class ProfileView extends React.Component<Props, State> {
         </View>
       </View>
     );
-
   }
-
 }

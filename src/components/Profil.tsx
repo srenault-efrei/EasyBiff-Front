@@ -158,7 +158,7 @@ export default class Profile extends React.Component<Props, State> {
   }
 
   updateInfos = async (): Promise<void | never> => {
-/*     const { token, user } = this.state
+    const { token, user } = this.state
     if(!token){
       alert('Veuillez vous reconnecter.')
       this.props.navigation.navigate("Connexion")
@@ -187,8 +187,7 @@ export default class Profile extends React.Component<Props, State> {
         .catch((error) => {
           console.error(error);
         });
-    } */
-    console.log(this.infos)
+    }
   }
 
   render() {
