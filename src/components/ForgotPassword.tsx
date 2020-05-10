@@ -5,6 +5,7 @@ import {
     View,
     Text,
     TextInput,
+    Image,
 
 } from 'react-native';
 import styles from '../../assets/css/styles'
@@ -38,61 +39,68 @@ export default class Signin extends React.Component<Props, State>{
         this.props.navigation.navigate(page)
     }
 
+    updatePhone = async (): Promise<void | never> => {
 
-    updatePhone = (): Promise<void | never> => {
-        return fetch(`https://eazybiff-server.herokuapp.com/api/forgotPassword/${this.state.phone}`, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-
-            },
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                if (json.data != null || json.data != undefined) {
-                    this.setState({
-                        isDisplay: false
-                    })
-                    this.goTo('Connexion')
-                } else {
-                    this.setState({
-                        error: json.err.description,
-                        isDisplay: true
-                    })
-                }
+        if (this.state.phone === '') {
+            this.setState({
+                error: 'Entrez votre numéro de téléphone',
+                isDisplay: true
             })
-            .catch((error) => {
-                console.error(error);
-            });
+        } else {
+            return fetch(`https://eazybiff-server.herokuapp.com/api/forgotPassword/${this.state.phone}`, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+
+                },
+            })
+                .then((response) => response.json())
+                .then((json) => {
+                    if (json.data != null || json.data != undefined) {
+                        this.setState({
+                            isDisplay: false
+                        })
+                        this.goTo('Connexion')
+                    } else {
+                        this.setState({
+                            error: json.err.description,
+                            isDisplay: true
+                        })
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+
     }
 
-
-    validPhone(): void {
-        this.updatePhone()
-    }
 
     render() {
         return (
             <SafeAreaView style={styles.safeArea}>
-                <View style={styles.topView}>
-                    <Text style={styles.title}>EazyBiff</Text>
+               <View style={styles.topView}>
+                    <Image
+                        style={styles.headerLogo}
+                        source={require('../../assets/eazy-biff-logo.png')}
+                    />
                 </View>
                 <View style={styles.loginView}>
                     <TextInput
                         autoCapitalize='none'
                         style={styles.input}
                         placeholder="Numéro de téléphone"
-                        maxLength = {10}
+                        maxLength={10}
                         onChangeText={phone => this.setState({ phone })}
                     >
                     </TextInput>
                     {this.state.isDisplay ? <Text style={styles.error}>{this.state.error}</Text> : <Text></Text>}
-                    <View style={styles.buttonPassword}>
-                        <Text style={styles.textButton} onPress={() => this.validPhone()} >Valider</Text>
-                    </View>
                     <View style={styles.button}>
-                    <Text style={styles.textButton} onPress={() => this.goTo('Connexion')} >Anunler</Text>
+                        <Text style={styles.textButton} onPress={() => this.updatePhone()} >Valider</Text>
+                    </View>
+                    <View style={styles.buttonPassword}>
+                        <Text style={styles.textButton} onPress={() => this.goTo('Connexion')} >Annuler</Text>
                     </View>
                 </View>
             </SafeAreaView>
