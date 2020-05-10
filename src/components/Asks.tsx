@@ -175,7 +175,11 @@ export default class Service extends React.Component<Props, State> {
                                     <View style={styles.viewServiceAsk} >
                                         <View style={styles.viewAsk}>
                                             <View>
-                                                <Text style={{ fontSize: 15 }} > Demande de {ask.customer.firstname} pour le service de
+                                                <Text style={{ fontSize: 15 }} > Demande de 
+                                                <Text style={styles.textUnderline}
+                                                            onPress={() => this.props.navigation.navigate('ProfileView', { user: ask.customer })}
+                                                        > {ask.customer.firstname} </Text>
+                                                 pour le service de
                                                   <Text
                                                     // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                     > {ask.service.category.name} </Text>
@@ -215,7 +219,11 @@ export default class Service extends React.Component<Props, State> {
                                         <View style={styles.viewServiceAsk} >
                                             <View style={styles.viewRefusedAsk}>
                                                 <View>
-                                                    <Text style={{ fontSize: 15 }} > Vous avez refusé la demande de {ask.customer.firstname} pour le service
+                                                    <Text style={{ fontSize: 15 }} > Vous avez refusé la demande de
+                                                    <Text style={styles.textUnderline}
+                                                            onPress={() => this.props.navigation.navigate('ProfileView', { user: ask.customer })}
+                                                        > {ask.customer.firstname} </Text>
+                                                    pour le service
                                                     <Text
                                                         // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                         > {ask.service.category.name} </Text>
@@ -234,7 +242,10 @@ export default class Service extends React.Component<Props, State> {
                                                         <Text
                                                             // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                             > {ask.service.category.name} </Text>
-                                                         du {this.changeDate(ask.service.dateDebut)} a été payé par {ask.customer.firstname}.
+                                                         du {this.changeDate(ask.service.dateDebut)} a été payé par
+                                                         <Text style={styles.textUnderline}
+                                                        onPress={() => this.props.navigation.navigate('ProfileView', { user: ask.customer })}
+                                                    > {ask.customer.firstname}</Text>.
                                                         </Text >
                                                     </View>
                                                 </View>
@@ -243,7 +254,12 @@ export default class Service extends React.Component<Props, State> {
                                             <View style={styles.viewServiceAsk} >
                                                 <View style={styles.viewValidAsk}>
                                                     <View>
-                                                        <Text style={{ fontSize: 15 }} > Vous avez validé la demande de {ask.customer.firstname} pour le service
+
+                                                        <Text style={{ fontSize: 15 }} > Vous avez validé la demande de
+                                                        <Text style={styles.textUnderline}
+                                                                onPress={() => this.props.navigation.navigate('ProfileView', { user: ask.customer })}
+                                                            > {ask.customer.firstname} </Text>
+                                                     pour le service
                                                           <Text
                                                             // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                             > {ask.service.category.name} </Text>
