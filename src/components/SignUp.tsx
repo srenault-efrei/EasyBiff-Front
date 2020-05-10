@@ -112,6 +112,7 @@ export default class SignUp extends React.Component<Props, State>{
     }
 
     render() {
+        console.disableYellowBox = true;
         return (
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.topView}>

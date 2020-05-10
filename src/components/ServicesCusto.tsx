@@ -150,7 +150,6 @@ render() {
                 <Picker
                     selectedValue={this.state.searchFilter}
                     style={{ height: 50, width: 110 }}
-                    mode='dialog'
                     onValueChange={(itemValue, itemIndex) => {
                         this.updateFilterParam(itemValue)
                     }

@@ -13,6 +13,11 @@ import styles from '../../assets/css/ask'
 import { Icon } from 'react-native-elements';
 
 
+interface validAsk {
+    service: number
+    idAsk: number
+}
+
 export interface Props {
     navigation: NavigationScreenProp<any>
     token: string,
@@ -26,6 +31,7 @@ interface State {
     token: string
     asks: Array<any>
     tabClick: Array<number>
+    validAsk: Array<validAsk>
 }
 
 export default class Service extends React.Component<Props, State> {
@@ -37,7 +43,8 @@ export default class Service extends React.Component<Props, State> {
             user: {},
             token: '',
             asks: [],
-            tabClick: [-1]
+            tabClick: [-1],
+            validAsk: []
         }
     }
 
@@ -61,6 +68,11 @@ export default class Service extends React.Component<Props, State> {
                 token
             })
         }
+    }
+
+
+    goTo = (page: string, service?: number, user?: string, token?: string): void => {
+        this.props.navigation.navigate(page, { serviceId: service, user: user, token: token })
     }
 
 
@@ -90,9 +102,34 @@ export default class Service extends React.Component<Props, State> {
         return `${("0" + (date.getDate())).slice(-2)}-${("0" + (date.getMonth() + 1)).slice(-2)}-${date.getFullYear()}`
     }
 
-    updateAsk = (state: number, idService: number): Promise<void | never> => {
+    updateAsk = (state: number, idAsk: number, service: number): Promise<void | never> => {
 
-        return fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.user.id}/asks/${idService}`, {
+        let { validAsk } = this.state
+
+        if (state == 2) {
+
+            if (validAsk.length == 0) {
+                validAsk.push({ 'service': service, "idAsk": idAsk })
+
+                this.setState({
+                    validAsk: validAsk
+                })
+            }
+            for (const v of validAsk) {
+                if (v.service != service) {
+                    validAsk.push({ 'service': service, "idAsk": idAsk })
+                    this.setState({
+                        validAsk: validAsk
+                    })
+                }
+                if (v.service == service && v.idAsk != idAsk) {
+                    alert("ce service a deja été validé par un autre client")
+                    state = -1
+                }
+            }
+        }
+
+        return fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.user.id}/asks/${idAsk}`, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -106,12 +143,12 @@ export default class Service extends React.Component<Props, State> {
         })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
+                // console.log(json.data["ask"].id)
                 if (json.data == null || json.data == undefined) {
                     console.log(json.err.description)
                 } else {
                     let tab: Array<number> = this.state.tabClick
-                    tab.push(idService)
+                    tab.push(json.data["ask"].id)
                     this.setState({
                         tabClick: tab
                     })
@@ -125,7 +162,7 @@ export default class Service extends React.Component<Props, State> {
 
 
     render() {
-
+        // console.log(this.state.asks)
         return (
             <SafeAreaView style={styles.viewPage} >
                 <MyHeader navigation={this.props.navigation} name="Demandes" ></MyHeader>
@@ -138,19 +175,15 @@ export default class Service extends React.Component<Props, State> {
                                     <View style={styles.viewServiceAsk} >
                                         <View style={styles.viewAsk}>
                                             <View>
-                                                <Text style={{ fontSize: 15 }} > Demande de
-                                                <Text style={styles.textUnderline}
-                                                        // onPress={() => this.props.navigation.navigate('Profil', { customer: ask.customer.id })}
-                                                    > {ask.customer.firstname} </Text>
-                                                  pour le service de
-                                                  <Text style={styles.textUnderline}
-                                                        // onPress={() => this.props.navigation.navigate('Details service', { service: ask.service.id })}
+                                                <Text style={{ fontSize: 15 }} > Demande de {ask.customer.firstname} pour le service de
+                                                  <Text
+                                                    // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                     > {ask.service.category.name} </Text>
                                                     du {this.changeDate(ask.service.dateDebut)}.
                                                     </Text >
                                             </View>
                                         </View>
-                                        {this.state.tabClick.includes(ask.service.id) ?
+                                        {this.state.tabClick.includes(ask.id) ?
                                             <View style={{ flexDirection: "row" }}>
                                             </View>
                                             :
@@ -162,7 +195,7 @@ export default class Service extends React.Component<Props, State> {
 
                                                     iconStyle={{ fontSize: 35, display: "flex" }}
                                                     containerStyle={{ marginLeft: 20, justifyContent: "center", paddingRight: 20 }}
-                                                    onPress={() => { this.updateAsk(2, ask.service.id) }}
+                                                    onPress={() => { this.updateAsk(2, ask.id, ask.service.id) }}
                                                 />
                                                 <Icon
                                                     name='close'
@@ -171,7 +204,7 @@ export default class Service extends React.Component<Props, State> {
 
                                                     iconStyle={{ fontSize: 35, display: "flex" }}
                                                     containerStyle={{ marginLeft: 20, justifyContent: "center", paddingRight: 20 }}
-                                                    onPress={() => { this.updateAsk(-1, ask.service.id) }}
+                                                    onPress={() => { this.updateAsk(-1, ask.id, ask.service.id) }}
                                                 />
                                             </View>
                                         }
@@ -182,13 +215,9 @@ export default class Service extends React.Component<Props, State> {
                                         <View style={styles.viewServiceAsk} >
                                             <View style={styles.viewRefusedAsk}>
                                                 <View>
-                                                    <Text style={{ fontSize: 15 }} > Vous avez refusé la demande de
-                                                    <Text style={styles.textUnderline}
-                                                            // onPress={() => this.props.navigation.navigate('Profil', { customer: ask.customer.id })}
-                                                        > {ask.customer.firstname} </Text>
-                                                    pour le service
-                                                    <Text style={styles.textUnderline}
-                                                            // onPress={() => this.props.navigation.navigate('Details service', { service: ask.service.id })}
+                                                    <Text style={{ fontSize: 15 }} > Vous avez refusé la demande de {ask.customer.firstname} pour le service
+                                                    <Text
+                                                        // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                         > {ask.service.category.name} </Text>
                                                     du {this.changeDate(ask.service.dateDebut)}.
                                                     </Text >
@@ -196,19 +225,16 @@ export default class Service extends React.Component<Props, State> {
                                             </View>
                                         </View>
                                         :
-                                        ask.service.state === 2
+                                        ask.state === 3
                                             ?
                                             <View style={styles.viewServiceAsk} >
                                                 <View style={styles.viewValidAsk}>
                                                     <View>
                                                         <Text style={{ fontSize: 15 }} >Le service
-                                                        <Text style={styles.textUnderline}
-                                                                // onPress={() => this.props.navigation.navigate('Details service', { service: ask.service.id })}
+                                                        <Text
+                                                            // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                             > {ask.service.category.name} </Text>
-                                                         du {this.changeDate(ask.service.dateDebut)} a été payé par
-                                                        <Text style={styles.textUnderline}
-                                                                // onPress={() => this.props.navigation.navigate('Profil', { customer: ask.customer.id })}
-                                                            > {ask.customer.firstname}.</Text>
+                                                         du {this.changeDate(ask.service.dateDebut)} a été payé par {ask.customer.firstname}.
                                                         </Text >
                                                     </View>
                                                 </View>
@@ -217,13 +243,9 @@ export default class Service extends React.Component<Props, State> {
                                             <View style={styles.viewServiceAsk} >
                                                 <View style={styles.viewValidAsk}>
                                                     <View>
-                                                        <Text style={{ fontSize: 15 }} > Vous avez validé la demande de
-                                                        <Text style={styles.textUnderline}
-                                                                // onPress={() => this.props.navigation.navigate('Profil', { customer: ask.customer.id })}
-                                                            > {ask.customer.firstname} </Text>
-                                                          pour le service
-                                                          <Text style={styles.textUnderline}
-                                                                // onPress={() => this.props.navigation.navigate('Details service', { customer: ask.customer.id })}
+                                                        <Text style={{ fontSize: 15 }} > Vous avez validé la demande de {ask.customer.firstname} pour le service
+                                                          <Text
+                                                            // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                             > {ask.service.category.name} </Text>
                                                             du {this.changeDate(ask.service.dateDebut)}.
                                                             </Text >

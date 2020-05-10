@@ -98,4 +98,13 @@ export default StyleSheet.create({
     borderWidth: 0,
     left: 0
   },
+  buttonPassword: {
+    height: 40,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "grey",
+    borderRadius: 10,
+    marginBottom: 10
+  },
 });
