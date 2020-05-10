@@ -4,7 +4,8 @@ import {
     SafeAreaView,
     View,
     Text,
-    AsyncStorage
+    AsyncStorage,
+    Image
 } from 'react-native';
 import styles from '../../assets/css/styles'
 
@@ -36,9 +37,9 @@ export default class SplashScreen extends React.Component<Props, State>{
         }
     }
 
-    componentDidMount() {
-        this.getToken();
-        this.getUser();
+    async componentDidMount() {
+        await this.getToken();
+        await this.getUser();
         this.timer();
     }
 
@@ -85,7 +86,10 @@ export default class SplashScreen extends React.Component<Props, State>{
         return (
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.view}>
-                    <Text style={styles.title}>EazyBiff</Text>
+                    <Image
+                        style={styles.logo}
+                        source={require('../../assets/eazy-biff-logo.png')}
+                    />
                 </View>
             </SafeAreaView >
         );

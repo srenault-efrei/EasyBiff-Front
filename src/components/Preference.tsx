@@ -4,7 +4,8 @@ import {
     SafeAreaView,
     View,
     Text,
-    AsyncStorage
+    AsyncStorage,
+    Image
 } from 'react-native';
 import styles from '../../assets/css/styles'
 
@@ -126,11 +127,14 @@ export default class SignUp extends React.Component<Props, State>{
         return (
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.topView}>
-                    <Text style={styles.title}>EazyBiff</Text>
+                    <Image
+                        style={styles.headerLogo}
+                        source={require('../../assets/eazy-biff-logo.png')}
+                    />
                 </View>
                 <View style={styles.loginView}>
                     <Text style={{ fontSize: 24, marginBottom: 20 }}>Vous souhaitez ?</Text>
-                    <View style={{ flexDirection: "row"}}>
+                    <View style={{ flexDirection: "row" }}>
                         <View style={styles.halfButton}>
                             <Text style={styles.textButton} onPress={() => this.setType(UserType.PROVIDER)}>Rendre service</Text>
                         </View>
