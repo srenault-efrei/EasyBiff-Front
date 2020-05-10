@@ -229,6 +229,8 @@ export default class Ask extends React.Component<Props, State> {
                 <MyHeader navigation={this.props.navigation} name="Demandes" ></MyHeader>
                 <ScrollView>
                     {
+                        this.state.asks.length != 0 ?
+
                         this.state.asks.map((ask, idAsk) => (
                             <View key={idAsk} style={{ flexDirection: "row" }}>
                                 {ask.state === 1
@@ -331,7 +333,7 @@ export default class Ask extends React.Component<Props, State> {
                                             </View>
                                 }
                             </View>
-                        ))
+                        )): <View></View>
                     }
                 </ScrollView>
             </SafeAreaView>
