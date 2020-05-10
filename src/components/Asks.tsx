@@ -13,16 +13,39 @@ import styles from '../../assets/css/ask'
 import { Icon } from 'react-native-elements';
 
 
-interface validAsk {
+interface ValidAsk {
     service: number
     idAsk: number
+}
+
+interface Service {
+    id: number,
+    dateDebut: Date,
+    dateFin: Date,
+    postalCode: number,
+    description: string,
+    state: number,
+    city: string,
+    price: number,
+    category: Category,
+    radius: Radius,
+}
+
+interface Category{
+    id: number,
+    name: string
+}
+
+interface Radius{
+    id: number,
+    kilometer: string
 }
 
 export interface Props {
     navigation: NavigationScreenProp<any>
     token: string,
-    route: any
-    params: any
+    route: object
+    params: object
 
 }
 
@@ -31,10 +54,10 @@ interface State {
     token: string
     asks: Array<any>
     tabClick: Array<number>
-    validAsk: Array<validAsk>
+    validAsk: Array<ValidAsk>
 }
 
-export default class Service extends React.Component<Props, State> {
+export default class Ask extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props)
@@ -102,29 +125,32 @@ export default class Service extends React.Component<Props, State> {
         return `${("0" + (date.getDate())).slice(-2)}-${("0" + (date.getMonth() + 1)).slice(-2)}-${date.getFullYear()}`
     }
 
-    updateAsk = (state: number, idAsk: number, service: number): Promise<void | never> => {
+    updateAsk = async (state: number, idAsk: number, idService: number, service: Service): Promise<void | never> => {
 
         let { validAsk } = this.state
 
         if (state == 2) {
 
             if (validAsk.length == 0) {
-                validAsk.push({ 'service': service, "idAsk": idAsk })
+                validAsk.push({ 'service': idService, "idAsk": idAsk })
 
                 this.setState({
                     validAsk: validAsk
                 })
             }
             for (const v of validAsk) {
-                if (v.service != service) {
-                    validAsk.push({ 'service': service, "idAsk": idAsk })
+                if (v.service != idService) {
+                    validAsk.push({ 'service': idService, "idAsk": idAsk })
                     this.setState({
                         validAsk: validAsk
                     })
                 }
-                if (v.service == service && v.idAsk != idAsk) {
+                if (v.service == idService && v.idAsk != idAsk) {
                     alert("ce service a deja été validé par un autre client")
                     state = -1
+                } else {
+                    this.deleteService(service)
+
                 }
             }
         }
@@ -161,6 +187,41 @@ export default class Service extends React.Component<Props, State> {
     }
 
 
+    deleteService = async (service: Service): Promise<void | never> => {
+
+        return fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.user.id}/services/${service.id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': this.state.token,
+                'Content-Type': 'application/json'
+
+            },
+            body: JSON.stringify({
+                dateDebut: service.dateDebut,
+                dateFin: service.dateDebut,
+                postalCode: service.postalCode,
+                description: service.description,
+                state: -1,
+                city: service.city,
+                price: service.price,
+                categoryId: service.category.id,
+                radiusId: service.radius.id,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                if (json.data == null || json.data == undefined) {
+                    console.log(json.err.description)
+
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+
     render() {
         // console.log(this.state.asks)
         return (
@@ -175,7 +236,11 @@ export default class Service extends React.Component<Props, State> {
                                     <View style={styles.viewServiceAsk} >
                                         <View style={styles.viewAsk}>
                                             <View>
-                                                <Text style={{ fontSize: 15 }} > Demande de {ask.customer.firstname} pour le service de
+                                                <Text style={{ fontSize: 15 }} > Demande de
+                                                <Text style={styles.textUnderline}
+                                                        onPress={() => this.props.navigation.navigate('ProfileView', { user: ask.customer })}
+                                                    > {ask.customer.firstname} </Text>
+                                                 pour le service de
                                                   <Text
                                                     // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                     > {ask.service.category.name} </Text>
@@ -195,7 +260,7 @@ export default class Service extends React.Component<Props, State> {
 
                                                     iconStyle={{ fontSize: 35, display: "flex" }}
                                                     containerStyle={{ marginLeft: 20, justifyContent: "center", paddingRight: 20 }}
-                                                    onPress={() => { this.updateAsk(2, ask.id, ask.service.id) }}
+                                                    onPress={() => { this.updateAsk(2, ask.id, ask.service.id, ask.service) }}
                                                 />
                                                 <Icon
                                                     name='close'
@@ -204,7 +269,7 @@ export default class Service extends React.Component<Props, State> {
 
                                                     iconStyle={{ fontSize: 35, display: "flex" }}
                                                     containerStyle={{ marginLeft: 20, justifyContent: "center", paddingRight: 20 }}
-                                                    onPress={() => { this.updateAsk(-1, ask.id, ask.service.id) }}
+                                                    onPress={() => { this.updateAsk(-1, ask.id, ask.service.id, ask.service) }}
                                                 />
                                             </View>
                                         }
@@ -215,7 +280,11 @@ export default class Service extends React.Component<Props, State> {
                                         <View style={styles.viewServiceAsk} >
                                             <View style={styles.viewRefusedAsk}>
                                                 <View>
-                                                    <Text style={{ fontSize: 15 }} > Vous avez refusé la demande de {ask.customer.firstname} pour le service
+                                                    <Text style={{ fontSize: 15 }} > Vous avez refusé la demande de
+                                                    <Text style={styles.textUnderline}
+                                                            onPress={() => this.props.navigation.navigate('ProfileView', { user: ask.customer })}
+                                                        > {ask.customer.firstname} </Text>
+                                                    pour le service
                                                     <Text
                                                         // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                         > {ask.service.category.name} </Text>
@@ -234,7 +303,10 @@ export default class Service extends React.Component<Props, State> {
                                                         <Text
                                                             // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                             > {ask.service.category.name} </Text>
-                                                         du {this.changeDate(ask.service.dateDebut)} a été payé par {ask.customer.firstname}.
+                                                         du {this.changeDate(ask.service.dateDebut)} a été payé par
+                                                         <Text style={styles.textUnderline}
+                                                                onPress={() => this.props.navigation.navigate('ProfileView', { user: ask.customer })}
+                                                            > {ask.customer.firstname}</Text>.
                                                         </Text >
                                                     </View>
                                                 </View>
@@ -243,7 +315,12 @@ export default class Service extends React.Component<Props, State> {
                                             <View style={styles.viewServiceAsk} >
                                                 <View style={styles.viewValidAsk}>
                                                     <View>
-                                                        <Text style={{ fontSize: 15 }} > Vous avez validé la demande de {ask.customer.firstname} pour le service
+
+                                                        <Text style={{ fontSize: 15 }} > Vous avez validé la demande de
+                                                        <Text style={styles.textUnderline}
+                                                                onPress={() => this.props.navigation.navigate('ProfileView', { user: ask.customer })}
+                                                            > {ask.customer.firstname} </Text>
+                                                     pour le service
                                                           <Text
                                                             // onPress={() => this.goTo('EditService', ask.service.id, this.state.user.id, this.state.token)}
                                                             > {ask.service.category.name} </Text>

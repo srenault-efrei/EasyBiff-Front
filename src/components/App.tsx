@@ -61,7 +61,7 @@ function createCustomMenu(props:Props){
 }
 function createAppStack() {
   return  (
-    <Stack.Navigator   headerMode="none"  initialRouteName='SplashScreen'  >
+    <Stack.Navigator   headerMode="none"  initialRouteName='SplashScreen'  screenOptions={{ gestureEnabled: false}} >
       <Stack.Screen name ='ServicesCusto' component = {serviceScreenCusto} />
       <Stack.Screen name ='Services' children = {serviceScreen} />
       <Stack.Screen name ='Profil' component = {Profile} />
@@ -80,8 +80,8 @@ function createAppStack() {
 }
 const app = () => {
   return (
-    <NavigationContainer>
-    <Drawer.Navigator drawerContent = { props => createCustomMenu(props)}  screenOptions={{swipeEnabled:false}} > 
+    <NavigationContainer >
+    <Drawer.Navigator drawerContent = { props => createCustomMenu(props)}  screenOptions={{swipeEnabled:false, gestureEnabled: false}} >  
     <Drawer.Screen name='StackApp' component={createAppStack} />
     </Drawer.Navigator>
     </NavigationContainer>

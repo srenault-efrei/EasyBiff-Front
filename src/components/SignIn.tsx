@@ -5,7 +5,8 @@ import {
     View,
     Text,
     TextInput,
-    AsyncStorage
+    AsyncStorage,
+    Image
 } from 'react-native';
 import styles from '../../assets/css/styles'
 
@@ -90,7 +91,10 @@ export default class Signin extends React.Component<Props, State>{
         return (
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.topView}>
-                    <Text style={styles.title}>EazyBiff</Text>
+                    <Image
+                        style={styles.headerLogo}
+                        source={require('../../assets/eazy-biff-logo.png')}
+                    />
                 </View>
                 <View style={styles.loginView}>
                     <TextInput

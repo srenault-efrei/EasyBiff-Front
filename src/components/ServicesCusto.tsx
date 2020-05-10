@@ -136,7 +136,7 @@ async updateFilterParam(searchFilter:string) {
 render() {
 
     return (
-        <SafeAreaView >
+        <SafeAreaView>
             <MyHeader navigation={this.props.navigation} name="Services"></MyHeader>
             <View style={styles.researchContainer}>
                 <TextInput placeholder='Taper votre recherche ici' style={styles.inputResearch} onChangeText={(text) => { this.searchMatchedServices(text) }}></TextInput>
