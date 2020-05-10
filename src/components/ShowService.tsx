@@ -16,7 +16,7 @@ import styles from '../../assets/css/styles'
 
 interface Props {
     navigation: NavigationScreenProp<any>,
-    route: RouteComponentProps
+    route: RouteComponentProps | any
 }
 
 interface User {
