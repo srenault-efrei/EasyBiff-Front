@@ -62,7 +62,7 @@ export default class Signin extends React.Component<Props, State>{
             },
             body: JSON.stringify({ email: this.state.email.trim(), password: this.state.password.trim() })
         })
-        const json =await req.json()
+        const json = await req.json()
         if (json.err) {
             this.setState({ error: json.err.description })
         }

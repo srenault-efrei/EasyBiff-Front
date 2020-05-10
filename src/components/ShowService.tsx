@@ -293,7 +293,8 @@ export default class Details extends React.Component<Props, State> {
         { distance != null ? <Text>Distance : <Text style={style.infos}>{distance}</Text></Text>: null }
         
 
-        <Card
+        <Card 
+          containerStyle={style.card}
           title={serviceUser.firstname + ' ' + serviceUser.lastname}>
           <View style={style.itemsCenter}>
             <Image style={style.avatar}

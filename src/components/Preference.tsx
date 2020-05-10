@@ -39,13 +39,12 @@ export default class SignUp extends React.Component<Props, State>{
 
     async componentDidMount() {
         await this.getToken();
-        this.getUser();
+        await this.getUser();
     }
 
     async getToken() {
         const token = await AsyncStorage.getItem('token');
         if (token && token !== undefined) {
-            console.log('PRE-TOKEN : ', token);
             this.setState({ token });
         } else {
             this.props.navigation.navigate('Inscription', {
@@ -60,7 +59,6 @@ export default class SignUp extends React.Component<Props, State>{
     async getUser() {
         const user = await AsyncStorage.getItem('user');
         if (user && user !== undefined) {
-            console.log('PRE-USER : ', user);
             this.setState({ user: JSON.parse(user) });
         } else {
             this.props.navigation.navigate('Inscription', {
@@ -72,8 +70,8 @@ export default class SignUp extends React.Component<Props, State>{
         }
     }
 
-    setType(type: string) {
-        fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.user.id}`, {
+    async setType(type: string) {
+        const req = await fetch(`https://eazybiff-server.herokuapp.com/api/users/${this.state.user.id}`, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -90,38 +88,36 @@ export default class SignUp extends React.Component<Props, State>{
 
             })
         })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                if (responseJson['err']) {
-                    this.setState({ error: responseJson.err.description })
-                    console.log(responseJson.err.description)
-                }
-                else {
-                    console.log(responseJson);
-                    this._storeData(responseJson.data.meta.token, responseJson.data.user)
-                    if (type === UserType.CUSTOMER) {
-                        this.props.navigation.navigate('ServicesCusto');
-                    }
-                    else if (type === UserType.PROVIDER) {
-                        this.props.navigation.navigate('Services');
-                    }
-
-                }
-            })
-            .catch((error) => {
-                console.log(error)
-                this.setState({ error })
-            });
-    }
-
-    _storeData = async (token: string, user: object) => {
         try {
-            await AsyncStorage.setItem('token', token);
-            await AsyncStorage.setItem('user', JSON.stringify(user));
+            const responseJson = await req.json();
+
+            if (responseJson.err) {
+                this.setState({ error: responseJson.err.description })
+                console.log(responseJson.err.description)
+            }
+            else {
+                console.log(responseJson);
+                await this._storeData(responseJson.data.user);
+                if (type === UserType.CUSTOMER) {
+                    this.props.navigation.navigate('ServicesCusto');
+                }
+                else if (type === UserType.PROVIDER) {
+                    this.props.navigation.navigate('Services');
+                }
+            }
         } catch (error) {
-            console.log('Local storage data Error : ', error)
+            console.log(error)
+            this.setState({ error })
         }
     }
+
+    _storeData = async (user: object) => {
+        try {
+            await AsyncStorage.mergeItem('user', JSON.stringify(user));
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     render() {
         return (

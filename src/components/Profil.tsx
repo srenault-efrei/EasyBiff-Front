@@ -201,7 +201,9 @@ export default class Profile extends React.Component<Props, State> {
       <View style={styles.view}>
         <MyHeader navigation={this.props.navigation} name="Profil" ></MyHeader>
         <View style={styles.loginView}>
-        <Image style={style.avatar} source={avatar}/>
+        <Image style={style.avatar} 
+        //source={avatar}
+        source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
           <Form>
             <Item stackedLabel style={style.item}>
               <Label><Icon name="info" size={15} color="#000" /> Prénom</Label>
