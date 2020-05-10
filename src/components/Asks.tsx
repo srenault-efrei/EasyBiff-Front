@@ -225,7 +225,7 @@ export default class Service extends React.Component<Props, State> {
                                             </View>
                                         </View>
                                         :
-                                        ask.service.state === 2
+                                        ask.state === 3
                                             ?
                                             <View style={styles.viewServiceAsk} >
                                                 <View style={styles.viewValidAsk}>
