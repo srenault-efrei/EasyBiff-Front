@@ -79,7 +79,7 @@ async componentDidMount(){
 }
 
 getStateStr(state:number){
-return state ==-1 ? 'refusé' : state ==2 ? 'Validé' :'en attente de réponse'
+return state ==-1 ? 'refusé' : state ==2 ? 'Validé' : state ==3 ? 'Payé' : 'en attente de réponse'
 }
 
   render() {
