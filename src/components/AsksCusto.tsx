@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   AsyncStorage
 } from 'react-native';
+import {Icon} from 'react-native-elements'
 import styles from '../../assets/css/services'
 import MyHeader from './MyHeader'
 
@@ -42,6 +43,9 @@ export default class Asks extends React.Component<Props, State> {
       })
       const resJson = await res.json()
       const asks  = resJson.data.ask
+      asks.forEach((ask:any) => {
+        ask.service.user= ask.provider 
+      });
       this.setState({asks})
 
       
@@ -79,6 +83,7 @@ return state ==-1 ? 'refusé' : state ==2 ? 'Validé' :'en attente de réponse'
 }
 
   render() {
+  
     return (
       <SafeAreaView>
         <MyHeader navigation={this.props.navigation} name="Demandes" ></MyHeader>
@@ -87,13 +92,24 @@ return state ==-1 ? 'refusé' : state ==2 ? 'Validé' :'en attente de réponse'
                 renderItem={({ item }) => 
                 <View style={{width:"100%"}}>
                     <View style={styles.cardContainer}>
-                        <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate('Details service',{service:item})}>
+                        <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate('Details service',{service:item.service})}>
                             <View>
                                 <Text style={{ fontSize: 15,fontWeight:'bold'}} >{item.service.category.name} </Text >
                             </View>
                             <Text style={{ fontSize: 15 }} >{item.service.price}€ </Text > 
                             <Text style={{ fontSize: 15 }} >Statut : {this.getStateStr(item.state)} </Text > 
                         </TouchableOpacity>
+                        {item.state ==2 && 
+                         <TouchableOpacity style ={{flexDirection:'row', margin:5, justifyContent:"flex-end",}} onPress={() => this.props.navigation.navigate('Payment',{ask:item})}>
+                           <Text>Payer </Text>
+                            <Icon
+                            name='add-shopping-cart'
+                            type='material'  />
+                         </TouchableOpacity>
+                        }
+
+
+                       
                     </View>
                 </View>
                 

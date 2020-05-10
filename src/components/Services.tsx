@@ -72,6 +72,7 @@ export default class Service extends React.Component<Props, State> {
     }
   }
 
+
   componentWillUnmount() {
     this.unsubscribe();
   }
@@ -109,8 +110,10 @@ export default class Service extends React.Component<Props, State> {
 
   }
 
-  render() {
 
+  
+
+  render() {
     return (
       <SafeAreaView style={styles.viewPage} >
         <MyHeader navigation={this.props.navigation} name="Services" ></MyHeader>

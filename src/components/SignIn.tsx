@@ -28,9 +28,9 @@ interface State {
 
 export default class Signin extends React.Component<Props, State>{
 
-    constructor(props: Props) {
+    constructor(props: any) {
         super(props)
-
+        
         this.state = {
             email: '',
             password: '',
