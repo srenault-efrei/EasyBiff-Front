@@ -19,7 +19,7 @@ import AsksCusto from './AsksCusto'
 import Details from './ShowService';
 import Payment from './Payment'
 import ForgotPassword from './ForgotPassword'
-
+import ProfileView from './ViewProfile'
 export interface Props {
   navigation:any
 }
@@ -31,7 +31,6 @@ const Tab = createBottomTabNavigator();
 
 function serviceScreen(){
   return(
-
     <Tab.Navigator  initialRouteName='Services'>
           <Tab.Screen name="Services" component={Services} />
           <Stack.Screen name="Demandes" component={Asks} />
@@ -75,7 +74,7 @@ function createAppStack() {
       <Stack.Screen name="Details service" component={Details} />
       <Stack.Screen name="Payment" component={Payment} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-
+      <Stack.Screen name="ProfileView" component={ProfileView} />
     </Stack.Navigator>
   )
 }

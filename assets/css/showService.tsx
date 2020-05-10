@@ -60,10 +60,8 @@ export default StyleSheet.create({
       color: "#FFFFFF",
     },
     itemsCenter:{
-      flex: 1,
       alignItems: 'center', 
       justifyContent: 'center',
-      width: 300,
     },
     infos:{
       fontWeight: "600"

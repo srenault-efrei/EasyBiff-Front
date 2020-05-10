@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo/vector-icons": "^10.1.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/bottom-tabs": "^5.3.3",
     "@react-navigation/drawer": "^5.5.0",
@@ -15,7 +16,9 @@
     "@react-navigation/stack": "^5.2.13",
     "@types/react-native-datepicker": "^1.7.0",
     "expo": "^37.0.8",
+    "expo-font": "~8.1.0",
     "moment": "^2.24.0",
+    "native-base": "^2.13.12",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-moment": "^0.9.7",
@@ -23,6 +26,7 @@
     "react-native-credit-card-input": "^0.4.1",
     "react-native-datepicker": "^1.7.2",
     "react-native-elements": "^1.2.7",
+    "react-native-floating-label": "^0.2.3",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-ionicons": "^5.0.0-rc",
     "react-native-picker-select": "^7.0.0",
@@ -31,7 +35,8 @@
     "react-native-screens": "^2.7.0",
     "react-native-ui-xg": "0.0.6",
     "react-native-vector-icons": "^6.6.0",
-    "react-native-web": "~0.11.7"
+    "react-native-web": "~0.11.7",
+    "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

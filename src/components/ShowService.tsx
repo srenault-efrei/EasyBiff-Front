@@ -6,6 +6,7 @@ import {
   Image,
   AsyncStorage,
 } from 'react-native';
+import { RouteComponentProps } from "react-router-dom";
 import { Card } from 'react-native-elements'
 import { NavigationScreenProp } from 'react-navigation';
 import MyHeader from './MyHeader'
@@ -15,7 +16,7 @@ import styles from '../../assets/css/styles'
 
 interface Props {
     navigation: NavigationScreenProp<any>,
-    route: any
+    route: RouteComponentProps
 }
 
 interface User {
@@ -157,37 +158,22 @@ export default class Details extends React.Component<Props, State> {
 
   verif = (): void => {
     const { service, tab } = this.state
+    
+    const index = tab.findIndex(line => line.service.id === service.id)
+    if (index === -1) {
+      // Service existe pas
+      return
+    }
 
-    console.log('appServiceId : ' + service.id)
-    tab.map( (line:any) => {
+    const currentLine = tab[index]
 
-      if(line.service.id === service.id && line.state){
+      let objToUpdate: any = { reqSent: currentLine.state }
 
-        if(line.state === 1){
-          console.log('dbServiceId : ' + line.service.id)
-          console.log('dbState : ' + line.state)
-          console.log('Demande déjà effectuée.')
-          this.setState({ reqSent: 1 })
-        }
-
-        else if(line.state === 2){
-          console.log('dbServiceId : ' + line.service.id)
-          console.log('dbState : ' + line.state)
-          console.log('Demande en attente de paiement')
-          this.setState({ reqSent: 2, waitingPayment: true })
-        }
-
-        else if(line.state === -1){
-          console.log('dbServiceId : ' + line.service.id)
-          console.log('dbState : ' + line.state)
-          console.log('Demande refusée')
-          this.setState({ reqSent: -1 })
-        } 
-      } else{
-        console.log('Aucune demande déjà effectuée.')
-        this.setState({ reqSent: 0})
+      if (currentLine.state === 2) {
+        objToUpdate.waitingPayment = true
       }
-    })
+
+      this.setState(objToUpdate)
   }
 
   ask = async (): Promise<void | never> => {
@@ -310,7 +296,7 @@ export default class Details extends React.Component<Props, State> {
           <View style={style.itemsCenter}>
             <Image style={style.avatar}
               source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
-            <Text style={[style.userInfo, {marginBottom: 20, fontStyle: 'italic'}]}> {serviceUser.age} ans</Text>
+            <Text style={[style.userInfo, {marginBottom: 20, fontStyle: 'italic', fontWeight: 'bold'}]}> {serviceUser.age} ans</Text>
             { serviceUser.biographie ? <Text style={[style.userInfo, {marginBottom: 10}]}>Biographie : {serviceUser.biographie}</Text>: null }
             <Text style={[styles.bottomView, {fontStyle: 'italic'}]}>Membre depuis le {serviceUser.inscription}.</Text>
           </View>
