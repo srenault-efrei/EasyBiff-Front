@@ -87,7 +87,8 @@ return state ==-1 ? 'refusé' : state ==2 ? 'Validé' : state ==3 ? 'Payé' : 'e
     return (
       <SafeAreaView>
         <MyHeader navigation={this.props.navigation} name="Demandes" ></MyHeader>
-        <FlatList<any>
+        {this.state.asks.length > 0 &&
+                <FlatList<any>
                 data={this.state.asks}
                 renderItem={({ item }) => 
                 <View style={{width:"100%"}}>
@@ -116,6 +117,8 @@ return state ==-1 ? 'refusé' : state ==2 ? 'Validé' : state ==3 ? 'Payé' : 'e
                 }
                 keyExtractor={item => String(item.id)}
             />
+        }
+
      
   </SafeAreaView>
     );
