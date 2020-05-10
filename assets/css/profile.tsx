@@ -19,5 +19,11 @@ export default StyleSheet.create({
     },
     infos:{
         fontWeight: "600"
-      },
+    },
+    item: {
+        width: 250
+    },
+    register: {
+        width: 250
+    }
 })
