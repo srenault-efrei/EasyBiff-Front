@@ -9,11 +9,10 @@ import style from '../../assets/css/viewProfile'
 import { NavigationScreenProp } from 'react-navigation'
 import MyHeader from './MyHeader'
 import { Card } from 'react-native-elements'
-import { RouteComponentProps } from "react-router-dom";
 
 interface Props {
   navigation: NavigationScreenProp<any>,
-  route: RouteComponentProps
+  route: any
 }
 
 interface State {

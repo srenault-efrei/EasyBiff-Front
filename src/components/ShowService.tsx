@@ -6,7 +6,6 @@ import {
   Image,
   AsyncStorage,
 } from 'react-native';
-import { RouteComponentProps } from "react-router-dom";
 import { Card } from 'react-native-elements'
 import { NavigationScreenProp } from 'react-navigation';
 import MyHeader from './MyHeader'
@@ -16,7 +15,7 @@ import styles from '../../assets/css/styles'
 
 interface Props {
     navigation: NavigationScreenProp<any>,
-    route: RouteComponentProps | any
+    route: any
 }
 
 interface User {

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { colors } from './colors';
 
 export default StyleSheet.create({
     header:{
@@ -10,7 +11,7 @@ export default StyleSheet.create({
         height: 100,
         borderRadius: 63,
         borderWidth: 2,
-        borderColor: "rgb(85,119,186)",
+        borderColor: colors.customLightGreen,
         alignSelf:'center',
     },
     img:{

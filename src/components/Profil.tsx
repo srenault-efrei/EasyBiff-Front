@@ -12,12 +12,11 @@ import { NavigationScreenProp } from 'react-navigation'
 import MyHeader from './MyHeader'
 import { Form, Item, Input, Label, Textarea } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { RouteComponentProps } from "react-router-dom";
 const avatar = require('../../assets/img/avatar.png')
 
 interface Props {
   navigation: NavigationScreenProp<any>,
-  route: RouteComponentProps
+  route: any
 }
 
 interface Infos {
@@ -247,7 +246,7 @@ export default class Profile extends React.Component<Props, State> {
             </Item>
           </Form>
 
-          <View style={[styles.button, style.register, {marginTop: 10, backgroundColor: 'rgb(85,119,186)'}]}>
+          <View style={[styles.button, style.register, {marginTop: 10}]}>
             <Text style={styles.textButton} onPress={() => this.updateInfos()}>Enregistrer</Text>
           </View>
           
