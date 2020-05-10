@@ -67,10 +67,10 @@ export default class Signin extends React.Component<Props, State>{
               else {
                   this._storeData(json.data.meta.token,json.data.user)
                   if(json.data.user.type == "customer"){
-                    this.goTo('ProfileView')
+                    this.goTo('ServicesCusto')
                   }
                   else{
-                    this.goTo('ProfileView')
+                    this.goTo('Services')
                   } 
               }
             return json

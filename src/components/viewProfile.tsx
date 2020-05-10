@@ -28,6 +28,28 @@ export default class ProfileView extends React.Component<Props, State> {
     };
   }
 
+  componentDidMount(){
+    this.formatUser()
+  }
+
+  formatUser() {
+    const { user } = this.state
+    const userUpdate = {
+      id: user.id,
+      lastname: user.lastname,
+      firstname: user.firstname,
+      age: this.getAge(user.birthday),
+      inscription: user.createdAt.split('T')[0],
+      biographie: user.bio
+    }
+    this.setState({ user: userUpdate })
+  }
+
+  getAge(birthday: string){
+    const newBirthday = new Date(birthday);
+    return new Number((new Date().getTime() - newBirthday.getTime()) / 31536000000).toFixed(0)
+  }
+
   render() {
     const { user } = this.state
     return (
