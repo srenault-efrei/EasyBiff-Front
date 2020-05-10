@@ -45,6 +45,7 @@ interface State {
   token: String,
   cityInfos: any,
   cityCoords: Coords,
+  ask: any
 }
 
 export default class Details extends React.Component<Props, State> {
@@ -79,6 +80,7 @@ export default class Details extends React.Component<Props, State> {
       lat: 0,
       long: 0
     },
+    ask: {},
     token: ''
   }
 
@@ -171,6 +173,7 @@ export default class Details extends React.Component<Props, State> {
 
       if (currentLine.state === 2) {
         objToUpdate.waitingPayment = true
+        objToUpdate.ask = currentLine
       }
 
       this.setState(objToUpdate)
@@ -325,7 +328,7 @@ export default class Details extends React.Component<Props, State> {
     } else if(reqSent === 2 && waitingPayment){
         return(
           <View style={styles.button}>
-          <Text style={styles.textButton} onPress={() => this.props.navigation.navigate('Payment')}>Payer ce service</Text>
+          <Text style={styles.textButton} onPress={() => this.props.navigation.navigate('Payment', {ask: this.state.ask})}>Payer ce service</Text>
           </View>
         )
     } else if(reqSent === -1){

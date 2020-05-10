@@ -184,13 +184,11 @@ export default class Profile extends React.Component<Props, State> {
             type: json.data.user.type
           }
           this.setState({ data: obj, btnDisabled: true })
-
           if(user.type === 'customer'){
             setTimeout( () => navigation.navigate('ServicesCusto'), 3000)
-          } else {
+          }else{
             setTimeout( () => navigation.navigate('Services'), 3000)
           }
-          
         })
         .catch((error) => {
           console.error(error);
