@@ -16,7 +16,7 @@ import Asks from './Asks'
 import AsksCusto from './AsksCusto'
 import Details from './ShowService';
 import Payment from './Payement'
-import ProfileView from './viewProfile'
+import ProfileView from './ViewProfile'
 export interface Props {
   navigation:any
 }
