@@ -39,7 +39,7 @@ export default class SignUp extends React.Component<Props, State>{
         this.state = {
             firstname: '',
             lastname: '',
-            birthday: '01-05-2010',
+            birthday: '',
             email: '',
             password: '',
             passwordConfirmation: '',
@@ -62,10 +62,10 @@ export default class SignUp extends React.Component<Props, State>{
         }
     }
 
-    signUp() {
+    async signUp() {
         if (this.isSamePasswords(this.state.password, this.state.passwordConfirmation)) {
 
-            fetch('https://eazybiff-server.herokuapp.com/api/authenticate/signup', {
+            const req = await fetch('https://eazybiff-server.herokuapp.com/api/authenticate/signup', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -81,19 +81,20 @@ export default class SignUp extends React.Component<Props, State>{
                     phone: this.state.phone.trim()
                 })
             })
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    if (responseJson['err']) {
-                        this.setState({ error: responseJson.err.description })
-                    } else {
-                        console.log(responseJson);
-                        this._storeData(responseJson.data.meta.token, responseJson.data.user)
-                        this.props.navigation.navigate('Preference');
-                    }
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
+            try {
+                const responseJson = await req.json()
+
+                if (responseJson.err) {
+                    this.setState({ error: responseJson.err.description })
+                } else {
+                    console.log(responseJson);
+                    await this._storeData(responseJson.data.meta.token, responseJson.data.user);
+                    this.props.navigation.navigate('Preference');
+                }
+            }
+            catch (error) {
+                console.error(error);
+            };
         } else {
             this.setState({ error: 'Attention,\nLes mots de passe saisis ne correspondent pas' });
         }

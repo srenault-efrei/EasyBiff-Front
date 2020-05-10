@@ -32,7 +32,7 @@ const Tab = createBottomTabNavigator();
 function serviceScreen(){
   return(
     <Tab.Navigator  initialRouteName='Services'>
-          <Tab.Screen name="Services" component={Services} />
+          <Tab.Screen name="Services" component={Services}/>
           <Stack.Screen name="Demandes" component={Asks} />
         </Tab.Navigator>
     );
