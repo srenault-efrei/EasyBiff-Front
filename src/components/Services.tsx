@@ -111,11 +111,10 @@ export default class Service extends React.Component<Props, State> {
   }
 
 
-  
-
+ 
   render() {
     return (
-      <SafeAreaView>
+      <SafeAreaView style={styles.viewPage}>
         <MyHeader navigation={this.props.navigation} name="Services" ></MyHeader>
 
         <TouchableOpacity
@@ -142,7 +141,6 @@ export default class Service extends React.Component<Props, State> {
               }
 
             </View>
-
 
           ))
           }
