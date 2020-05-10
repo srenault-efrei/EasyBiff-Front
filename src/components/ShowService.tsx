@@ -305,10 +305,6 @@ export default class Details extends React.Component<Props, State> {
         <Text style={[style.userInfo, {marginTop: 10, marginBottom: 20}]}>A bientôt j'espère.</Text>
 
         {this.displayButton()}
-
-        <View style={[styles.button, {marginTop: 10, backgroundColor: 'rgb(85,119,186)'}]}>
-          <Text style={styles.textButton} onPress={() => this.props.navigation.navigate('Services')}>Retour aux services</Text>
-        </View>
       
       </View>
     )

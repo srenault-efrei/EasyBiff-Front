@@ -40,7 +40,8 @@ export default class ProfileView extends React.Component<Props, State> {
       firstname: user.firstname,
       age: this.getAge(user.birthday),
       inscription: user.createdAt.split('T')[0],
-      biographie: user.bio
+      biographie: user.bio,
+      phone: user.phone
     }
     this.setState({ user: userUpdate })
   }
@@ -63,12 +64,10 @@ export default class ProfileView extends React.Component<Props, State> {
                 source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
               <Text style={[style.userInfo, {marginBottom: 20, fontStyle: 'italic', fontWeight: 'bold'}]}> {user.age} ans</Text>
               { user.bio ? <Text style={[style.userInfo, style.bio, {marginBottom: 10}]}>{user.bio}</Text>: null }
+              <Text style={[style.userInfo, {marginBottom: 20, fontStyle: 'italic'}]}>Contact: {user.phone}</Text>
               <Text style={[styles.bottomView, {fontStyle: 'italic'}]}>Membre depuis le {user.inscription}.</Text>
             </View>
           </Card>
-          <View style={[styles.button, {marginTop: 10, backgroundColor: 'rgb(85,119,186)'}]}>
-            <Text style={styles.textButton} onPress={() => this.props.navigation.navigate('Services')}>Retour aux services</Text>
-          </View>
         </View>
       </View>
     );
