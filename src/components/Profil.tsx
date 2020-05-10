@@ -251,7 +251,9 @@ export default class Profile extends React.Component<Props, State> {
         </View>
 
         <View style={[styles.button, {marginTop: 10, backgroundColor: 'rgb(85,119,186)'}]}>
-          <Text style={styles.textButton} onPress={() => this.props.navigation.navigate('Services')}>Retour aux services</Text>
+        { user.type === 'provider' ? <Text style={styles.textButton} onPress={() => this.props.navigation.navigate('Services')}>Retour aux services</Text>: 
+          <Text style={styles.textButton} onPress={() => this.props.navigation.navigate('ServicesCusto')}>Retour aux services</Text>
+        }
         </View>
       </View>
     );
