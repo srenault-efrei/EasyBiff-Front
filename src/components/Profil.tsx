@@ -249,6 +249,10 @@ export default class Profile extends React.Component<Props, State> {
         <View style={styles.bottomView}>
           <Text>Vous êtes inscrit depuis le : <Text style={style.infos}>{user.createdAt}</Text></Text>
         </View>
+
+        <View style={[styles.button, {marginTop: 10, backgroundColor: 'rgb(85,119,186)'}]}>
+          <Text style={styles.textButton} onPress={() => this.props.navigation.navigate('Services')}>Retour aux services</Text>
+        </View>
       </View>
     );
 
