@@ -159,6 +159,7 @@ export default class Profile extends React.Component<Props, State> {
 
   updateInfos = async (): Promise<void | never> => {
     const { token, user } = this.state
+    const { navigation } = this.props
     if(!token){
       alert('Veuillez vous reconnecter.')
       this.props.navigation.navigate("Connexion")
@@ -183,6 +184,11 @@ export default class Profile extends React.Component<Props, State> {
             type: json.data.user.type
           }
           this.setState({ data: obj, btnDisabled: true })
+          if(user.type === 'customer'){
+            setTimeout( () => navigation.navigate('ServicesCusto'), 3000)
+          }else{
+            setTimeout( () => navigation.navigate('Services'), 3000)
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -248,12 +254,6 @@ export default class Profile extends React.Component<Props, State> {
         </View>
         <View style={styles.bottomView}>
           <Text>Vous êtes inscrit depuis le : <Text style={style.infos}>{user.createdAt}</Text></Text>
-        </View>
-
-        <View style={[styles.button, {marginTop: 10, backgroundColor: 'rgb(85,119,186)'}]}>
-        { user.type === 'provider' ? <Text style={styles.textButton} onPress={() => this.props.navigation.navigate('Services')}>Retour aux services</Text>: 
-          <Text style={styles.textButton} onPress={() => this.props.navigation.navigate('ServicesCusto')}>Retour aux services</Text>
-        }
         </View>
       </View>
     );
