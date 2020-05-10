@@ -291,6 +291,7 @@ export default class Details extends React.Component<Props, State> {
         <Text>Heure de disponibilité : <Text style={style.infos}>{service.heure}</Text></Text>
         <Text>Tarif annoncé : <Text style={style.infos}>{service.price} €</Text></Text>
         { distance != null ? <Text>Distance : <Text style={style.infos}>{distance}</Text></Text>: null }
+        <Text>Lieu : <Text style={style.infos}>{service.city}</Text></Text>
         
 
         <Card 

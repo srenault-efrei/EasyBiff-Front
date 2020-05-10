@@ -15,7 +15,6 @@
     "@react-navigation/native": "^5.2.4",
     "@react-navigation/stack": "^5.2.13",
     "@types/react-native-datepicker": "^1.7.0",
-    "@types/react-router-dom": "^5.1.5",
     "expo": "^37.0.8",
     "expo-font": "~8.1.0",
     "moment": "^2.24.0",
@@ -36,8 +35,7 @@
     "react-native-screens": "^2.7.0",
     "react-native-ui-xg": "0.0.6",
     "react-native-vector-icons": "^6.6.0",
-    "react-native-web": "~0.11.7",
-    "react-router-dom": "^5.1.2"
+    "react-native-web": "~0.11.7"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
