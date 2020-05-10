@@ -291,7 +291,8 @@ export default class Details extends React.Component<Props, State> {
         { distance != null ? <Text>Distance : <Text style={style.infos}>{distance}</Text></Text>: null }
         
 
-        <Card
+        <Card 
+          containerStyle={style.card}
           title={serviceUser.firstname + ' ' + serviceUser.lastname}>
           <View style={style.itemsCenter}>
             <Image style={style.avatar}
@@ -306,7 +307,7 @@ export default class Details extends React.Component<Props, State> {
 
         {this.displayButton()}
 
-        <View style={[styles.button, {marginTop: 10, backgroundColor: 'rgb(85,119,186)'}]}>
+        <View style={[styles.button, { marginTop: 10 }]}>
           <Text style={styles.textButton} onPress={() => this.props.navigation.navigate('Services')}>Retour aux services</Text>
         </View>
       

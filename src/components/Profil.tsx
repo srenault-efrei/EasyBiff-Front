@@ -196,7 +196,9 @@ export default class Profile extends React.Component<Props, State> {
       <View style={styles.view}>
         <MyHeader navigation={this.props.navigation} name="Profil" ></MyHeader>
         <View style={styles.loginView}>
-        <Image style={style.avatar} source={avatar}/>
+        <Image style={style.avatar} 
+        //source={avatar}
+        source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
           <Form>
             <Item stackedLabel style={style.item}>
               <Label><Icon name="info" size={15} color="#000" /> Prénom</Label>
@@ -241,7 +243,7 @@ export default class Profile extends React.Component<Props, State> {
             </Item>
           </Form>
 
-          <View style={[styles.button, style.register, {marginTop: 10, backgroundColor: 'rgb(85,119,186)'}]}>
+          <View style={[styles.button, style.register, {marginTop: 10}]}>
             <Text style={styles.textButton} onPress={() => this.updateInfos()}>Enregistrer</Text>
           </View>
           
@@ -250,7 +252,7 @@ export default class Profile extends React.Component<Props, State> {
           <Text>Vous êtes inscrit depuis le : <Text style={style.infos}>{user.createdAt}</Text></Text>
         </View>
 
-        <View style={[styles.button, {marginTop: 10, backgroundColor: 'rgb(85,119,186)'}]}>
+        <View style={[styles.button, {marginTop: 10, width: '90%'}]}>
         { user.type === 'provider' ? <Text style={styles.textButton} onPress={() => this.props.navigation.navigate('Services')}>Retour aux services</Text>: 
           <Text style={styles.textButton} onPress={() => this.props.navigation.navigate('ServicesCusto')}>Retour aux services</Text>
         }
