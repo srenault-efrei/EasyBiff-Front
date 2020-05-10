@@ -1,4 +1,6 @@
 import { StyleSheet, Platform } from 'react-native';
+import { colors } from './colors';
+
 export default StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -10,14 +12,14 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  
+
   topView: {
     justifyContent: "center",
     alignItems: "center",
     alignContent: "space-between",
     paddingVertical: 10,
     flexDirection: "row"
-},
+  },
   loginView: {
     flex: 1,
     justifyContent: "center",
@@ -39,7 +41,7 @@ export default StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "grey",
+    backgroundColor: colors.customLightGreen,
     borderRadius: 10,
   },
   halfButton: {
@@ -67,8 +69,8 @@ export default StyleSheet.create({
   inputRow: {
     width: "100%",
     flexDirection: 'row',
-    alignItems:"center",
-    justifyContent:'center'
+    alignItems: "center",
+    justifyContent: 'center'
   },
   error: {
     height: 'auto',
@@ -79,12 +81,12 @@ export default StyleSheet.create({
     textAlign: "center",
     fontSize: 16
   },
-  card:{
-    width:'90%',
-    alignItems:'center',
-    borderColor:'black',
-    justifyContent:'space-around',
-    borderBottomWidth:1,
+  card: {
+    width: '90%',
+    alignItems: 'center',
+    borderColor: 'black',
+    justifyContent: 'space-around',
+    borderBottomWidth: 1,
     flexDirection: 'row',
   },
   dateIcon: {
@@ -107,4 +109,22 @@ export default StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10
   },
+  logo: {
+    width: '80%',
+    height: 140
+  },
+  headerLogo: {
+    width: '60%',
+    height: 120
+  },
+  header: {
+    backgroundColor: colors.customDarkGreen,
+    justifyContent: 'space-around',
+    paddingTop: 0,
+    marginBottom: "auto",
+    height: Platform.select({
+      android: 56,
+      default: 44
+    })
+  }
 });
