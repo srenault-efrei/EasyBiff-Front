@@ -16,6 +16,7 @@ import Asks from './Asks'
 import AsksCusto from './AsksCusto'
 import Details from './ShowService';
 import Payment from './Payement'
+import ProfileView from './viewProfile'
 export interface Props {
   navigation:any
 }
@@ -68,6 +69,7 @@ function createAppStack() {
        <Stack.Screen name="AddService" component={AddService} />
       <Stack.Screen name="Details service" component={Details} />
       <Stack.Screen name="Payment" component={Payment} />
+      <Stack.Screen name="ProfileView" component={ProfileView} />
     </Stack.Navigator>
   )
 }

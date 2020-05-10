@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment'
 import {
   View,
   Text,
@@ -33,7 +34,7 @@ interface State {
   longitude: number,
   latitude: number,
   user: any,
-  token: string | null,
+  token: string,
   btnDisabled: boolean,
   chosenDate: Date
 }
@@ -81,13 +82,7 @@ export default class Profile extends React.Component<Props, State> {
     let user = await AsyncStorage.getItem('user')
     let token = await AsyncStorage.getItem('token')
     if (!user) {
-      if(this.props.route.params.user && this.props.route.params.token){
-        user = this.props.route.params.user
-        token = user = this.props.route.params.token
-        this.setState({user, token})
-      } else {
-        this.props.navigation.navigate("Connexion")
-      }
+      this.props.navigation.navigate("Connexion")
     } else if (user && token) {
       this.setState({
         user: JSON.parse(user),
@@ -163,7 +158,7 @@ export default class Profile extends React.Component<Props, State> {
   }
 
   updateInfos = async (): Promise<void | never> => {
-    const { token, user } = this.state
+/*     const { token, user } = this.state
     if(!token){
       alert('Veuillez vous reconnecter.')
       this.props.navigation.navigate("Connexion")
@@ -192,7 +187,8 @@ export default class Profile extends React.Component<Props, State> {
         .catch((error) => {
           console.error(error);
         });
-    }
+    } */
+    console.log(this.infos)
   }
 
   render() {
